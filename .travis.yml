@@ -24,6 +24,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/build deploy@onarbooks.com:~/dist/mafalda-web
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/build/ deploy@onarbooks.com:~/dist/mafalda-web
   on:
     branch: master
