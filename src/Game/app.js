@@ -1,21 +1,37 @@
 import './app.css'
 import * as PIXI from 'pixi.js'
 
-
+import Router from './Router.js'
 import Menu from './views/Menu';
 
 
 class App {
 	constructor(){
 		this.animateables = [];
-	}
-	init() {
 		this.app = new PIXI.Application(window.innerWidth, window.innerHeight, {backgroundColor : 0x1099bb});
 		window.onresize = this.resize;
+		this.app.view.style.display = 'none';
 		document.body.appendChild(this.app.view);
 
-		this.add(new Menu(this.app));
+
+		this._router = new Router(this.app.stage);
+		this._router.addRoute('Login', new Menu(this.app, 'LoginMenuConfig.js'));
+		this._router.addRoute('Test', new Menu(this.app, 'TestMenuConfig.js'));
+
 	}
+	destroy() {
+		this.app.view.style.display = 'none';
+		this.animateables = [];
+	}
+	init() {
+		this.app.view.style.display = 'block';
+		this._router.go("Login");
+	}
+
+	router() {
+		return this._router;	
+	}
+
 	/////////
 	resize = () => {
     	const w = window.innerWidth;
@@ -28,9 +44,9 @@ class App {
 			try{
 				this.animateables[i].step(dt);
 			} catch(e) {
-				console.log("Problem running animateable : ");
-				console.log(e);
-				console.log(this.animateables[i]);
+				info("Problem running animateable : ");
+				info(e);
+				info(this.animateables[i]);
 			}
 		}
 	}
@@ -39,6 +55,7 @@ class App {
 	}
 }
 
+const info = (e) => console.log(e);
 
 let singleton = null;
 function getSingleton () {

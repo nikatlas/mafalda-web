@@ -7,6 +7,9 @@ class Game extends Component {
 	componentDidMount() {
        GameLayer.init();
 	}
+	componentWillUnmount() {
+       GameLayer.destroy();
+	}
 
 	goTo = (stateName) => {
 		this.props.resolves.$transition$.router.stateService.go(stateName);
