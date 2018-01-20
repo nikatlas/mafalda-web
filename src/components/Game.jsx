@@ -4,9 +4,6 @@ import './Game.css'
 import GameLayer from '../Game/index.js'
 
 class Game extends Component {
-	constructor(props) {
-		super(props);
-	}
 	componentDidMount() {
        GameLayer.init();
 	}
