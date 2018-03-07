@@ -17,7 +17,6 @@ class App {
 		this._router = new Router(this.app.stage);
 		this._router.addRoute('Login', new Menu(this.app, 'LoginMenuConfig.js'));
 		this._router.addRoute('Test', new Menu(this.app, 'TestMenuConfig.js'));
-
 	}
 	destroy() {
 		this.app.view.style.display = 'none';

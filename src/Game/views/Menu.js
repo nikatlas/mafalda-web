@@ -5,7 +5,7 @@ class Menu extends PIXI.Container{
 	constructor(app, config){
 		super();
 		this.stage = app.stage;
-		this.buttons = require('./'+config).default || [];
+		this.buttons = require('./menuConfigs/'+config).default || [];
 		this.calculatePositions();
 		this.buttons.forEach((e,i) => this.addChild(e));
 
