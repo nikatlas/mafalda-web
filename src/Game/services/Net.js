@@ -30,7 +30,8 @@ class Net {
 			method: 'GET',
 			headers: {
 				'Content-Type':'application/json' 
-			}
+			},
+			body: 
 		})
 	}
 }
