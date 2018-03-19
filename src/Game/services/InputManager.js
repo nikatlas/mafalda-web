@@ -58,8 +58,8 @@ class InputManager {
 		this.keys['mouseY'] = 0;
 
 		window.addEventListener('mousemove', e => {
-			this.keys['mouseX'] = (e.pageX - offsetX) / window.innerWidth;
-        	this.keys['mouseY'] = (e.pageY - offsetY) / window.innerHeight;
+			this.keys['mouseX'] = (e.pageX ) / window.innerWidth;
+        	this.keys['mouseY'] = (e.pageY ) / window.innerHeight;
     	});
 
     	window.addEventListener('mousedown', e => {

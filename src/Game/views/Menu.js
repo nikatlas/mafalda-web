@@ -8,7 +8,7 @@ class Menu extends PIXI.Container{
 		this.buttons = require('./menuConfigs/'+config).default || [];
 		this.calculatePositions();
 		this.buttons.forEach((e,i) => this.addChild(e));
-
+		this.test = "dsa";
 		this.position.set(app.screen.width/2, app.screen.height/2);
 	}
 	calculatePositions() {

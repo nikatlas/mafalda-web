@@ -11,6 +11,13 @@ class Router {
 		this.routes[link] = actors;
 	}
 
+	clear = () => {
+		this.stage.removeChild(this.currentRoute);
+		if(this.currentRoute !== null)
+			this.currentRoute.destroy();
+		this.currentRoute = null;
+	}
+
 	go = (link) => {
 		const newRoute = this.routes[link];
 		if (this.currentRoute !== null)

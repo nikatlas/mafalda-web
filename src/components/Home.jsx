@@ -17,6 +17,9 @@ class Home extends Component {
 		    </header>,
 		    <p className="App-intro" key={2}>
 		      <Button color="primary" onClick={() => this.goTo('game')}>Play</Button>
+		    </p>,
+		    <p className="App-intro" key={3}>
+		      <Button color="danger" onClick={() => this.goTo('playground')}>Play</Button>
 		    </p>]
 	    );
   	}
