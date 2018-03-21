@@ -18,7 +18,14 @@ class Button extends PIXI.Sprite{
         this.imageURL = image || getParam('imageURL') || DefaultImageUrl;
         if(Gui) {
             this.Gui = Gui;
-            this.controller = Gui.add(this, 'imageURL').onFinishChange((v) => this.loadImage(v));
+            let position = {
+                x:0,
+                y:0
+            }
+            this.controllers = [];
+            this.controllers.push(Gui.add(this, 'imageURL').onFinishChange((v) => this.loadImage(v)));
+            this.controllers.push(Gui.add(position, 'x').onFinishChange((v) => this.position.x = v));
+            this.controllers.push(Gui.add(position, 'y').onFinishChange((v) => this.position.y = v));
         }
 
         this.anchor.set(0.5,0.5);
@@ -41,7 +48,7 @@ class Button extends PIXI.Sprite{
     }
 
     _kill() {
-        this.controller.remove();
+        this.controllers.forEach((e) => e.remove());
         this.textNode._kill();
         this.destroy();
     }
