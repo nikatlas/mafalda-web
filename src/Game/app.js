@@ -19,11 +19,13 @@ class App {
 		// this._router.addRoute('Login', new Menu(this.app, 'LoginMenuConfig.js'));
 		// this._router.addRoute('Test', new Menu(this.app, 'TestMenuConfig.js'));
 	}
+
 	destroy() {
 		this.app.view.style.display = 'none';
 		this.animateables = [];
 		this._router.clear();
 	}
+
 	init() {
 		this.app.view.style.display = 'block';
 		//this._router.go("Login");
@@ -32,6 +34,7 @@ class App {
 	router() {
 		return this._router;	
 	}
+
 	gui() {
 		return this._gui;
 	}

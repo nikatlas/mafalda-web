@@ -14,14 +14,12 @@ class Playground extends Component {
        	const gui = GameLayer.gui();
 
        	const route = new Loader(GameLayer);
-
        	router.addRoute('Loader', route);
        	router.go('Loader');
 	}
 
 	componentDidMount() {
        GameLayer.init();
-       
 	}
 	componentWillUnmount() {
        GameLayer.destroy();
