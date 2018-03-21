@@ -10,8 +10,8 @@ class Text extends PIXI.Container{
 
 		this.text = text || '';
 		if(Gui) {
-			this.Gui = Gui;
-			this.controller = Gui.add(this, 'text').onFinishChange((v) => this.setText(v));
+			this.Gui = Gui.addFolder("Text");
+			this.controller = this.Gui.add(this, 'text').onFinishChange((v) => this.setText(v));
 		}
 
 		this.textNode = new PIXI.Text(text,{fontFamily : 'Arial', fontSize: 28, fill : 0x000000, align : 'center'});

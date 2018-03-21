@@ -17,22 +17,22 @@ class Button extends PIXI.Sprite{
 
         this.imageURL = image || getParam('imageURL') || DefaultImageUrl;
         if(Gui) {
-            this.Gui = Gui;
+            this.Gui = Gui.addFolder("Button");
             let position = {
                 x:0,
                 y:0
-            }
+            };
             this.controllers = [];
-            this.controllers.push(Gui.add(this, 'imageURL').onFinishChange((v) => this.loadImage(v)));
-            this.controllers.push(Gui.add(position, 'x').onFinishChange((v) => this.position.x = v));
-            this.controllers.push(Gui.add(position, 'y').onFinishChange((v) => this.position.y = v));
+            this.controllers.push(this.Gui.add(this, 'imageURL').onFinishChange((v) => this.loadImage(v)));
+            this.controllers.push(this.Gui.add(position, 'x').onFinishChange((v) => this.position.x = v));
+            this.controllers.push(this.Gui.add(position, 'y').onFinishChange((v) => this.position.y = v));
         }
 
         this.anchor.set(0.5,0.5);
         this.interactive = true;
         this.buttonMode = true;
 
-        this.textNode = new Text(props);
+        this.textNode = new Text({...props, Gui:this.Gui});
         this.addChild(this.textNode);
 
         this.loadImage(this.imageURL);
