@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { getParam } from '../helpers/url.js';
 
 class Loader extends PIXI.Container{
 
@@ -7,16 +8,21 @@ class Loader extends PIXI.Container{
 
         this.GameLayer = GameLayer;
 
-        this.component = '';
+        var comp = getParam('component');
+        this.component = comp || '';
+
 
         let app = GameLayer.app;
         this.gui = GameLayer.gui();
         this.router = GameLayer.router();
-		this.position.set(app.screen.width/2, app.screen.height/2);
+        this.position.set(app.screen.width/2, app.screen.height/2);
 
 
         this.controller = this.gui.add(this, 'component');
         this.controller.onFinishChange((value) => this.loadComponent(value));
+
+        if(this.component)
+            this.loadComponent(this.component);
     }
 
     destroy() {
@@ -24,12 +30,12 @@ class Loader extends PIXI.Container{
     }
 
     loadComponent = (component) => {
-    	if(this.instance) {
+    	if (this.instance) {
     		this.removeChild(this.instance);
     		this.instance._kill();
     	}
     	try {
-    		if(component.length < 3)return;
+    		if (component.length < 3) return;
     		let ctor = require('../Game/misc/' + component).default;
     		this.instance = new ctor({GameLayer: this.GameLayer, Router: this.router, Gui: this.gui});
     		this.addChild(this.instance);
