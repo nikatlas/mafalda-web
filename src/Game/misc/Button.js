@@ -17,22 +17,23 @@ class Button extends PIXI.Sprite{
 
         this.imageURL = image || getParam('imageURL') || DefaultImageUrl;
         if(Gui) {
-            this.Gui = Gui.addFolder("Button");
+            this.Gui = Gui;
+            this.folder = Gui.addFolder('Button');
             let position = {
                 x:0,
                 y:0
             };
             this.controllers = [];
-            this.controllers.push(this.Gui.add(this, 'imageURL').onFinishChange((v) => this.loadImage(v)));
-            this.controllers.push(this.Gui.add(position, 'x').onFinishChange((v) => this.position.x = v));
-            this.controllers.push(this.Gui.add(position, 'y').onFinishChange((v) => this.position.y = v));
+            this.controllers.push(this.folder.add(this, 'imageURL').onFinishChange((v) => this.loadImage(v)));
+            this.controllers.push(this.folder.add(position, 'x').onFinishChange((v) => this.position.x = v));
+            this.controllers.push(this.folder.add(position, 'y').onFinishChange((v) => this.position.y = v));
         }
 
         this.anchor.set(0.5,0.5);
         this.interactive = true;
         this.buttonMode = true;
 
-        this.textNode = new Text({...props, Gui:this.Gui});
+        this.textNode = new Text({...props, Gui:this.folder});
         this.addChild(this.textNode);
 
         this.loadImage(this.imageURL);
@@ -48,6 +49,7 @@ class Button extends PIXI.Sprite{
     }
 
     _kill() {
+        this.Gui.removeFolder('Button');
         this.controllers.forEach((e) => e.remove());
         this.textNode._kill();
         this.destroy();

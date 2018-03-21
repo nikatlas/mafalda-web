@@ -5,6 +5,16 @@ import Router from './Router.js'
 import Menu from './views/Menu';
 
 let DATGUI = require('dat.gui');
+DATGUI.default.GUI.prototype.removeFolder = function(name) {
+  var folder = this.__folders[name];
+  if (!folder) {
+    return;
+  }
+  folder.close();
+  this.__ul.removeChild(folder.domElement.parentNode);
+  delete this.__folders[name];
+  this.onResize();
+}
 
 class App {
 	constructor(){
