@@ -20,6 +20,7 @@ class Button extends PIXI.Sprite{
 
 
     _kill() {
+        this.textNode._kill();
         this.destroy();
     }
 
