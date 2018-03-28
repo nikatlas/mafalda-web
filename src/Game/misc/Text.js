@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import GuiableContainer from '../../helpers/Guiable'
 
-class Text extends GuiableContainer{
+class Text extends GuiableContainer {
 	constructor(props) {
 		super(props);
 		let {
@@ -14,8 +14,8 @@ class Text extends GuiableContainer{
 
 		this.addFolder("Text");
 		this.addToFolder('Text', this, 'text').onFinishChange((v) => this.setText(v));
-
 		this.addToFolder('Text', this, 'style', TextStylesNames).onFinishChange((v) => this.setStyle(v));
+
 
 		this.construct();
 	}
@@ -24,14 +24,6 @@ class Text extends GuiableContainer{
 		this.textNode = new PIXI.Text(this.text,TextStyles[this.style]);
 		this.textNode.anchor.set(0.5,0.5);
 		this.addChild(this.textNode);
-	}
-
-	getAsJSON = () => {
-		return {
-			component: 'Text',
-			text: this.text,
-			style: this.style
-		}
 	}
 
 	setText = (args) => {
@@ -43,7 +35,13 @@ class Text extends GuiableContainer{
 		this.textNode.style = TextStyles[args];
 	}
 
-	static get styles() { return 1; }
+	getAsJSON = () => {
+		return {
+			component: 'Text',
+			text: this.text,
+			style: this.style
+		}
+	}
 }
 
 let TextStylesNames = {

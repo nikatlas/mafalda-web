@@ -1,42 +1,50 @@
 import * as PIXI from 'pixi.js';
+
 import Text from './Text.js';
 import { getParam } from '../../helpers/url';
 
+import GuiableContainer from '../../helpers/Guiable';
+import draggable from '../../helpers/draggable'
 
 const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
 
-class Button extends PIXI.Sprite{
+class Button extends GuiableContainer{
     constructor(props) {
-        super(DefaultImage);
+        super(props);
         let {
-            image,
-            text,
-            Gui
+            image
         } = props;
 
         this.imageURL = image || getParam('imageURL') || DefaultImageUrl;
-        if(Gui) {
-            this.Gui = Gui;
-            this.folder = Gui.addFolder('Button');
-            let position = {
-                x:0,
-                y:0
-            };
-            this.controllers = [];
-            this.controllers.push(this.folder.add(this, 'imageURL').onFinishChange((v) => this.loadImage(v)));
-            this.controllers.push(this.folder.add(position, 'x').onFinishChange((v) => this.position.x = v));
-            this.controllers.push(this.folder.add(position, 'y').onFinishChange((v) => this.position.y = v));
-        }
+        
 
-        this.anchor.set(0.5,0.5);
-        this.interactive = true;
-        this.buttonMode = true;
+        let position = {
+            x:0,
+            y:0
+        };
+  
+        this.addFolder('Button');
+        this.addToFolder('Button', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
+        this.addToFolder('Button', this.position, 'x').onFinishChange((v) => this.position.x = v).listen();
+        this.addToFolder('Button', this.position, 'y').onFinishChange((v) => this.position.y = v).listen();
+        
+        this.construct(props);
+    }
 
-        this.textNode = new Text({...props, Gui:this.folder});
-        this.addChild(this.textNode);
+    construct(props) {
+        this.sprite = new PIXI.Sprite(DefaultImage);
+        this.sprite.anchor.set(0.5,0.5);
+        this.sprite.interactive = true;
+        this.sprite.buttonMode = true;
 
-        this.loadImage(this.imageURL);
+        //draggable(this.sprite);
+
+        this.textNode = new Text(props);
+        this.sprite.addChild(this.textNode);
+        this.addChild(this.sprite);
+
+        this.loadImage(this.imageURL);        
     }
 
     loadImage(img) {
@@ -48,15 +56,24 @@ class Button extends PIXI.Sprite{
         this.texture = texture;
     }
 
-    _kill() {
-        this.Gui.removeFolder('Button');
-        this.controllers.forEach((e) => e.remove());
-        this.textNode._kill();
-        this.destroy();
-    }
-
     onClick(fn) {
         this.on('pointerdown', (e) => fn(e));
+    }
+
+
+    _kill() {
+        this.textNode._kill();
+        super._kill();
+    }
+
+    getAsJSON = () => {
+        return {
+            image: this.imageURL,
+            ...this.textNode.getAsJSON(),
+            x: this.position.x,
+            y: this.position.y,
+            component: 'Button'
+        }
     }
 }
 
