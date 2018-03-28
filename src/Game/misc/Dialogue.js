@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import Text from './Text.js';
 import { getParam } from '../../helpers/url';
 
 
@@ -11,7 +10,6 @@ class Dialogue extends PIXI.Sprite{
         super(DefaultImage);
         let {
             image,
-            text,
             Gui
         } = props;
 

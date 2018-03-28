@@ -1,8 +1,5 @@
 class State {
 
-    constructor(){
-
-    }
 
     setState(data) {
         this.state = {

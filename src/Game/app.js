@@ -1,8 +1,7 @@
 import './app.css';
 import * as PIXI from 'pixi.js';
 
-import Router from './Router.js'
-import Menu from './views/Menu';
+import Router from './Router.js';
 
 let DATGUI = require('dat.gui');
 // Polyfill removeFolder

@@ -4,7 +4,6 @@ import Text from './Text.js';
 import { getParam } from '../../helpers/url';
 
 import GuiableContainer from '../../helpers/Guiable';
-import draggable from '../../helpers/draggable'
 
 const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
@@ -17,12 +16,6 @@ class Button extends GuiableContainer{
         } = props;
 
         this.imageURL = image || getParam('imageURL') || DefaultImageUrl;
-        
-
-        let position = {
-            x:0,
-            y:0
-        };
   
         this.addFolder('Button');
         this.addToFolder('Button', this, 'imageURL').onFinishChange((v) => this.loadImage(v));

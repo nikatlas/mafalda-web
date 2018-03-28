@@ -10,8 +10,8 @@ class Playground extends Component {
 		super(props);
 		
 		const router = GameLayer.router();
-       	const app = GameLayer.app;
-       	const gui = GameLayer.gui();
+       	// const app = GameLayer.app;
+       	// const gui = GameLayer.gui();
 
        	const route = new Loader(GameLayer);
        	router.addRoute('Loader', route);

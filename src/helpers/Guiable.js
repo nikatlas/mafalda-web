@@ -4,7 +4,6 @@ class GuiableContainer extends PIXI.Container {
     constructor(props) {
         super();
         let {
-            GameLayer,
             Gui
         } = props;
 
