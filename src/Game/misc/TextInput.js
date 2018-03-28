@@ -1,17 +1,47 @@
 import * as PIXI from 'pixi.js';
 import * as PixiTextInput from './PixiTextInput.js';
+import GuiableContainer from '../../helpers/Guiable';
 
-class TextInput extends PIXI.Container{
-    constructor(text, width) {
-        super();
-        this.inputNode = new PixiTextInput(text,{fontFamily : 'Arial', fontSize: 28, fill : 0x000000, align : 'center'});
-        this.inputNode.width = width || 320;
+import { TextStylesNames, TextStyles } from './Text';
+
+class TextInput extends GuiableContainer{
+    constructor(props) {
+        super(props);
+        let {
+            text,
+            style,
+            width
+        } = props;
+
+        this.style = style || 'heavy';
+        this.text = text || '';
+        this.width = width || 120;
+
+        this.addFolder('TextInput');
+        this.addToFolder('TextInput', this, 'text').onFinishChange((v) => this.setText(v)).listen();
+        this.addToFolder('TextInput', this, 'style', TextStylesNames).onFinishChange((v) => this.setStyle(v));
+
+        this.construct(props); 
+    }
+
+    construct() {
+        this.inputNode = new PixiTextInput(this.text,TextStyles[this.style]);
+        this.inputNode.width = this.width || 320;
         this.inputNode.pivot.set(this.inputNode.width/2, this.inputNode.height/2);
         this.addChild(this.inputNode);
     }
 
-    value() {
-        return this.value;
+    setText(text) {
+        this.inputNode.text = text;
+    }
+
+    setStyle(style) {
+        this.style = style;
+        this.inputNode.style = TextStyles[style];
+    }
+
+    getValue() {
+        return this.inputNode.text;
     }
 }
 

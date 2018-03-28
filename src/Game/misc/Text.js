@@ -62,6 +62,7 @@ let TextStyles = {
 
 
 export {
-	TextStyles
+	TextStyles,
+	TextStylesNames
 };
 export default Text;
