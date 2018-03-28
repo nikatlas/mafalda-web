@@ -5,6 +5,7 @@ import Router from './Router.js'
 import Menu from './views/Menu';
 
 let DATGUI = require('dat.gui');
+// Polyfill removeFolder
 DATGUI.default.GUI.prototype.removeFolder = function(name) {
   var folder = this.__folders[name];
   if (!folder) {
@@ -15,7 +16,7 @@ DATGUI.default.GUI.prototype.removeFolder = function(name) {
   delete this.__folders[name];
   this.onResize();
 }
-
+////
 class App {
 	constructor(){
 		this.animateables = [];
@@ -25,7 +26,9 @@ class App {
 		document.body.appendChild(this.app.view);
 
 		this._router = new Router(this.app.stage);
+		
 		this._gui = new DATGUI.default.GUI();
+		DATGUI.default.GUI.toggleHide();
 		// this._router.addRoute('Login', new Menu(this.app, 'LoginMenuConfig.js'));
 		// this._router.addRoute('Test', new Menu(this.app, 'TestMenuConfig.js'));
 	}
@@ -49,6 +52,9 @@ class App {
 		return this._gui;
 	}
 
+	toggleGui() {
+		DATGUI.default.GUI.toggleHide();
+	}
 	/////////
 	resize = () => {
     	const w = window.innerWidth;

@@ -1,15 +1,15 @@
 class State {
 
-	constructor(){
+    constructor(){
 
-	}
+    }
 
-	setState(data) {
-		this.state = {
-			...this.state, 
-			...data
-		};
-		if(this.onStateUpdate)this.onStateUpdate();
-	}
+    setState(data) {
+        this.state = {
+            ...this.state, 
+            ...data
+        };
+        if(this.onStateUpdate)this.onStateUpdate();
+    }
 }
 export default State;
