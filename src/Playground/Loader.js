@@ -64,7 +64,7 @@ class Loader extends PIXI.Container{
     	}
     	try {
     		if (component.length < 3) return;
-    		let ctor = require('../Game/misc/' + component).default;
+    		let ctor = require('../Game/views/' + component).default;
     		this.instance = new ctor({GameLayer: this.GameLayer, Router: this.router, Gui: this.gui, ...props});
     		this.addChild(this.instance);
     	} catch(e) {

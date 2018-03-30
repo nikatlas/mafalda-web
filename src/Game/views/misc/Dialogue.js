@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { getParam } from '../../helpers/url';
+import { getParam } from '../../../helpers/url';
 
 
 const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';

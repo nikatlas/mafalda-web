@@ -1,9 +1,8 @@
 import * as PIXI from 'pixi.js';
-
 import Text from './Text.js';
-import { getParam } from '../../helpers/url';
+import { getParam } from '../../../helpers/url';
 
-import GuiableContainer from '../../helpers/Guiable';
+import GuiableContainer from '../../../helpers/Guiable';
 
 const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
@@ -12,16 +11,26 @@ class Button extends GuiableContainer{
     constructor(props) {
         super(props);
         let {
-            image
+            image,
+            x,
+            y
         } = props;
 
+        // Properties Component 
         this.imageURL = image || getParam('imageURL') || DefaultImageUrl;
-  
+        this.position.set(x,y);
+
+        this.x = x || 0;
+        this.y = y || 0;
+
+        // GUI
         this.addFolder('Button');
         this.addToFolder('Button', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
-        this.addToFolder('Button', this.position, 'x').onFinishChange((v) => this.position.x = v).listen();
-        this.addToFolder('Button', this.position, 'y').onFinishChange((v) => this.position.y = v).listen();
-        
+        this.addToFolder('Button', this, 'x').onFinishChange((v) => this.position.x = v);
+        this.addToFolder('Button', this, 'y').onFinishChange((v) => this.position.y = v);
+        // 
+
+
         this.construct(props);
     }
 
@@ -32,8 +41,7 @@ class Button extends GuiableContainer{
         this.sprite.buttonMode = true;
 
         //draggable(this.sprite);
-
-        this.textNode = new Text(props);
+        this.textNode = new Text({...(props.Text|| {}), Gui: props.Gui});
         this.sprite.addChild(this.textNode);
         this.addChild(this.sprite);
 
@@ -50,7 +58,7 @@ class Button extends GuiableContainer{
     }
 
     onClick(fn) {
-        this.on('pointerdown', (e) => fn(e));
+        this.sprite.on('pointerdown', (e) => fn(e));
     }
 
 
@@ -59,14 +67,14 @@ class Button extends GuiableContainer{
         super._kill();
     }
 
-    getAsJSON = () => {
+    getAsJSON() {
         return {
+            component: 'misc/Button',
+            Text: this.textNode.getAsJSON(),
             image: this.imageURL,
-            ...this.textNode.getAsJSON(),
             x: this.position.x,
-            y: this.position.y,
-            component: 'Button'
-        }
+            y: this.position.y
+        };
     }
 }
 

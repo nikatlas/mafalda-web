@@ -1,5 +1,10 @@
 import * as PIXI from 'pixi.js';
 
+let Empty = {
+    onFinishChange: () => this,
+    listen: () => this
+
+}
 class GuiableContainer extends PIXI.Container { 
     constructor(props) {
         super();
@@ -16,24 +21,24 @@ class GuiableContainer extends PIXI.Container {
     }
 
     addFolder = (name) => {
-        if (!this.Gui) return;
+        if (!this.Gui) return Empty;
         this.folders[name] = this.Gui.addFolder(name);
     }
 
     addToFolder = (name, ...props) => {
-        if (!this.Gui) return;
+        if (!this.Gui) return Empty;
         return this.folders[name].add(...props);
     }
 
     addGui = (...props) => {
-        if (!this.Gui) return;
+        if (!this.Gui) return Empty;
         let cont = this.Gui.add(...props);
         this.controllers.push(cont);
         return cont;
     }
 
     _kill() {
-        if (!this.Gui) return;
+        if (!this.Gui) return Empty;
         this.controllers.forEach((a) => a.remove());
         for(var k in this.folders) {
             this.Gui.removeFolder(k);

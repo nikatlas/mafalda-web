@@ -1,6 +1,5 @@
-import * as PIXI from 'pixi.js';
 import * as PixiTextInput from './PixiTextInput.js';
-import GuiableContainer from '../../helpers/Guiable';
+import GuiableContainer from '../../../helpers/Guiable';
 
 import { TextStylesNames, TextStyles } from './Text';
 
@@ -42,6 +41,15 @@ class TextInput extends GuiableContainer{
 
     getValue() {
         return this.inputNode.text;
+    }
+
+    getAsJSON = () => {
+        return {
+            style: this.style,
+            text: this.text,
+            width: this.width,
+            component: 'misc/TextInput'
+        }
     }
 }
 
