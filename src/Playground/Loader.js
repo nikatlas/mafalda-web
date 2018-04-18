@@ -24,9 +24,9 @@ class Loader extends PIXI.Container{
 
         this.gui.add(this, 'save');
         this.gui.add(this, 'load');
+        this.gui.add(this, 'loadJSON');
 
-        if(this.component)
-            this.loadComponent({component: this.component});
+        this.load();
     }
 
     destroy() {
@@ -34,7 +34,7 @@ class Loader extends PIXI.Container{
         this.GameLayer.toggleGui();
     }
 
-    load = () => {
+    loadJSON = () => {
         var loadJSON = prompt("Enter load info...", "");
         
         let jsonData = null;
@@ -47,8 +47,20 @@ class Loader extends PIXI.Container{
         this.loadComponent(jsonData);
     }
 
+    load = () => {
+        let loadJSON = localStorage.getItem('SavedDevData');
+        if(loadJSON) {
+            loadJSON = JSON.parse(loadJSON);
+            this.loadComponent(loadJSON);
+        } else {
+            if(this.component)
+                this.loadComponent({component: this.component}); 
+        } 
+    }
+
     save = () => {
         let data = JSON.stringify(this.instance.getAsJSON());
+        localStorage.setItem('SavedDevData', data);
         alert(data);
     }
 

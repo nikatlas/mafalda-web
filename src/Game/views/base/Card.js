@@ -1,13 +1,16 @@
 import * as PIXI from 'pixi.js';
-import Text from './Text.js';
+//import Text from './Text.js';
 import { getParam } from '../../../helpers/url';
+
+import draggable from '../../../helpers/draggable';
+import dragAndDrop from '../../../helpers/dragAndDrop';
 
 import GuiableContainer from '../../../helpers/Guiable';
 
 const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
 
-class Button extends GuiableContainer{
+class Card extends GuiableContainer{
     constructor(props) {
         super(props);
         let {
@@ -24,28 +27,31 @@ class Button extends GuiableContainer{
         this.y = y || 0;
 
         // GUI
-        this.addFolder('Button');
-        this.addToFolder('Button', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
-        this.addToFolder('Button', this, 'x').onFinishChange((v) => this.position.x = v);
-        this.addToFolder('Button', this, 'y').onFinishChange((v) => this.position.y = v);
-        // 
-
+        this.addFolder('Card');
+        this.addToFolder('Card', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
+        this.addToFolder('Card', this, 'x').onFinishChange((v) => this.position.x = v);
+        this.addToFolder('Card', this, 'y').onFinishChange((v) => this.position.y = v);
+        //
 
         this.construct(props);
     }
 
     construct(props) {
+        let [w,h] = [200,320];
+
         this.sprite = new PIXI.Sprite(DefaultImage);
         this.sprite.anchor.set(0.5,0.5);
-        this.sprite.interactive = true;
-        this.sprite.buttonMode = true;
+        this.sprite.width = w;
+        this.sprite.height= h;
 
-        //draggable(this.sprite);
-        this.textNode = new Text({...(props.Text|| {}), Gui: props.Gui});
-        this.sprite.addChild(this.textNode);
+        this.interactive = true;
+        this.hitArea = new PIXI.Rectangle(-w/2,-h/2,w,h);
+        this.cursor = 'pointer';
+
         this.addChild(this.sprite);
+        dragAndDrop(this);
 
-        this.loadImage(this.imageURL);        
+        this.loadImage(this.imageURL);
     }
 
     loadImage(img) {
@@ -61,16 +67,13 @@ class Button extends GuiableContainer{
         this.sprite.on('pointerdown', (e) => fn(e));
     }
 
-
     _kill() {
-        this.textNode._kill();
         super._kill();
     }
 
     getAsJSON() {
         return {
-            component: 'misc/Button',
-            Text: this.textNode.getAsJSON(),
+            component: 'base/Card',
             image: this.imageURL,
             x: this.position.x,
             y: this.position.y
@@ -78,4 +81,4 @@ class Button extends GuiableContainer{
     }
 }
 
-export default Button;
+export default Card;
