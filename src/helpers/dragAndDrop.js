@@ -1,7 +1,5 @@
 import EventManager from '../Game/services/EventManager';
 
-
-
 function dragAndDrop(sprite) {
 // Sprite must be interactive and if container Hit Area must be specified!
     sprite
@@ -18,8 +16,9 @@ function dragAndDrop(sprite) {
         .on('touchmove', onDragMove);
 
     EventManager.on('CardPlaced', (position) => {
-        console.log("CardPlaced");
-        sprite.placedPosition = position;
+        if(sprite.dragging) {
+            sprite.placedPosition = position;
+        }
     });
 }
 

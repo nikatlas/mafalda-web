@@ -9,6 +9,8 @@ class CardToHolder extends PIXI.Container{
 
         let card = new Card({});
         this.addChild(card);
+        let card2 = new Card({'x': -200});
+        this.addChild(card2);
 
         let holder = new CardHolder({'x':-170,'y':0,'w':203,'h':323});
         this.addChild(holder);
