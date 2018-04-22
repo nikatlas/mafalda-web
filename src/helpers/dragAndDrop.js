@@ -14,12 +14,15 @@ function dragAndDrop(sprite) {
         // events for drag move
         .on('mousemove', onDragMove)
         .on('touchmove', onDragMove);
+}
 
-    EventManager.on('CardPlaced', (position) => {
-        if(sprite.dragging) {
-            sprite.placedPosition = position;
+function place(position, dropCallback) {
+    if(this.dragging) {
+        this.placedPosition = position;
+        if(dropCallback) {
+            dropCallback(this);
         }
-    });
+    }
 }
 
 function onDragStart(event)
@@ -38,6 +41,10 @@ function onDragStart(event)
     this.draggingInitial.y -= this.draggingOffset.y;
 
     EventManager.emit('CardDragging');
+
+    this.placeFn = place.bind(this);
+    // Add CardPlace Callback 
+    EventManager.on('CardPlaced', this.placeFn);
 }
 
 function onDragEnd()
@@ -46,17 +53,15 @@ function onDragEnd()
     this.dragging = false;
     // set the interaction data to null
     this.data = null;
-    if(this.placedPosition){
-        this.position.x = this.placedPosition.x;
-        this.position.y = this.placedPosition.y;
+    if(this.placedPosition) {
+        this.moveTo(this.placedPosition);
     } else {
-        this.position.x = this.draggingInitial.x;
-        this.position.y = this.draggingInitial.y;
+        this.moveTo(this.draggingInitial);
     }
-
-
-
     EventManager.emit('CardDraggingFinished');
+    
+    // Remove Card Placed Callbacks
+    EventManager.off('CardPlaced', this.placeFn);
 }
 
 function onDragMove()
@@ -66,6 +71,7 @@ function onDragMove()
         var newPosition = this.data.getLocalPosition(this.parent);
         this.position.x = newPosition.x - this.draggingOffset.x;
         this.position.y = newPosition.y - this.draggingOffset.y;
+
     }
 }
 export default dragAndDrop;

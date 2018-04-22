@@ -33,7 +33,7 @@ class CardHolder extends GuiableContainer{
         this.construct(props);
     }
 
-    construct(props) {
+    construct() {
         this.sprite = new PIXI.Graphics();
         this.sprite.beginFill(0xFFFF00,0.1);
 
@@ -44,7 +44,10 @@ class CardHolder extends GuiableContainer{
         this.sprite.interactive = true;
         this.sprite.hitArea = new PIXI.Rectangle(0, 0, this.w, this.h);
         this.sprite.cursor = 'pointer';
-        this.sprite.on('mouseup', () => EventManager.trigger('CardPlaced', [this.position]));
+        this.sprite.on('mouseup', () => {
+            // This is called before it is removed from the DragEnd Callback
+            EventManager.trigger('CardPlaced', [this.position, this._onDrop]); 
+        });
 
         this.position.set(this.x,this.y);
 
@@ -71,7 +74,7 @@ class CardHolder extends GuiableContainer{
     }
 
     onDrop(fn) {
-        // TODO
+        this._onDrop = fn;
     }
 
     _kill() {

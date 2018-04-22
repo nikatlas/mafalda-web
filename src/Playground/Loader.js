@@ -14,6 +14,7 @@ class Loader extends PIXI.Container{
 
         let app = GameLayer.app;
         GameLayer.toggleGui();
+        GameLayer.start();
         this.gui = GameLayer.gui();
         this.router = GameLayer.router();
         this.position.set(app.screen.width/2, app.screen.height/2);

@@ -2,10 +2,11 @@ import * as PIXI from 'pixi.js';
 //import Text from './Text.js';
 import { getParam } from '../../../helpers/url';
 
-import draggable from '../../../helpers/draggable';
 import dragAndDrop from '../../../helpers/dragAndDrop';
 
 import GuiableContainer from '../../../helpers/Guiable';
+
+
 
 const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
@@ -34,6 +35,7 @@ class Card extends GuiableContainer{
         //
 
         this.construct(props);
+        window.MM = this;
     }
 
     construct(props) {
@@ -52,6 +54,12 @@ class Card extends GuiableContainer{
         dragAndDrop(this);
 
         this.loadImage(this.imageURL);
+
+
+        this._tween = PIXI.tweenManager.createTween(this);
+        this._tween.time = 1000;
+        this._tween.easing = PIXI.tween.Easing.outQuart();
+        this._tween.loop = false;
     }
 
     loadImage(img) {
@@ -65,6 +73,26 @@ class Card extends GuiableContainer{
 
     onClick(fn) {
         this.sprite.on('pointerdown', (e) => fn(e));
+    }
+
+    // Animate to Position
+    moveTo(point, milliseconds=1000) {
+        let path = new PIXI.tween.TweenPath();
+        path.moveTo(this.position.x, this.position.y).lineTo(point.x, point.y);
+        this._tween.path = path;
+        this._tween.time = milliseconds;
+        this._tween.start();
+    }
+    // Animate Scale
+    scaleTo(newscale, milliseconds=1000) {
+        this._tween.from({
+            scale: { x: this.scale.x, y: this.scale.y }
+        });
+        this._tween.to({
+            scale: { x: newscale, y: newscale }
+        });
+        this._tween.time = milliseconds;
+        this._tween.start();
     }
 
     _kill() {
