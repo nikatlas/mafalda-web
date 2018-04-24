@@ -48,12 +48,12 @@ class Card extends GuiableContainer{
     }
 
     construct(props) {
-        let [w,h] = [819/3,1020/3];
+        let [w,h] = [494,683];
 
         this.sprite = new PIXI.Sprite();
         this.sprite.anchor.set(0.5,0.5);
-        this.sprite.width = w-30;
-        this.sprite.height= h-30*h/w;
+        this.sprite.width = w;
+        this.sprite.height= h;
 
         this.frame = new PIXI.Sprite(BlueImage);
         this.frame.anchor.set(0.5,0.5);
