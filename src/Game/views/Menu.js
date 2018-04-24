@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import GuiableContainer from '../../helpers/Guiable';
 import { getParam } from '../../helpers/url';
 import drag from '../../helpers/draggable';

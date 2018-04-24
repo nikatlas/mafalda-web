@@ -14,6 +14,8 @@ function dragAndDrop(sprite) {
         // events for drag move
         .on('mousemove', onDragMove)
         .on('touchmove', onDragMove);
+
+    sprite.placeFn = place.bind(sprite);
 }
 
 function place(position, dropCallback) {
@@ -41,8 +43,6 @@ function onDragStart(event)
     this.draggingInitial.y -= this.draggingOffset.y;
 
     EventManager.emit('CardDragging');
-
-    this.placeFn = place.bind(this);
     // Add CardPlace Callback 
     EventManager.on('CardPlaced', this.placeFn);
 }
@@ -59,7 +59,6 @@ function onDragEnd()
         this.moveTo(this.draggingInitial);
     }
     EventManager.emit('CardDraggingFinished');
-    
     // Remove Card Placed Callbacks
     EventManager.off('CardPlaced', this.placeFn);
 }
@@ -71,7 +70,6 @@ function onDragMove()
         var newPosition = this.data.getLocalPosition(this.parent);
         this.position.x = newPosition.x - this.draggingOffset.x;
         this.position.y = newPosition.y - this.draggingOffset.y;
-
     }
 }
 export default dragAndDrop;

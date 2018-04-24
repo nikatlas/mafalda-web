@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js';
-import { getParam } from '../../../helpers/url';
+//import { getParam } from '../../../helpers/url';
 
 import GuiableContainer from '../../../helpers/Guiable';
 import EventManager from '../../services/EventManager';
 
-const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
-const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
+//const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
+//const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
 
 class CardHolder extends GuiableContainer{
     constructor(props) {

@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import GuiableContainer from '../../../helpers/Guiable';
 import CardHolder from '../base/CardHolder';
-import Card from '../base/Card';
+//import Card from '../base/Card';
 
 const DefaultImageUrl = '/files/assets/ui/papyrus.jpg';
 const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);

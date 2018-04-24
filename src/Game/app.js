@@ -19,6 +19,7 @@ DATGUI.default.GUI.prototype.removeFolder = function(name) {
 ////
 class App {
 	constructor(){
+		this.__$$ = tweenManager;
 		this.animateables = [];
 		this.app = new PIXI.Application(window.innerWidth, window.innerHeight, {backgroundColor : 0x1099bb});
 		window.onresize = this.resize;
