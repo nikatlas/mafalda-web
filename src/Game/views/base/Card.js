@@ -61,12 +61,12 @@ class Card extends GuiableContainer{
         this.frame.height= h;
         //this.frame.setTexture(RedImage);
 
-        let [lw,lh] = [1983/12,737/12];
+        let [lw,lh] = [412,137];
         this.label = new PIXI.Sprite(LabelImage);
         this.label.anchor.set(0.5,0.5);
         this.label.width = lw;
         this.label.height= lh;
-        this.label.position.set(0,100);
+        this.label.position.set(0,210);
 
 
         this.interactive = true;
