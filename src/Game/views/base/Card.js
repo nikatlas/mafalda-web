@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 //import Text from './Text.js';
-import { getParam } from '../../../helpers/url';
 
 import dragAndDrop from '../../../helpers/dragAndDrop';
 
@@ -23,13 +22,12 @@ class Card extends GuiableContainer{
     constructor(props) {
         super(props);
         let {
-            image,
             x,
             y
         } = props;
 
         // Properties Component 
-        this.imageURL = image || getParam('imageURL');
+        //this.imageURL = image || getParam('imageURL');
         this.position.set(x,y);
 
         this.x = x || 0;
@@ -37,7 +35,7 @@ class Card extends GuiableContainer{
 
         // GUI
         this.addFolder('Card');
-        this.addToFolder('Card', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
+        //this.addToFolder('Card', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
         this.addToFolder('Card', this, 'x').onFinishChange((v) => this.position.x = v);
         this.addToFolder('Card', this, 'y').onFinishChange((v) => this.position.y = v);
         this.addToFolder('Card', {team: false}, 'team').onFinishChange((v) => this.setTeam(v));
@@ -55,7 +53,7 @@ class Card extends GuiableContainer{
         this.sprite.width = w;
         this.sprite.height= h;
 
-        this.frame = new PIXI.Sprite(BlueImage);
+        this.frame = new PIXI.Sprite(RedImage);
         this.frame.anchor.set(0.5,0.5);
         this.frame.width = w;
         this.frame.height= h;
@@ -68,10 +66,11 @@ class Card extends GuiableContainer{
         this.label.height= lh;
         this.label.position.set(0,210);
 
-
         this.interactive = true;
         this.hitArea = new PIXI.Rectangle(-w/2,-h/2,w,h);
         this.cursor = 'pointer';
+
+        this.scale.set(0.5);
 
         this.addChild(this.sprite);
         this.addChild(this.label);
@@ -84,22 +83,23 @@ class Card extends GuiableContainer{
     setTeam(team) {
         switch(team) {
             case 0: case 'R': case 'r': case false:
-                this.frame.setTexture(RedImage);
+                this.frame.texture = RedImage;
                 break;
             case 1: case 'B': case 'b': case true:
-                this.frame.setTexture(BlueImage);
+                this.frame.texture = BlueImage;
                 break;
             default:break;
         }
     }
 
     loadCard(number) {
+        number = parseInt(number+0.5, 10);
         this.imageURL = Deck.Filenames[number];
-        this.setTexture(Deck.Textures[number]);
+        this.sprite.texture = Deck.Textures[number];
     }
 
     setTexture(texture) {
-        this.sprite.setTexture(texture);
+        this.sprite.texture = texture;
     }
 
     onClick(fn) {
@@ -139,7 +139,6 @@ class Card extends GuiableContainer{
     getAsJSON() {
         return {
             component: 'base/Card',
-            image: this.imageURL,
             x: this.position.x,
             y: this.position.y
         };
