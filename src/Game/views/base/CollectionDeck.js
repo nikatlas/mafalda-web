@@ -42,15 +42,15 @@ class CollectionDeck extends GuiableContainer{
 
         this.addChild(this.sprite);
 
-        let cardHolder = new CardHolder({'x':0,'y':0,'w':60,'h':96});
-        this.addChild(cardHolder);
-        let cardHolder2 = new CardHolder({'x':0,'y':100,'w':60,'h':96});
+        let cardHolder1 = new CardHolder({'x':0,'y':-200,'w':60,'h':96});
+        this.addChild(cardHolder1);
+        let cardHolder2 = new CardHolder({'x':0,'y':-100,'w':60,'h':96});
         this.addChild(cardHolder2);
         let cardHolder3 = new CardHolder({'x':0,'y':0,'w':60,'h':96});
         this.addChild(cardHolder3);
-        let cardHolder4 = new CardHolder({'x':0,'y':0,'w':60,'h':96});
+        let cardHolder4 = new CardHolder({'x':0,'y':100,'w':60,'h':96});
         this.addChild(cardHolder4);
-        let cardHolder5 = new CardHolder({'x':0,'y':0,'w':60,'h':96});
+        let cardHolder5 = new CardHolder({'x':0,'y':200,'w':60,'h':96});
         this.addChild(cardHolder5);
 
 
