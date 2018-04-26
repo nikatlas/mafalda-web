@@ -38,7 +38,7 @@ function onDragStart(event)
     var newPosition = this.data.getLocalPosition(this);
     this.draggingOffset = newPosition;
 
-    this.draggingInitial   = this.data.getLocalPosition(this.parent);
+    this.draggingInitial   = this.data.getLocalPosition(this);
     this.draggingInitial.x -= this.draggingOffset.x;
     this.draggingInitial.y -= this.draggingOffset.y;
 

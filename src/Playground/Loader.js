@@ -2,23 +2,18 @@ import * as PIXI from 'pixi.js';
 import { getParam } from '../helpers/url.js';
 
 class Loader extends PIXI.Container{
-
     constructor(GameLayer) {
         super();
 
         this.GameLayer = GameLayer;
-
         var comp = getParam('component');
         this.component = comp || '';
 
-
-        let app = GameLayer.app;
+        // let app = GameLayer.app;
         GameLayer.toggleGui();
         GameLayer.start();
         this.gui = GameLayer.gui();
         this.router = GameLayer.router();
-        this.position.set(app.screen.width/2, app.screen.height/2);
-
 
         this.controller = this.gui.add(this, 'component').listen();
         this.controller.onFinishChange((value) => this.loadComponent({component: value}));

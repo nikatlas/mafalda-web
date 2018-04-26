@@ -25,14 +25,25 @@ class App {
 		window.onresize = this.resize;
 		this.app.view.style.display = 'none';
 		document.body.appendChild(this.app.view);
-		this.resize();
 
-		this._router = new Router(this.app.stage);
+		this.viewStage = new PIXI.Container();
+		// var graphics = new PIXI.Graphics();
+		// graphics.beginFill(0xFFFF00,0.2);
+		// // set the line style to have a width of 5 and set the color to red
+		// graphics.lineStyle(5, 0xFF0000);
+		// // draw a rectangle
+		// graphics.drawRect(0, 0, 1280, 720);
+		// this.app.stage.addChild(graphics);
+
+		this.app.stage.addChild(this.viewStage);
+
+		this._router = new Router(this.viewStage);
 		
 		this._gui = new DATGUI.default.GUI();
 		DATGUI.default.GUI.toggleHide();
 		// this._router.addRoute('Login', new Menu(this.app, 'LoginMenuConfig.js'));
 		// this._router.addRoute('Test', new Menu(this.app, 'TestMenuConfig.js'));
+		this.resize();
 	}
 
 	destroy() {
@@ -59,22 +70,31 @@ class App {
 	}
 	/////////
 	resize = () => {
+		let stageDimensions = [1280, 720];
 		let ratio = 16/9;
-    	let w,h;
+    	var w,h,s,vw,vh,pw,ph;
+	    
 	    if (window.innerWidth / window.innerHeight >= ratio) {
-	        w = window.innerHeight * ratio;
+	        w = parseInt(window.innerHeight * ratio, 10);
 	        h = window.innerHeight;
+	        s = window.innerHeight / stageDimensions[1];
+	        vh = parseInt(h, 10);
+	        vw = parseInt(vh * ratio, 10);
+	        ph = parseInt(vh / 2, 10);
+	        pw = parseInt((window.innerWidth)/2, 10);
 	    } else {
 	        w = window.innerWidth;
-	        h = window.innerWidth / ratio;
+	        h = parseInt(window.innerWidth / ratio, 10);
+	        s = window.innerWidth / stageDimensions[0];
+	        vw = parseInt(w, 10);
+	        vh = parseInt(vw / ratio, 10);
+	        pw = parseInt(vw / 2, 10);
+	        ph = parseInt((window.innerHeight)/2, 10);
 	    }
-	    
-	    this.app.renderer.view.style.width = window.innerWidth + 'px';
-	    this.app.renderer.view.style.height = window.innerHeight + 'px';
-	    this.app.renderer.resize(window.innerWidth, window.innerHeight);
-	    
-	    this.app.stage.pivot.set(w/2,h/2);
-	    this.app.stage.position.set(w/2,h/2);
+	   	this.viewStage.position.set(640, 360);
+	    this.app.stage.position.set(pw - vw/2, ph - vh/2);
+	    this.app.stage.scale.set(s);
+	    this.app.renderer.resize(window.innerWidth-1, window.innerHeight-1);
 	}
 
 	step(dt) {

@@ -23,30 +23,41 @@ class Card extends GuiableContainer{
         super(props);
         let {
             x,
-            y
+            y,
+            id
         } = props;
 
         // Properties Component 
         //this.imageURL = image || getParam('imageURL');
         this.position.set(x,y);
 
-        this.x = x || 0;
-        this.y = y || 0;
+        this.options = {
+            x: x || 0,
+            y: y || 0,
+            team: false,
+            id: id || 0
+        };
 
         // GUI
         this.addFolder('Card');
         //this.addToFolder('Card', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
-        this.addToFolder('Card', this, 'x').onFinishChange((v) => this.position.x = v);
-        this.addToFolder('Card', this, 'y').onFinishChange((v) => this.position.y = v);
-        this.addToFolder('Card', {team: false}, 'team').onFinishChange((v) => this.setTeam(v));
-        this.addToFolder('Card', {card: 0}, 'card', 0, 1).onFinishChange((v) => this.loadCard(v));
+        this.addToFolder('Card', this.options, 'x').onFinishChange((v) => this.position.x = v);
+        this.addToFolder('Card', this.options, 'y').onFinishChange((v) => this.position.y = v);
+        this.addToFolder('Card', this.options, 'team').onFinishChange((v) => this.setTeam(v));
+        this.addToFolder('Card', this.options, 'id', 0, 1).onFinishChange((v) => this.loadCard(v));
         //
 
         this.construct(props);
     }
 
     construct(props) {
+        let {
+            id
+        } = props;
+
         let [w,h] = [494,683];
+        // Every card has a transparent region around so the hitArea is Reduced!!!
+        let [hw,hh] = [430,617];  
 
         this.sprite = new PIXI.Sprite();
         this.sprite.anchor.set(0.5,0.5);
@@ -67,7 +78,7 @@ class Card extends GuiableContainer{
         this.label.position.set(0,210);
 
         this.interactive = true;
-        this.hitArea = new PIXI.Rectangle(-w/2,-h/2,w,h);
+        this.hitArea = new PIXI.Rectangle(-hw/2,-hh/2,hw,hh);
         this.cursor = 'pointer';
 
         this.scale.set(0.5);
@@ -77,18 +88,18 @@ class Card extends GuiableContainer{
         this.addChild(this.frame);
         dragAndDrop(this);
 
-        this.loadCard(0);
+        this.loadCard(id || 0);
     }
 
     setTeam(team) {
         switch(team) {
-            case 0: case 'R': case 'r': case false:
-                this.frame.texture = RedImage;
-                break;
-            case 1: case 'B': case 'b': case true:
-                this.frame.texture = BlueImage;
-                break;
-            default:break;
+        case 0: case 'R': case 'r': case false:
+            this.frame.texture = RedImage;
+            break;
+        case 1: case 'B': case 'b': case true:
+            this.frame.texture = BlueImage;
+            break;
+        default: break;
         }
     }
 
@@ -139,8 +150,10 @@ class Card extends GuiableContainer{
     getAsJSON() {
         return {
             component: 'base/Card',
-            x: this.position.x,
-            y: this.position.y
+            x:  this.position.x,
+            y:  this.position.y,
+            id: this.options.id,
+            team: this.options.team
         };
     }
 }
