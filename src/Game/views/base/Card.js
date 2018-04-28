@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-//import Text from './Text.js';
+import config from '../../config';
 
 import dragAndDrop from '../../../helpers/dragAndDrop';
 
@@ -56,9 +56,9 @@ class Card extends GuiableContainer{
             team
         } = props;
 
-        let [w,h] = [494,683];
+        let [w,h] = [config.CARD.WIDTH,config.CARD.HEIGHT];
         // Every card has a transparent region around so the hitArea is Reduced!!!
-        let [hw,hh] = [430,617];  
+        let [hw,hh] = [config.CARD.WIDTH-config.CARD.OFFSET.X,config.CARD.HEIGHT-config.CARD.OFFSET.Y];  
 
         this.sprite = new PIXI.Sprite();
         this.sprite.anchor.set(0.5,0.5);
@@ -123,6 +123,9 @@ class Card extends GuiableContainer{
     moveTo(point, milliseconds=1000) {
         let path = new PIXI.tween.TweenPath();
         path.moveTo(this.position.x, this.position.y).lineTo(point.x, point.y);
+        console.log(this.position.x);
+        console.log(this.position.y);
+
         this._tween = PIXI.tweenManager.createTween(this);
         this._tween.easing = PIXI.tween.Easing.outQuart();
         this._tween.loop = false;

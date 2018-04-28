@@ -27,22 +27,20 @@ class CardToHolder extends PIXI.Container{
         view.position.set(-200,0);
         this.addChild(view);
 
-
         let deck = new PIXI.Container();
 
-        deck.addChild(new Card({GameLayer, 'x': -180, 'y': -230, team: 0, id: 3}).scaleTo(0.27));
-        deck.addChild(new Card({GameLayer, 'x': -180, 'y': -50, team: 1, id: 1}).scaleTo(0.27));
-        deck.addChild(new Card({GameLayer, 'x': -50, 'y': -230, team: 1, id: 5}).scaleTo(0.27));
-        deck.addChild(new Card({GameLayer, 'x': -50, 'y': -50, team: 1, id: 4}).scaleTo(0.27));
-        deck.addChild(new Card({GameLayer, 'x': -120, 'y': 130, team: 1, id: 3}).scaleTo(0.27));
+        deck.addChild(new CardHolder({GameLayer, 'x': -180, 'y': -230, team: 0, id: 3}).scaleTo(0.27));
+        deck.addChild(new CardHolder({GameLayer, 'x': -180, 'y': -50, team: 1, id: 1}).scaleTo(0.27));
+        deck.addChild(new CardHolder({GameLayer, 'x': -50, 'y': -230, team: 1, id: 5}).scaleTo(0.27));
+        deck.addChild(new CardHolder({GameLayer, 'x': -50, 'y': -50, team: 1, id: 4}).scaleTo(0.27));
+        deck.addChild(new CardHolder({GameLayer, 'x': -120, 'y': 130, team: 1, id: 3}).scaleTo(0.27));
         deck.position.set(610,110);
         this.addChild(deck);
 
+        // let holder = new CardHolder({'x':-170,'y':0, 's': 0.4});
+        // this.addChild(holder);
 
-        let holder = new CardHolder({'x':-170,'y':0,'w':203,'h':323});
-        this.addChild(holder);
-
-        let holder2 = new CardHolder({'x':200,'y':100,'w':203,'h':323});
+        let holder2 = new CardHolder({'x':200,'y':100, 's': 0.7});
         this.addChild(holder2);
         holder2.onDrop((card) => 0);
     }

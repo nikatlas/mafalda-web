@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import EventManager from '../Game/services/EventManager';
 
 function dragAndDrop(sprite) {
@@ -18,9 +19,10 @@ function dragAndDrop(sprite) {
     sprite.placeFn = place.bind(sprite);
 }
 
-function place(position, dropCallback) {
+function place(holder, dropCallback) {
     if(this.dragging) {
-        this.placedPosition = position;
+        this.placedPosition = this.parent.toLocal(holder.getGlobalPosition());
+        this.placedScale = new PIXI.Point(holder.scale.x, holder.scale.y);
         if(dropCallback) {
             dropCallback(this);
         }
@@ -35,12 +37,9 @@ function onDragStart(event)
     this.data = event.data;
     this.dragging = true;
     
-    var newPosition = this.data.getLocalPosition(this);
-    this.draggingOffset = newPosition;
+    this.draggingOffset = this.data.getLocalPosition(this);
 
-    this.draggingInitial   = this.data.getLocalPosition(this);
-    this.draggingInitial.x -= this.draggingOffset.x;
-    this.draggingInitial.y -= this.draggingOffset.y;
+    this.draggingInitial = new PIXI.Point(this.position.x, this.position.y);
 
     EventManager.emit('CardDragging');
     // Add CardPlace Callback 
@@ -55,9 +54,11 @@ function onDragEnd()
     this.data = null;
     if(this.placedPosition) {
         this.moveTo(this.placedPosition);
+        this.scaleTo(this.placedScale.x);
     } else {
         this.moveTo(this.draggingInitial);
     }
+
     EventManager.emit('CardDraggingFinished');
     // Remove Card Placed Callbacks
     EventManager.off('CardPlaced', this.placeFn);
@@ -68,8 +69,9 @@ function onDragMove()
     if (this.dragging)
     {
         var newPosition = this.data.getLocalPosition(this.parent);
-        this.position.x = newPosition.x - this.draggingOffset.x;
-        this.position.y = newPosition.y - this.draggingOffset.y;
+        var offset = this.draggingOffset;
+        this.position.x = newPosition.x - offset.x * this.scale.x;
+        this.position.y = newPosition.y - offset.y * this.scale.y;
     }
 }
 export default dragAndDrop;

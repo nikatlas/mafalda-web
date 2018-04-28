@@ -7,28 +7,29 @@ import EventManager from '../../services/EventManager';
 //const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 //const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
 
+import config from '../../config.js';
+
 class CardHolder extends GuiableContainer{
     constructor(props) {
         super(props);
         let {
             x,
             y,
-            w,
-            h
+            s
         } = props;
 
         // Properties Component 
         this.x = x || 0;
         this.y = y || 0;
-        this.w = w || 10;
-        this.h = h || 10;
+        this.w = config.CARD.WIDTH-config.CARD.OFFSET.X;
+        this.h = config.CARD.HEIGHT-config.CARD.OFFSET.Y;
+        this.s = s || 1;
 
         // GUI
         this.addFolder('CardHolder');
         this.addToFolder('CardHolder', this, 'x').onFinishChange((v) => this.change({x: v}));
         this.addToFolder('CardHolder', this, 'y').onFinishChange((v) => this.change({y: v}));
-        this.addToFolder('CardHolder', this, 'w').onFinishChange((v) => this.change({w: v}));
-        this.addToFolder('CardHolder', this, 'h').onFinishChange((v) => this.change({h: v}));
+        this.addToFolder('CardHolder', this, 's').onFinishChange((v) => this.change({s: v}));
         //
         this.construct(props);
     }
@@ -46,31 +47,35 @@ class CardHolder extends GuiableContainer{
         this.sprite.cursor = 'pointer';
         this.sprite.on('mouseup', () => {
             // This is called before it is removed from the DragEnd Callback
-            EventManager.trigger('CardPlaced', [this.position, this._onDrop]); 
+            EventManager.trigger('CardPlaced', [this, this._onDrop]); 
         });
 
         this.position.set(this.x,this.y);
+
+        this.scale.set(this.s);
 
         EventManager.on('CardDragging', () => this.addChild(this.sprite));
         EventManager.on('CardDraggingFinished', () => this.removeChild(this.sprite));
     }
 
+    scaleTo(s) {
+        this.scale.set(s);
+        this.s = s;
+        return this;
+    }
     change(props) {
         let newdata = {
             x: this.x,
             y: this.y,
-            w: this.w,
-            h: this.h,
+            s: this.s,
             ...props
         };
         this.x = newdata.x;
         this.y = newdata.y;
-        this.w = newdata.w;
-        this.h = newdata.h;
+        this.s = newdata.s;
 
         this.position.set(this.x,this.y);
-        this.sprite.width = this.w;
-        this.sprite.height = this.h;
+        this.scale.set(this.s);
     }
 
     onDrop(fn) {
