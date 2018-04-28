@@ -45,10 +45,12 @@ class CardHolder extends GuiableContainer{
         this.sprite.interactive = true;
         this.sprite.hitArea = new PIXI.Rectangle(0, 0, this.w, this.h);
         this.sprite.cursor = 'pointer';
-        this.sprite.on('mouseup', () => {
+        let fn = () => {
             // This is called before it is removed from the DragEnd Callback
             EventManager.trigger('CardPlaced', [this, this._onDrop]); 
-        });
+        };
+        this.sprite.on('mouseup', fn);
+        this.sprite.on('touchend', fn);
 
         this.position.set(this.x,this.y);
 

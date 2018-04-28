@@ -123,8 +123,6 @@ class Card extends GuiableContainer{
     moveTo(point, milliseconds=1000) {
         let path = new PIXI.tween.TweenPath();
         path.moveTo(this.position.x, this.position.y).lineTo(point.x, point.y);
-        console.log(this.position.x);
-        console.log(this.position.y);
 
         this._tween = PIXI.tweenManager.createTween(this);
         this._tween.easing = PIXI.tween.Easing.outQuart();
