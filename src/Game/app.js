@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 import * as tweenManager from 'pixi-tween';
 import 'pixi-layers';
 
+import Injector from './services/Injector';
 import Router from './Router.js';
 
 let DATGUI = require('dat.gui');
@@ -27,7 +28,27 @@ class App {
 		this.app.view.style.display = 'none';
 		document.body.appendChild(this.app.view);
 
-		//this.app.stage = new PIXI.display.Stage();
+		this.app.stage = new PIXI.display.Stage();
+
+
+		let bg = new PIXI.display.Layer();
+		let shadows = new PIXI.display.Layer();
+		let main = new PIXI.display.Layer();
+		let top = new PIXI.display.Layer();
+		let ui = new PIXI.display.Layer();
+
+		Injector.saveAs('BackgroundLayer', bg);
+		Injector.saveAs('ShadowsLayer', shadows);
+		Injector.saveAs('MainLayer', main);
+		Injector.saveAs('TopLayer', top);
+		Injector.saveAs('UILayer', ui);
+
+		this.app.stage.addChild(bg);
+		this.app.stage.addChild(shadows);
+		this.app.stage.addChild(main);
+		this.app.stage.addChild(top);
+		this.app.stage.addChild(ui);
+
 		this.viewStage = new PIXI.Container();
 		// var graphics = new PIXI.Graphics();
 		// graphics.beginFill(0xFFFF00,0.2);

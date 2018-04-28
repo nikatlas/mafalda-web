@@ -34,25 +34,25 @@ class CardCollection extends GuiableContainer{
         let [w,h] = [800,600];
 
         this.sprite = new PIXI.Sprite(DefaultImage);
-        this.sprite.anchor.set(0.5,0.5);
+        this.sprite.anchor.set(0,0);
         this.sprite.width = w;
         this.sprite.height= h;
-
+        
         this.addChild(this.sprite);
 
-        let card = new Card({'x':2*w/3, 'y':-h/2});
-        this.sprite.addChild(card);
-        let card2 = new Card({'x':w/3, 'y':-h/2});
-        this.sprite.addChild(card2);
-        let card3 = new Card({'x':0, 'y':-h/2});
-        this.sprite.addChild(card3);
-        let card4 = new Card({'x':-2*w/3, 'y':-h/2});
-        this.sprite.addChild(card4);
+
+        let card = new Card({'x':100, 'y':120});
+        this.addChild(card);
+        let card2 = new Card({'x':350, 'y':120});
+        this.addChild(card2);
+        let card3 = new Card({'x':600, 'y':120});
+        this.addChild(card3);
+        let card4 = new Card({'x':-w/2, 'y':-h/2}).scaleTo(0.4);
+        this.addChild(card4);
         let card5 = new Card({'x':-w/3, 'y':-h/2});
-        this.sprite.addChild(card5);
+        this.addChild(card5);
 
-
-
+        this.position.set(-500,-320);
     }
 
     loadImage(img) {

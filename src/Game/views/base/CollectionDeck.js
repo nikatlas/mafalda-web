@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import GuiableContainer from '../../../helpers/Guiable';
 import CardHolder from '../base/CardHolder';
-//import Card from '../base/Card';
+import Injector from '../../services/Injector';
 
 const DefaultImageUrl = '/files/assets/ui/papyrus.jpg';
 const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
@@ -33,27 +33,38 @@ class CollectionDeck extends GuiableContainer{
     }
 
     construct(props){
+        let { GameLayer } = props;
+
         let [w,h] = [200,600];
+
+
 
         this.sprite = new PIXI.Sprite(DefaultImage);
         this.sprite.anchor.set(0.5,0.5);
         this.sprite.width = w;
         this.sprite.height= h;
 
+        this.sprite.parentLayer = Injector.getByName("BackgroundLayer");
+
         this.addChild(this.sprite);
 
-        let cardHolder1 = new CardHolder({'x':0,'y':-200,'w':60,'h':96});
+
+
+        let cardHolder1 = new CardHolder({GameLayer,'x':0,'y':-240,'s':0.30});
+        cardHolder1.parentLayer = Injector.getByName("TopLayer");
         this.addChild(cardHolder1);
-        let cardHolder2 = new CardHolder({'x':0,'y':-100,'w':60,'h':96});
-        this.addChild(cardHolder2);
-        let cardHolder3 = new CardHolder({'x':0,'y':0,'w':60,'h':96});
+        // let cardHolder2 = new CardHolder({GameLayer,'x':0,'y':-120,'s':0.30});
+        // cardHolder2.parentLayer = Injector.getByName("TopLayer");
+        // this.addChild(cardHolder2);
+        let cardHolder3 = new CardHolder({GameLayer,'x':0,'y':0,'s':0.30});
+        cardHolder3.parentLayer = Injector.getByName("TopLayer");
         this.addChild(cardHolder3);
-        let cardHolder4 = new CardHolder({'x':0,'y':100,'w':60,'h':96});
-        this.addChild(cardHolder4);
-        let cardHolder5 = new CardHolder({'x':0,'y':200,'w':60,'h':96});
+        // let cardHolder4 = new CardHolder({GameLayer,'x':0,'y':120,'s':0.30});
+        // cardHolder4.parentLayer = Injector.getByName("TopLayer");
+        // this.addChild(cardHolder4);
+        let cardHolder5 = new CardHolder({GameLayer,'x':0,'y':240,'s':0.30});
+        cardHolder5.parentLayer = Injector.getByName("TopLayer");
         this.addChild(cardHolder5);
-
-
 
     }
 
