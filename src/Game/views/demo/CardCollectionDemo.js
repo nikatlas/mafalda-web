@@ -10,10 +10,6 @@ class CardCollectionDemo extends PIXI.Container{
 	constructor(props){
 		super();
 
-		let {
-			GameLayer
-		} = props;
-
 
 		let cardCollection = new CardCollection({});
 		cardCollection.parentLayer = Injector.getByName("MainLayer");
