@@ -7,6 +7,9 @@ class Injector {
         return this.components[name];
     }
     
+    saveAs(name, comp) {
+        this.components[name] = comp;
+    }
     load(json) {
         let  {
             component,
