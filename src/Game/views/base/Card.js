@@ -52,7 +52,8 @@ class Card extends GuiableContainer{
 
     construct(props) {
         let {
-            id
+            id,
+            team
         } = props;
 
         let [w,h] = [494,683];
@@ -81,7 +82,7 @@ class Card extends GuiableContainer{
         this.hitArea = new PIXI.Rectangle(-hw/2,-hh/2,hw,hh);
         this.cursor = 'pointer';
 
-        this.scale.set(0.5);
+        this.scale.set(0.355);
 
         this.addChild(this.sprite);
         this.addChild(this.label);
@@ -89,6 +90,7 @@ class Card extends GuiableContainer{
         dragAndDrop(this);
 
         this.loadCard(id || 0);
+        this.setTeam(team || 0);
     }
 
     setTeam(team) {
@@ -141,6 +143,7 @@ class Card extends GuiableContainer{
         });
         this._tween.time = milliseconds;
         this._tween.start();
+        return this;
     }
 
     _kill() {
