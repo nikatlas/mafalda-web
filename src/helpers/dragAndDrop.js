@@ -48,20 +48,21 @@ function onDragStart(event)
 
 function onDragEnd()
 {
-    this.alpha = 1;
-    this.dragging = false;
-    // set the interaction data to null
-    this.data = null;
-    if(this.placedPosition) {
-        this.moveTo(this.placedPosition);
-        this.scaleTo(this.placedScale.x);
-    } else {
-        this.moveTo(this.draggingInitial);
-    }
-
     EventManager.emit('CardDraggingFinished');
     // Remove Card Placed Callbacks
-    EventManager.off('CardPlaced', this.placeFn);
+    setTimeout(() => {
+        EventManager.off('CardPlaced', this.placeFn)
+        this.dragging = false;
+        this.alpha = 1;
+        // set the interaction data to null
+        this.data = null;
+        if(this.placedPosition) {
+            this.moveTo(this.placedPosition);
+            this.scaleTo(this.placedScale.x);
+        } else {
+            this.moveTo(this.draggingInitial);
+        }
+    }, 10);
 }
 
 function onDragMove()

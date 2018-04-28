@@ -26,7 +26,8 @@ class App {
 		window.onresize = this.resize;
 		this.app.view.style.display = 'none';
 		document.body.appendChild(this.app.view);
-		this.app.stage = new PIXI.display.Stage();
+
+		//this.app.stage = new PIXI.display.Stage();
 		this.viewStage = new PIXI.Container();
 		// var graphics = new PIXI.Graphics();
 		// graphics.beginFill(0xFFFF00,0.2);
