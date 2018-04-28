@@ -5,15 +5,30 @@ import CardCollection from '../base/CardCollection';
 import CollectionDeck from '../base/CollectionDeck';
 
 class CardCollectionDemo extends PIXI.Container{
-	constructor(){
+	constructor(props){
 		super();
 
-		var layer = new PIXI.display.Layer();
+		let {
+			GameLayer
+		} = props;
 
+		var layer = new PIXI.display.Layer();
+		var layer2 = new PIXI.display.Layer();
 		let cardCollection = new CardCollection({});
-		this.addChild(cardCollection);
+		//cardCollection.parentLayer = layer;
+		layer.addChild(cardCollection);
+		cardCollection.zIndex = 1;
+		// this.addChild(cardCollection);
 		let collectionDeck = new CollectionDeck({'x': 600, 'y':0 });
-		this.addChild(collectionDeck);
+		//collectionDeck.parentLayer = layer;
+		layer2.addChild(collectionDeck);
+		collectionDeck.zIndex = 2;
+		// this.addChild(collectionDeck);
+		GameLayer.app.stage.addChild(layer2);
+		GameLayer.app.stage.addChild(layer);
+		
+		this.addChild(layer);
+		this.addChild(layer2);
 		// this.setChildIndex(collectionDeck, 0);
 		// this.setChildIndex(cardCollection,1);
 	}
