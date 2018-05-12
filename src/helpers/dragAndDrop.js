@@ -17,12 +17,28 @@ function dragAndDrop(sprite) {
         .on('touchmove', onDragMove);
 
     sprite.placeFn = place.bind(sprite);
+
+    sprite.stopDND = () => {
+        sprite
+        // events for drag start
+        .off('mousedown', onDragStart)
+        .off('touchstart', onDragStart)
+        // events for drag end
+        .off('mouseup', onDragEnd)
+        .off('mouseupoutside', onDragEnd)
+        .off('touchend', onDragEnd)
+        .off('touchendoutside', onDragEnd)
+        //events for drag move
+        .off('mousemove', onDragMove)
+        .off('touchmove', onDragMove);
+    }
 }
 
 function place(holder, dropCallback) {
     if(this.dragging) {
         this.placedPosition = this.parent.toLocal(holder.getGlobalPosition());
         this.placedScale = new PIXI.Point(holder.scale.x, holder.scale.y);
+        holder.lock(this);
         if(dropCallback) {
             dropCallback(this);
         }
@@ -37,6 +53,10 @@ function onDragStart(event)
     this.data = event.data;
     this.dragging = true;
     
+    let holder = this.getHolder();
+    if(holder)
+        holder.unlock();
+
     this.draggingOffset = this.data.getLocalPosition(this);
 
     this.draggingInitial = new PIXI.Point(this.position.x, this.position.y);
