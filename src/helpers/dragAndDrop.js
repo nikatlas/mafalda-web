@@ -19,13 +19,11 @@ function dragAndDrop(sprite) {
     sprite.placeFn = place.bind(sprite);
 }
 
-function place(holder, dropCallback) {
+function place(holder) {
     if(this.dragging) {
         this.placedPosition = this.parent.toLocal(holder.getGlobalPosition());
         this.placedScale = new PIXI.Point(holder.scale.x, holder.scale.y);
-        if(dropCallback) {
-            dropCallback(this);
-        }
+        // holder.occupy(this);
     }
 }
 

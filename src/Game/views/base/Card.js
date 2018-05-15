@@ -130,6 +130,7 @@ class Card extends GuiableContainer{
         this._tween.path = path;
         this._tween.time = milliseconds;
         this._tween.start();
+        return this;
     }
     // Animate Scale
     scaleTo(newscale, milliseconds=1000) {

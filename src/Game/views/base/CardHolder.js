@@ -32,6 +32,7 @@ class CardHolder extends GuiableContainer{
         this.addToFolder('CardHolder', this, 's').onFinishChange((v) => this.change({s: v}));
         //
         this.construct(props);
+        this.show();
     }
 
     construct() {
@@ -47,7 +48,7 @@ class CardHolder extends GuiableContainer{
         this.sprite.cursor = 'pointer';
         let fn = () => {
             // This is called before it is removed from the DragEnd Callback
-            EventManager.trigger('CardPlaced', [this, this._onDrop]); 
+            EventManager.trigger('CardPlaced', [this]); 
         };
         this.sprite.on('mouseup', fn);
         this.sprite.on('touchend', fn);
@@ -56,9 +57,12 @@ class CardHolder extends GuiableContainer{
 
         this.scale.set(this.s);
 
-        EventManager.on('CardDragging', () => this.addChild(this.sprite));
-        EventManager.on('CardDraggingFinished', () => this.removeChild(this.sprite));
+        EventManager.on('CardDragging', this.show);
+        EventManager.on('CardDraggingFinished', this.hide);
     }
+
+    show = () => this.addChild(this.sprite)
+    hide = () => this.removeChild(this.sprite)
 
     scaleTo(s) {
         this.scale.set(s);
