@@ -42,10 +42,13 @@ class CardCollection extends GuiableContainer{
 
 
         let card = new Card({'x':100, 'y':120});
+        card.zIndex = 4;
         this.addChild(card);
         let card2 = new Card({'x':350, 'y':120});
+        card2.zIndex = 1;
         this.addChild(card2);
         let card3 = new Card({'x':600, 'y':120});
+        card3.zIndex = 2;
         this.addChild(card3);
         let card4 = new Card({'x':-w/2, 'y':-h/2}).scaleTo(0.4);
         this.addChild(card4);

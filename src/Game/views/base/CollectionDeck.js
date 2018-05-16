@@ -51,7 +51,7 @@ class CollectionDeck extends GuiableContainer{
 
 
         let cardHolder1 = new CardHolder({GameLayer,'x':0,'y':-240,'s':0.30});
-        cardHolder1.parentLayer = Injector.getByName("TopLayer");
+        cardHolder1.parentLayer = Injector.getByName("MainLayer");
         this.addChild(cardHolder1);
         // let cardHolder2 = new CardHolder({GameLayer,'x':0,'y':-120,'s':0.30});
         // cardHolder2.parentLayer = Injector.getByName("TopLayer");

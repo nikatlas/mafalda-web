@@ -37,6 +37,12 @@ class App {
 		let top = new PIXI.display.Layer();
 		let ui = new PIXI.display.Layer();
 
+		bg.group.enableSort = true;
+		shadows.group.enableSort = true;
+		main.group.enableSort = true;
+		top.group.enableSort = true;
+		ui.group.enableSort = true;
+
 		Injector.saveAs('BackgroundLayer', bg);
 		Injector.saveAs('ShadowsLayer', shadows);
 		Injector.saveAs('MainLayer', main);
