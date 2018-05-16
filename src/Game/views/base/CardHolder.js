@@ -9,7 +9,7 @@ import EventManager from '../../services/EventManager';
 
 import config from '../../config.js';
 
-class CardHolder extends GuiableContainer{
+class CardHolder extends GuiableContainer {
     constructor(props) {
         super(props);
         let {
@@ -46,12 +46,11 @@ class CardHolder extends GuiableContainer{
         this.sprite.interactive = true;
         this.sprite.hitArea = new PIXI.Rectangle(0, 0, this.w, this.h);
         this.sprite.cursor = 'pointer';
-        let fn = () => {
+        this._placeFn = () => {
             // This is called before it is removed from the DragEnd Callback
             EventManager.trigger('CardPlaced', [this]); 
         };
-        this.sprite.on('mouseup', fn);
-        this.sprite.on('touchend', fn);
+        this.setEvents();
 
         this.position.set(this.x,this.y);
 
@@ -61,14 +60,49 @@ class CardHolder extends GuiableContainer{
         EventManager.on('CardDraggingFinished', this.hide);
     }
 
+
     show = () => this.addChild(this.sprite)
     hide = () => this.removeChild(this.sprite)
+
+    getCard() {
+        return this._card;
+    }
+
+    setEvents() {
+        this.sprite.on('mouseup', this._placeFn);
+        this.sprite.on('touchend',this._placeFn);
+    }
+
+    unsetEvents() {
+        this.sprite.off('mouseup', this._placeFn);
+        this.sprite.off('touchend',this._placeFn);
+    }
+
+    occupy(card) {
+        this.lock(card);
+        this._onDrop(card);
+    }
+
+    lock(card = null) {
+        this.unsetEvents();
+        this._locked = true;
+        this._card = card;
+        if(card) {
+            card.attach(this);
+        }
+    }
+
+    unlock() {
+        this.setEvents();
+        this._locked = false;    
+    }
 
     scaleTo(s) {
         this.scale.set(s);
         this.s = s;
         return this;
     }
+
     change(props) {
         let newdata = {
             x: this.x,
@@ -86,6 +120,7 @@ class CardHolder extends GuiableContainer{
 
     onDrop(fn) {
         this._onDrop = fn;
+        return this;
     }
 
     _kill() {

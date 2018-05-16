@@ -2,8 +2,9 @@ import * as PIXI from 'pixi.js';
 
 import Card from '../base/Card';
 import CardHolder from '../base/CardHolder';
+import Board from '../buildings/Board';
 
-class Board extends PIXI.Container{
+class BoardDemo extends PIXI.Container{
     constructor(props) {
         super();
 
@@ -21,20 +22,8 @@ class Board extends PIXI.Container{
         // this.addChild(card);
         this.addChild(new Card({GameLayer, 'x': -220, 'y': -230, team: 0, id: 4}).scaleTo(0.27));
         
-        let view = new PIXI.Container();
-
-        view.addChild(new CardHolder({GameLayer, 'x': -220, 'y': -230, team: 0, id: 4}).scaleTo(BoardScale));
-        view.addChild(new CardHolder({GameLayer, 'x': -220, 'y': 0, team: 1, id: 5}).scaleTo(BoardScale));
-        view.addChild(new CardHolder({GameLayer, 'x': -220, 'y': 230, team: 1, id: 4}).scaleTo(BoardScale));
-        view.addChild(new CardHolder({GameLayer, 'x': -50, 'y': -230, team: 1, id: 5}).scaleTo(BoardScale));
-        view.addChild(new CardHolder({GameLayer, 'x': -50, 'y': 0, team: 0, id: 2}).scaleTo(BoardScale));
-        view.addChild(new CardHolder({GameLayer, 'x': -50, 'y': 230, team: 1, id: 3}).scaleTo(BoardScale));
-        view.addChild(new CardHolder({GameLayer, 'x': 120, 'y': -230, team: 0, id: 1}).scaleTo(BoardScale));
-        view.addChild(new CardHolder({GameLayer, 'x': 120, 'y': 0, team: 1, id: 3}).scaleTo(BoardScale));
-        view.addChild(new CardHolder({GameLayer, 'x': 120, 'y': 230, team: 1, id: 3}).scaleTo(BoardScale));
-
-        view.position.set(-200,0);
-        this.addChild(view);
+        let board = new Board({GameLayer, 'x': -250, 'y': 0 });
+        this.addChild(board);
 
         let deck = new PIXI.Container();
 
@@ -61,4 +50,4 @@ class Board extends PIXI.Container{
     getAsJSON = () => {return {component: 'demo/Board'}}
 }
 
-export default Board;
+export default BoardDemo;

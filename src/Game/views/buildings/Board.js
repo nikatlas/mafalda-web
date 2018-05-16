@@ -57,11 +57,15 @@ class Board extends GuiableContainer{
         this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': 230, team: 1, id: 3}).scaleTo(BoardScale).onDrop(() => this.placeCard(7)));
         this.holders.push(new CardHolder({GameLayer, 'x': 120, 'y': 230, team: 1, id: 3}).scaleTo(BoardScale).onDrop(() => this.placeCard(8)));
 
-        this.holders.map((item) => this.addChild(item));
+        this.holders.forEach((item) => this.addChild(item));
+    }
+
+    getCard(x,y) {
+        return this.holders[3*y+x].getCard();
     }
 
     placeCard(position) {
-        //this.holders[position]
+        this.holders[position].getCard();
     }
 
     onClick(fn) {

@@ -119,6 +119,14 @@ class Card extends GuiableContainer{
         this.sprite.on('pointerdown', (e) => fn(e));
     }
 
+    getHolder() {
+        return this._holder;
+    }
+
+    attach(holder = null) { 
+        this._holder = holder;
+    }
+
     // Animate to Position
     moveTo(point, milliseconds=1000) {
         let path = new PIXI.tween.TweenPath();
