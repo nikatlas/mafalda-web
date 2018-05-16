@@ -5,7 +5,9 @@ import GuiableContainer from '../../../helpers/Guiable';
 import Deck from '../../assets/deck';
 import CardHolder from '../base/CardHolder';
 
-class Board extends GuiableContainer{
+import Injector from '../../services/Injector';
+
+class BoardHandler extends GuiableContainer{
     constructor(props) {
         super(props);
         let {
@@ -42,21 +44,25 @@ class Board extends GuiableContainer{
         let BoardScale = 0.35;
         // Board BG
         let bg = new PIXI.Sprite(PIXI.Texture.fromImage('/files/assets/board_wood.jpg'));
+        bg.parentLayer = Injector.getByName('BackgroundLayer');
         bg.position.set(-700,-500);
         bg.scale.set(1.75);
         this.addChild(bg);
 
-        this.holders = [];
-        this.holders.push(new CardHolder({GameLayer, 'x': -220, 'y': -230, team: 0, id: 4}).scaleTo(BoardScale).onDrop(() => this.placeCard(0)));
-        this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': -230, team: 1, id: 5}).scaleTo(BoardScale).onDrop(() => this.placeCard(1)));
-        this.holders.push(new CardHolder({GameLayer, 'x': 120, 'y': -230, team: 0, id: 1}).scaleTo(BoardScale).onDrop(() => this.placeCard(2)));
-        this.holders.push(new CardHolder({GameLayer, 'x': -220, 'y': 0, team: 1, id: 5}).scaleTo(BoardScale).onDrop(() => this.placeCard(3)));
-        this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': 0, team: 0, id: 2}).scaleTo(BoardScale).onDrop(() => this.placeCard(4)));
-        this.holders.push(new CardHolder({GameLayer, 'x': 120, 'y': 0, team: 1, id: 3}).scaleTo(BoardScale).onDrop(() => this.placeCard(5)));
-        this.holders.push(new CardHolder({GameLayer, 'x': -220, 'y': 230, team: 1, id: 4}).scaleTo(BoardScale).onDrop(() => this.placeCard(6)));
-        this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': 230, team: 1, id: 3}).scaleTo(BoardScale).onDrop(() => this.placeCard(7)));
-        this.holders.push(new CardHolder({GameLayer, 'x': 120, 'y': 230, team: 1, id: 3}).scaleTo(BoardScale).onDrop(() => this.placeCard(8)));
 
+
+        this.holders = [];
+        this.holders.push(new CardHolder({GameLayer, 'x': -220, 'y': -230, team: 0, id: 4}).scaleTo(BoardScale).onDrop((c) => this.placeCard(0, c)));
+        this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': -230, team: 1, id: 5}).scaleTo(BoardScale).onDrop((c) => this.placeCard(1, c)));
+        this.holders.push(new CardHolder({GameLayer, 'x': 120, 'y': -230, team: 0, id: 1}).scaleTo(BoardScale).onDrop((c) => this.placeCard(2, c)));
+        this.holders.push(new CardHolder({GameLayer, 'x': -220, 'y': 0, team: 1, id: 5}).scaleTo(BoardScale).onDrop((c) => this.placeCard(3, c)));
+        this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': 0, team: 0, id: 2}).scaleTo(BoardScale).onDrop((c) => this.placeCard(4, c)));
+        this.holders.push(new CardHolder({GameLayer, 'x': 120, 'y': 0, team: 1, id: 3}).scaleTo(BoardScale).onDrop((c) => this.placeCard(5, c)));
+        this.holders.push(new CardHolder({GameLayer, 'x': -220, 'y': 230, team: 1, id: 4}).scaleTo(BoardScale).onDrop((c) => this.placeCard(6, c)));
+        this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': 230, team: 1, id: 3}).scaleTo(BoardScale).onDrop((c) => this.placeCard(7, c)));
+        this.holders.push(new CardHolder({GameLayer, 'x': 120, 'y': 230, team: 1, id: 3}).scaleTo(BoardScale).onDrop((c) => this.placeCard(8, c)));
+        this.holders.forEach((item) => item.parentLayer = Injector.getByName('TopLayer'));
+        this.holders.forEach((item) => item.lockable());
         this.holders.forEach((item) => this.addChild(item));
     }
 
@@ -64,8 +70,8 @@ class Board extends GuiableContainer{
         return this.holders[3*y+x].getCard();
     }
 
-    placeCard(position) {
-        this.holders[position].getCard();
+    placeCard(position, card) {
+       
     }
 
     onClick(fn) {
@@ -87,4 +93,4 @@ class Board extends GuiableContainer{
     }
 }
 
-export default Board;
+export default BoardHandler;

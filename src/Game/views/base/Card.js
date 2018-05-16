@@ -4,6 +4,7 @@ import config from '../../config';
 import dragAndDrop from '../../../helpers/dragAndDrop';
 
 import GuiableContainer from '../../../helpers/Guiable';
+import Injector from '../../services/Injector';
 
 import Deck from '../../assets/deck';
 
@@ -87,6 +88,8 @@ class Card extends GuiableContainer{
         this.addChild(this.sprite);
         this.addChild(this.label);
         this.addChild(this.frame);
+
+        this.parentLayer = Injector.getByName('MainLayer');
         dragAndDrop(this);
 
         this.loadCard(id || 0);
@@ -125,7 +128,21 @@ class Card extends GuiableContainer{
 
     attach(holder = null) { 
         this._holder = holder;
+        setTimeout(() => {
+            this.moveTo(this.parent.toLocal(holder.getGlobalPosition()))
+        }, 10);
     }
+    
+    unsetEvents() {
+        this.stopDND();
+        return this;
+    }
+
+    setEvents() {
+        dragAndDrop(this);
+        return this;
+    }
+
 
     // Animate to Position
     moveTo(point, milliseconds=1000) {

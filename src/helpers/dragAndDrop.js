@@ -36,8 +36,6 @@ function dragAndDrop(sprite) {
 
 function place(holder) {
     if(this.dragging) {
-        this.placedPosition = this.parent.toLocal(holder.getGlobalPosition());
-        this.placedScale = new PIXI.Point(holder.scale.x, holder.scale.y);
         holder.occupy(this);
     }
 }
@@ -49,12 +47,12 @@ function onDragStart(event)
     // we want to track the movement of this particular touch
     this.data = event.data;
     this.dragging = true;
-    
-    let holder = this.getHolder();
-    if(holder)
-        holder.unlock();
 
     this.draggingOffset = this.data.getLocalPosition(this);
+
+    if(this._holder) {
+        this._holder.unlock();
+    }
 
     this.draggingInitial = new PIXI.Point(this.position.x, this.position.y);
 

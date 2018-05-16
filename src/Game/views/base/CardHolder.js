@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 
 import GuiableContainer from '../../../helpers/Guiable';
 import EventManager from '../../services/EventManager';
+import Injector from '../../services/Injector';
 
 //const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 //const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
@@ -32,6 +33,8 @@ class CardHolder extends GuiableContainer {
         this.addToFolder('CardHolder', this, 's').onFinishChange((v) => this.change({s: v}));
         //
         this.construct(props);
+        this.appear();
+        this.uncloak();
         this.show();
     }
 
@@ -56,13 +59,23 @@ class CardHolder extends GuiableContainer {
 
         this.scale.set(this.s);
 
+        this.parentLayer = Injector.getByName('TopLayer');
+
+
         EventManager.on('CardDragging', this.show);
         EventManager.on('CardDraggingFinished', this.hide);
     }
 
+    lockable() { this._lockable = true; return this;}
 
-    show = () => this.addChild(this.sprite)
-    hide = () => this.removeChild(this.sprite)
+    show = () => { if(this._visible)this.addChild(this.sprite) }
+    hide = () => { if(this._visible)this.removeChild(this.sprite) }
+
+    disappear = () => { this.hide(); this._visible = false; }
+    appear = () => { this._visible = true; this.show(); }
+
+    cloak = () => { this.sprite.alpha = 0.01; }
+    uncloak = () => { this.sprite.alpha = 1.0; }
 
     getCard() {
         return this._card;
@@ -80,7 +93,8 @@ class CardHolder extends GuiableContainer {
 
     occupy(card) {
         this.lock(card);
-        this._onDrop(card);
+        if(this._onDrop)
+            this._onDrop(card);
     }
 
     lock(card = null) {
@@ -89,12 +103,14 @@ class CardHolder extends GuiableContainer {
         this._card = card;
         if(card) {
             card.attach(this);
+            if(this._lockable)card.unsetEvents();
         }
     }
 
     unlock() {
         this.setEvents();
-        this._locked = false;    
+        this._locked = false;
+        this._card = null;
     }
 
     scaleTo(s) {

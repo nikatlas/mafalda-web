@@ -2,7 +2,9 @@ import * as PIXI from 'pixi.js';
 
 import Card from '../base/Card';
 import CardHolder from '../base/CardHolder';
-import Board from '../buildings/Board';
+import BoardHandler from '../buildings/Board';
+import DeckHandler from '../buildings/Deck';
+import Injector from '../../services/Injector';
 
 class BoardDemo extends PIXI.Container{
     constructor(props) {
@@ -10,37 +12,22 @@ class BoardDemo extends PIXI.Container{
 
         let {GameLayer} = props;
 
-        let BoardScale = 0.35,
-            DeckScale = 0.35;
-        // Board BG
-        let bg = new PIXI.Sprite(PIXI.Texture.fromImage('/files/assets/board_wood.jpg'));
-        bg.position.set(-700,-500);
-        bg.scale.set(1.75);
-        this.addChild(bg);
 
-        // let card = new Card({GameLayer});
-        // this.addChild(card);
-        this.addChild(new Card({GameLayer, 'x': -220, 'y': -230, team: 0, id: 4}).scaleTo(0.27));
+        let card = new Card({GameLayer, 'x': 100, 'y': -230, team: 0, id: 4}).scaleTo(0.27);
+        card.parentLayer = Injector.getByName('MainLayer');
+        this.addChild(card);
         
-        let board = new Board({GameLayer, 'x': -250, 'y': 0 });
+        let board = new BoardHandler({GameLayer, 'x': -250, 'y': 0 });
         this.addChild(board);
 
-        let deck = new PIXI.Container();
+        // let holder2 = new Card({'x':200,'y':100, 's': 0.7, id: 3});
+        // this.addChild(holder2);
 
-        deck.addChild(new CardHolder({GameLayer, 'x': 160, 'y': -230, team: 0, id: 3}).scaleTo(DeckScale));
-        deck.addChild(new CardHolder({GameLayer, 'x': 160, 'y': 0, team: 1, id: 1}).scaleTo(DeckScale));
-        deck.addChild(new CardHolder({GameLayer, 'x': 0, 'y': -230, team: 1, id: 5}).scaleTo(DeckScale));
-        deck.addChild(new CardHolder({GameLayer, 'x': 0, 'y': 0, team: 1, id: 4}).scaleTo(DeckScale));
-        deck.addChild(new CardHolder({GameLayer, 'x': 80, 'y': 230, team: 1, id: 3}).scaleTo(DeckScale));
-        deck.position.set(380,0);
+        let deck = new DeckHandler({GameLayer, 'x': 380, 'y': 0});
         this.addChild(deck);
 
-        // let holder = new CardHolder({'x':-170,'y':0, 's': 0.4});
-        // this.addChild(holder);
-
-        let holder2 = new CardHolder({'x':200,'y':100, 's': 0.7});
-        //this.addChild(holder2);
-        holder2.onDrop((card) => 0);
+        this.board = board;
+        this.deck = deck;
     }
 
     _kill = () => {

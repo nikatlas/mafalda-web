@@ -20,7 +20,6 @@ class CardCollectionDemo extends PIXI.Container{
 	}
 
 	_kill() {
-        
     }
 
 	getAsJSON = () => {return {component: 'demo/CardCollectionDemo'}}
