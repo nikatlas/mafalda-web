@@ -42,6 +42,11 @@ function place(holder) {
 
 function onDragStart(event)
 {
+    // zIndex reference and increase in order to appear "above-all" when dragged
+    this.zReference = this.zIndex;
+    this.zIndex = 100;
+
+
     // store a reference to the data
     // the reason for this is because of multitouch
     // we want to track the movement of this particular touch
@@ -63,6 +68,10 @@ function onDragStart(event)
 
 function onDragEnd()
 {
+    // This may fit inside better?
+    this.zIndex = this.zReference;
+    //!!
+
     EventManager.emit('CardDraggingFinished');
     // Remove Card Placed Callbacks
     setTimeout(() => {
