@@ -38,6 +38,9 @@ class CollectionHolder extends CardHolder {
         
         this.unsetEvents();
         this.refresh();
+
+        EventManager.on('CardAddedToDeck', this.deckAdd);
+        EventManager.on('CardRemovedFromDeck', this.deckRemove);
     }
 
     setEvents() {
@@ -58,16 +61,18 @@ class CollectionHolder extends CardHolder {
         this.z -= 1;
     }
 
-    remove(){
+    deckAdd(){
         //when you place card in deck
-        this.cards.pop();
+        let card = this.cards.pop();
+        card._kill();
         this.z += 1;
         if (this.counter - this.deckCards >0){
             this.createCard();
         }
+        //card should be killed
     }
 
-    deckRemoval(){
+    deckRemove(){
         //when you remove card from deck and it is added to collectionm, if you have only one copy in collection, add another copy
         if (this.counter - this.deckCards <2){
             this.createCard();

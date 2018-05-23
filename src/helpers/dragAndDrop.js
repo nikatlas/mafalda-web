@@ -21,17 +21,17 @@ function dragAndDrop(sprite) {
     sprite.stopDND = () => {
         sprite
         // events for drag start
-        .off('mousedown', onDragStart)
-        .off('touchstart', onDragStart)
+            .off('mousedown', onDragStart)
+            .off('touchstart', onDragStart)
         // events for drag end
-        .off('mouseup', onDragEnd)
-        .off('mouseupoutside', onDragEnd)
-        .off('touchend', onDragEnd)
-        .off('touchendoutside', onDragEnd)
+            .off('mouseup', onDragEnd)
+            .off('mouseupoutside', onDragEnd)
+            .off('touchend', onDragEnd)
+            .off('touchendoutside', onDragEnd)
         //events for drag move
-        .off('mousemove', onDragMove)
-        .off('touchmove', onDragMove);
-    }
+            .off('mousemove', onDragMove)
+            .off('touchmove', onDragMove);
+    };
 }
 
 function place(holder) {
@@ -75,7 +75,7 @@ function onDragEnd()
     EventManager.emit('CardDraggingFinished');
     // Remove Card Placed Callbacks
     setTimeout(() => {
-        EventManager.off('CardPlaced', this.placeFn)
+        EventManager.off('CardPlaced', this.placeFn);
         this.dragging = false;
         this.alpha = 1;
         // set the interaction data to null
