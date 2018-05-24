@@ -1,15 +1,15 @@
-import * as PIXI from 'pixi.js';
+// import * as PIXI from 'pixi.js';
 //import { getParam } from '../../../helpers/url';
 
 import CardHolder from './CardHolder';
 import Card from './Card';
 import EventManager from '../../services/EventManager';
-import Injector from '../../services/Injector';
+// import Injector from '../../services/Injector';
 
 //const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 //const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
 
-import config from '../../config.js';
+// import config from '../../config.js';
 
 class CollectionHolder extends CardHolder {
     constructor(props) {
