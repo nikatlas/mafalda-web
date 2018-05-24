@@ -2,20 +2,8 @@ import React, { Component } from 'react';
 import './Stats.css';
 import Chart from 'chart.js';
 
-import Zigg from '../helpers/generator'
+import {random, createRandomDeck} from '../helpers/deckGenerator';
 
-var seed = 1;
-
-let gen = new Zigg();
-function random() {
-    // var x = Math.sin(seed++) * 10000;
-    // return (x - Math.floor(x))* 123456;
-    let n =  gen.nextGaussian() * 2 + 4.5;
-    return n;
-}
-function r9() {
-    return (parseInt( random() ) % 9) + 1;
-}
 let bgColors = [	
 	'rgba(255, 99, 132, 0.2)',
     'rgba(54, 162, 235, 0.2)',
@@ -34,12 +22,12 @@ let borderColors = [
 
 function createChart(chartID, data, title = "Simple Attack", maxScale = 30) {
 	let labels = Array.apply(null, Array(data.length)).map((a,i) => i+1);
-	let numbers = Array.apply(null, Array(data.length)).map((a,i) => parseInt(random() * 1032132 % 5));
+	let numbers = Array.apply(null, Array(data.length)).map((a,i) => parseInt(random() * 1032132 % 5, 10));
 	let borders = numbers.map((a) => borderColors[a]); 
 	let bgs = numbers.map((a) => bgColors[a]);
 
 	var ctx = document.getElementById(chartID).getContext('2d');
-		var WA = new Chart(ctx, {
+		new Chart(ctx, {
 		    type: 'bar',
 		    data: {
 		        labels: labels,
@@ -74,27 +62,16 @@ class Stats extends Component {
 			deck
 		} = props;
 
-		deck = this.createRandomDeck();
+		deck = createRandomDeck();
 		this.numbers = this.calculateNumbers(deck);
 		this.sums    = this.calculateSummables(this.numbers);
 		this.wapropabilities = this.findWinning(deck);
 		this.losepropabilities = this.findLosing(deck);
 		this.samepropabilities = this.findSame(deck);
 		this.solosamepropabilities = this.findSoloSame(this.samepropabilities);
+		this.plustriggers = this.findPlusTriggers(this.numbers);
 	}
 	
-	createRandomDeck() {
-		let a = [];
-		for(var j=0;j<100;j++){
-			let b = [];
-			for(var i=0;i<4;i++){
-				b[i] = r9();
-			}
-			a.push(b);
-		}
-		return a;
-	}
-
 	componentDidMount() {
         createChart("chart11", this.numbers[0], "Right Numbers Distribution");
         createChart("chart12", this.numbers[1], "Up Numbers Distribution");
@@ -113,7 +90,10 @@ class Stats extends Component {
         createChart("chart43", this.samepropabilities[2], "Left Same Chance", 100);
         createChart("chart44", this.samepropabilities[3], "Down Same Chance", 100);
         createChart("chart51", this.solosamepropabilities, "Same Chance Of card", 100);
+        createChart("chart61", this.plustriggers[0], "R-L Plus Triggers", 250);
+        createChart("chart62", this.plustriggers[1], "U-D Plus Triggers", 250);
 	}
+
 	componentWillUnmount() {
        
 	}
@@ -124,7 +104,7 @@ class Stats extends Component {
 
 	findSame(deck) {
 		let nums = this.calculateNumbers(deck);
-		let sums = this.calculateSummables(nums);
+		// let sums = this.calculateSummables(nums);
 
 		let cards = deck.map((card) => {
 			return [
@@ -147,6 +127,23 @@ class Stats extends Component {
 			a[i] = (1-a[i]) * 100;
 		}
 		return a;
+	}
+
+	findPlusTriggers(nums) {
+		let c = [
+			Array.apply(null, Array(19)).map(Number.prototype.valueOf,0),
+			Array.apply(null, Array(19)).map(Number.prototype.valueOf,0)
+		];
+		for (let i = 0; i < 2; i++) {
+			let a = nums[i];
+			let b = nums[i+2];
+			for (let j=0; j < 9; j++) {
+				for (let z=0; z < 9; z++) {
+					c[i][j+z+1] += a[j] + b[z];
+				}
+			}
+		}
+		return c;
 	}
 
 	findLosing(deck) {
@@ -190,8 +187,8 @@ class Stats extends Component {
 			Array.apply(null, Array(9)).map(Number.prototype.valueOf,0)
 		];
 
-		deck.map((card) => 
-			card.map((number,side) => {
+		deck.forEach((card) => 
+			card.forEach((number,side) => {
 				nums[side][number-1] += 1;
 			})
 		);
@@ -265,6 +262,20 @@ class Stats extends Component {
 		    		<canvas id="chart51" width="200" height="100"></canvas>
 		    	</div>
 		    </div>
+		    <div>
+		    	<div className="chartBox-lg">
+		    		<canvas id="chart51" width="200" height="100"></canvas>
+		    	</div>
+		    </div>
+		    <div>
+		    	<div className="chartBox">
+		    		<canvas id="chart61" width="250" height="100"></canvas>
+		    	</div>
+		    	<div className="chartBox">
+		    		<canvas id="chart62" width="250" height="100"></canvas>
+		    	</div>
+		    </div>
+		    
 	    </div>
 	    );
 	}

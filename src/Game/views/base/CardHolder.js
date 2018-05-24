@@ -35,7 +35,8 @@ class CardHolder extends GuiableContainer {
         this.construct(props);
         this.appear();
         this.uncloak();
-        this.show();
+        // this.show(); 
+        this.hide();
     }
 
     construct() {
@@ -79,6 +80,10 @@ class CardHolder extends GuiableContainer {
 
     getCard() {
         return this._card;
+    }
+    
+    isEmpty() {
+        return this._card === null || this._card === undefined;
     }
 
     setEvents() {

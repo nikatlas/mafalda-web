@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import Card from '../base/Card';
-import CardHolder from '../base/CardHolder';
+// import CardHolder from '../base/CardHolder';
 import CollectionHandler from '../buildings/Collection';
 import DeckHandler from '../buildings/Deck';
 import Injector from '../../services/Injector';

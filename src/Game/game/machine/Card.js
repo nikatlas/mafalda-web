@@ -1,17 +1,20 @@
+// import fckn generator to check different Distributions
+var dg = require('../../../helpers/deckGenerator').createRandomDeck;
+
+let deck = dg();
+
 class Card {
-	constructor() {
-		this.attack = [0,0,0,0];
-		this.portrait = "";
-		this.owner = "";
-	}
+    constructor(id = 0) {
+        this.attack = deck[id];
+    }
 
-	setAttack(attack) {
-		this.attack = attack;
-	}
+    setAttack(attack) {
+        this.attack = attack;
+    }
 
-	setOwner(owner) {
-		this.owner = owner;
-	}
-
+    setOwner(owner) {
+        this.owner = owner;
+    }
 }
+
 module.exports = Card;

@@ -1,6 +1,6 @@
-function Ziggurat(){
+function Ziggurat(seeder = 123456789){
 
-  var jsr = 123456789;
+  var jsr = seeder;
 
   var wn = Array(128);
   var fn = Array(128);
@@ -23,7 +23,7 @@ function Ziggurat(){
     var y;
     while(true){
       x = hz * wn[iz];
-      if( iz == 0 ){
+      if( iz === 0 ){
         x = (-Math.log(UNI()) * r1); 
         y = -Math.log(UNI());
         while( y + y < x * x){
@@ -89,4 +89,4 @@ function Ziggurat(){
   zigset();
 }
 
-export default Ziggurat;
+module.exports = Ziggurat;

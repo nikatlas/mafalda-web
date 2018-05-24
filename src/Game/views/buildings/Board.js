@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
-import config from '../../config';
+// import config from '../../config';
 
 import GuiableContainer from '../../../helpers/Guiable';
-import Deck from '../../assets/deck';
+// import Deck from '../../assets/deck';
 import CardHolder from '../base/CardHolder';
-import CollectionHolder from '../base/CollectionHolder';
+// import CollectionHolder from '../base/CollectionHolder';
 import Injector from '../../services/Injector';
 
 class BoardHandler extends GuiableContainer{
@@ -12,8 +12,7 @@ class BoardHandler extends GuiableContainer{
         super(props);
         let {
             x,
-            y,
-            id
+            y
         } = props;
 
         // Properties Component 
@@ -36,8 +35,6 @@ class BoardHandler extends GuiableContainer{
 
     construct(props) {
         let {
-            id,
-            team,
             GameLayer
         } = props;
         
@@ -75,12 +72,22 @@ class BoardHandler extends GuiableContainer{
         this.holders.forEach((item) => this.addChild(item));
     }
 
+    updateTeam(position, team) {
+        if (!this.holders[position].isEmpty()) {   
+            this.holders[position].getCard().setTeam(team);
+        }
+    }
+
+    isEmpty(x) { return !this.holders[x]._locked; }
+
     getCard(x,y) {
         return this.holders[3*y+x].getCard();
     }
 
     placeCard(position, card) {
-       
+        if(this.onCardPlaced) {
+            this.onCardPlaced(position, card);
+        }
     }
 
     onClick(fn) {

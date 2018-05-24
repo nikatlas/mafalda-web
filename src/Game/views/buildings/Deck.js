@@ -1,8 +1,8 @@
-import * as PIXI from 'pixi.js';
-import config from '../../config';
+// import * as PIXI from 'pixi.js';
+// import config from '../../config';
 
 import GuiableContainer from '../../../helpers/Guiable';
-import Deck from '../../assets/deck';
+// import Deck from '../../assets/deck';
 import CardHolder from '../base/CardHolder';
 
 class DeckHandler extends GuiableContainer{
@@ -10,8 +10,7 @@ class DeckHandler extends GuiableContainer{
         super(props);
         let {
             x,
-            y,
-            id
+            y
         } = props;
 
         // Properties Component 
@@ -33,8 +32,6 @@ class DeckHandler extends GuiableContainer{
 
     construct(props) {
         let {
-            id,
-            team,
             GameLayer
         } = props;
         

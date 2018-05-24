@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
 
-import Card from '../base/Card';
-import CardHolder from '../base/CardHolder';
+// import Card from '../base/Card';
+// import CardHolder from '../base/CardHolder';
 import BoardHandler from '../buildings/Board';
 import DeckHandler from '../buildings/Deck';
-import Injector from '../../services/Injector';
+// import Injector from '../../services/Injector';
 
 class BoardDemo extends PIXI.Container{
     constructor(props) {
@@ -13,9 +13,9 @@ class BoardDemo extends PIXI.Container{
         let {GameLayer} = props;
 
 
-        let card = new Card({GameLayer, 'x': 100, 'y': -230, team: 0, id: 4}).scaleTo(0.27);
-        card.parentLayer = Injector.getByName('MainLayer');
-        this.addChild(card);
+        // let card = new Card({GameLayer, 'x': 100, 'y': -230, team: 0, id: 4}).scaleTo(0.27);
+        // card.parentLayer = Injector.getByName('MainLayer');
+        // this.addChild(card);
         
         let board = new BoardHandler({GameLayer, 'x': -250, 'y': 0 });
         this.addChild(board);

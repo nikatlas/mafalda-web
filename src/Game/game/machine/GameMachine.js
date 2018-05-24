@@ -1,4 +1,4 @@
-var Card = require('./Card.js');
+// var Card = require('./Card.js');
 
 class GameMachine {
     constructor() {
@@ -25,6 +25,9 @@ class GameMachine {
     runMove(move) {
         move.performMove(this.state.board);
     }
+    ownerOf(x) {
+        return this.state.board.owners[x];
+    }
 }
 
 class Board {
@@ -38,9 +41,9 @@ class Board {
         for (var i=0; i < 9; i += 1) {
             this.triggerPaths[i] = [];
             this.plusPaths[i] = {
-                winner: -1,
+                winners: [],
                 sums: []
-            }
+            };
         }
     }
 
@@ -49,8 +52,8 @@ class Board {
         console.log('---------------------------');
         console.log('Cards :');
         let s = '';
-        for(var i=0,j=0;i<this.data.length;i+=1) {
-            s += this.owners[i] + ':' + this.data[i] + '\t';
+        for(let i=0,j=0;i<9;i+=1) {
+            s += `P${this.owners[i]}:${(this.data[i] ? this.data[i].attack.reduce((a,b) => a + b + "|", "|") : 'Empty')}\t`;
             j += 1;
             if(j%3===0)s += '\n';
         }
@@ -59,8 +62,8 @@ class Board {
         console.log('Triggers');
         console.log('---------------------------');
         s = '';
-        for(var i=0,j=0;i<this.triggerPaths.length;i+=1) {
-            s += '[' + this.triggerPaths[i] + ']' + '\t\t';
+        for(let i=0,j=0;i<9;i+=1) {
+            s += `[${this.triggerPaths[i]}]\t\t`;
             j += 1;
             if(j%3===0)s += '\n';
         }
@@ -69,8 +72,8 @@ class Board {
         console.log('Pluspaths');
         console.log('---------------------------');
         s = '';
-        for(var i=0,j=0;i<this.plusPaths.length;i+=1) {
-            s += '[' + (this.plusPaths[i].winner) + ']' + '\t\t';
+        for(let i=0,j=0;i<9;i+=1) {
+            s += `[${(this.plusPaths[i].winners.reduce((a,b) => a + b + '|', "|"))}]\t\t`;
             j += 1;
             if(j%3===0)s += '\n';
         }
@@ -88,7 +91,7 @@ class Board {
     }
 
     _calculatePlusAndTriggers(position) {
-        const attacker      = this.data[position];
+        const attacker = this.data[position];
         for (let j = 0; j < 4; j += 1) {
             if ( Board.ATTACK_VECTORS[position][j] === 0 ) continue;
             
@@ -101,26 +104,26 @@ class Board {
                 this.plusPaths[      position  ].sums[j] = sum;
                 this.plusPaths[   position + dx].sums[defendJ] = sum;
                 this.triggerPaths[   position  ][j] =   attacker.attack[j] - attackedCard.attack[defendJ];
-                this.triggerPaths[position + dx][defendJ] =   -this .triggerPaths[position][j]; // opposite to the above
+                this.triggerPaths[position + dx][defendJ] =   -this.triggerPaths[position][j]; // opposite to the above
             }
         }
     }
 
     _getDisplacement(j) {
         switch(j) {
-            case 0: return 1;//return {x: 1, y:0};
-            case 1: return -3;//return {x: 0, y:1};
-            case 2: return -1;//return {x: -1, y:0};
-            case 3: return 3;//return {x: 0, y:-1};
-            default: throw Error("Cannot _getDisplacement of this value: " + j);
+        case 0: return 1;   //return {x: 1, y:0};
+        case 1: return -3;  //return {x: 0, y:1};
+        case 2: return -1;  //return {x: -1, y:0};
+        case 3: return 3;   //return {x: 0, y:-1};
+        default: throw Error ("Cannot _getDisplacement of this value: " + j);
         }
     }
 
     _flipCard(position, combo, owner) {
         // change owner!
-
+        let isFlipping = owner !== this.owners[position];
         this.owners[position] = owner;
-        if(combo) this._analyze(position, combo);
+        if(combo && isFlipping) this._analyze(position, combo);
     }
 
     _analyze(position, combo) {
@@ -128,21 +131,21 @@ class Board {
         if(         this._checkSameRule(position) && !combo ) {
             // Apply Same Rule
             this._applySameRule(position);
-        } else if ( this._checkPlusRule(position) && !combo ) {
+        }
+        if ( this._checkPlusRule(position) && !combo ) {
             // Apply Plus Rule
             this._applyPlusRule(position);
-        } else {
-            this._applyAttackRule(position);
-        }
+        } 
+        this._applyAttackRule(position, combo);
     }
 
-    _applyAttackRule(position) { //seems ok
+    _applyAttackRule(position, combo = false) { //seems ok
         if ( !this.triggerPaths[position] ) return;
         for (let j = 0; j < 4; j += 1) {
             if ( Board.ATTACK_VECTORS[position][j] === 0 ) continue;
             const dx = this._getDisplacement(j);
             if ( this.triggerPaths[position][j] > 0 ) {
-                this._flipCard(position + dx, false, this.owners[position]);
+                this._flipCard(position + dx, combo, this.owners[position]);
             }
         }
     }
@@ -154,21 +157,20 @@ class Board {
             if ( this.triggerPaths[position][j] === 0 ) {
                 this._flipCard(position + dx, true, this.owners[position]);
             }
-        }   
+        }
     }
 
     _applyPlusRule(position) {
         for (let j = 0; j < 4; j += 1) { // this for loop can be fixed seems obsolete & slow
             if ( Board.ATTACK_VECTORS[position][j] === 0 ) continue;
             const dx = this._getDisplacement(j);
-            if ( this.plusPaths[position].sums[j] === this.plusPaths[position].winner ) {
+            if ( this.plusPaths[position].winners.includes(this.plusPaths[position].sums[j]) ) {
                 this._flipCard(position + dx, true, this.owners[position]);
             }
         }
     }
 
     _checkSameRule(position) {
-        const card = this.data[position];
         let  sames = 0;
         for (let j = 0; j < 4; j += 1) {
             if ( Board.ATTACK_VECTORS[position][j] === 0 ) continue;            
@@ -181,28 +183,26 @@ class Board {
     }
 
     _checkPlusRule(position) { // refactor plz // need fix (problem double plus a.k.a. four side attack)
-        const card = this.data[position];
         let pluses = {};
-        let sum = -1;
         for (let j = 0; j < 4; j += 1) {
             if ( Board.ATTACK_VECTORS[position][j] === 0 ) continue;
-            if(sum = this.plusPaths[position].sums[j])
+            let sum = this.plusPaths[position].sums[j];
+            if ( sum ) {
                 pluses[sum] = (pluses[sum] || 0) + 1;
+            }
         }
         for (var i in pluses) {
             if (pluses[i] > 1) {
-                this.plusPaths[position].winner = parseInt(i);
-                console.log(i);
-                return true;
+                this.plusPaths[position].winners.push(parseInt(i, 10)); 
             }
         }
-        this.plusPaths[position].winner = -1;
-        return false;
+        return this.plusPaths[position].winners.length > 0;
     }
 
     isEmpty(position) {
         return !!this.data[position];
     }
+
 }
 // START From top left goin row row  
 Board.ATTACK_VECTORS = [
@@ -218,6 +218,4 @@ Board.ATTACK_VECTORS = [
     [0, 1, 1, 0]
 ];
 
-module.exports = {
-    GameMachine
-};
+module.exports = GameMachine;

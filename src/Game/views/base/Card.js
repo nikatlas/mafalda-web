@@ -8,7 +8,9 @@ import Injector from '../../services/Injector';
 
 import Deck from '../../assets/deck';
 
+import Text from '../misc/Text';
 
+import Machine from '../../game';
 
 const BlueURL = '/files/assets/cards/frame_blue.png';
 const BlueImage = PIXI.Texture.fromImage(BlueURL);
@@ -18,6 +20,8 @@ const RedImage = PIXI.Texture.fromImage(RedURL);
 
 const LabelURL = '/files/assets/cards/label.png';
 const LabelImage = PIXI.Texture.fromImage(LabelURL);
+
+
 
 class Card extends GuiableContainer{
     constructor(props) {
@@ -38,6 +42,8 @@ class Card extends GuiableContainer{
             team: false,
             id: id || 0
         };
+
+        this.id = id;
 
         // GUI
         this.addFolder('Card');
@@ -90,6 +96,16 @@ class Card extends GuiableContainer{
         this.addChild(this.frame);
 
         this.parentLayer = Injector.getByName('MainLayer');
+
+        this.numbers = 
+        [
+            new Text({text: '1', x:  176, y: -17}),
+            new Text({text: '1', y: -268}),
+            new Text({text: '1', x: -176, y: -17}),
+            new Text({text: '1', y:  268})
+        ];
+        this.numbers.forEach((item) => this.addChild(item));
+
         dragAndDrop(this);
 
         this.loadCard(id || 0);
@@ -99,9 +115,11 @@ class Card extends GuiableContainer{
     setTeam(team) {
         switch(team) {
         case 0: case 'R': case 'r': case false:
+            this.team = 0;
             this.frame.texture = RedImage;
             break;
         case 1: case 'B': case 'b': case true:
+            this.team = 1;
             this.frame.texture = BlueImage;
             break;
         default: break;
@@ -110,8 +128,12 @@ class Card extends GuiableContainer{
 
     loadCard(number) {
         number = parseInt(number+0.5, 10);
+        this.card = number;
         this.imageURL = Deck.Filenames[number];
         this.sprite.texture = Deck.Textures[number];
+
+        this.machineCard = new Machine.Card(number);
+        this.machineCard.attack.forEach((a,i) => this.numbers[i].setText(a));
     }
 
     setTexture(texture) {
@@ -146,6 +168,8 @@ class Card extends GuiableContainer{
 
     // Animate to Position
     moveTo(point, milliseconds=1000) {
+        if(!point)
+            debugger; // error with x undefined...
         let path = new PIXI.tween.TweenPath();
         path.moveTo(this.position.x, this.position.y).lineTo(point.x, point.y);
 
