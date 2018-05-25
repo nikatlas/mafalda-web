@@ -10,7 +10,7 @@ import * as Machine from '../../game';
 console.log(Machine);
 let GameMachine = new Machine.GameMachine();
 
-const TURN_TIME = 2000;// ms delay for NPC 
+const TURN_TIME = 1000;// ms delay for NPC 
 
 class BoardPlayDemo extends GuiableContainer{
     constructor(props) {

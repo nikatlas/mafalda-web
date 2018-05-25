@@ -7,6 +7,8 @@ import CardHolder from '../base/CardHolder';
 
 import Card from '../base/Card';
 
+import EventManager from '../../services/EventManager';
+
 
 class DeckHandler extends GuiableContainer{
     constructor(props) {
@@ -29,6 +31,9 @@ class DeckHandler extends GuiableContainer{
         //this.addToFolder('Deck', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
         this.addToFolder('Deck', this.options, 'x').onFinishChange((v) => this.position.x = v);
         this.addToFolder('Deck', this.options, 'y').onFinishChange((v) => this.position.y = v);
+        
+        EventManager.on('increaseDeckCards', this.increaseCardCounter, this._card.id);
+        EventManager.on('removeDeckCards',this.decreaseCardCounter, this._card.id);
 
         this.construct(props);
     }
@@ -101,6 +106,22 @@ class DeckHandler extends GuiableContainer{
             id: this.options.id,
             team: this.options.team
         };
+    }
+
+    increaseCardCounter(id){
+        if (this.cardsMap(id)){
+            this.cardsMap[id] += 1;
+        }
+        else {
+            this.cardsMap[id] = 1; 
+        }
+    }
+
+    decreaseCardCounter(id){
+        this.cardsMap[id] -= 1;
+        if (this.cardsMap[id] === 0){
+            delete this.cardsMap[id];
+        }
     }
 }
 
