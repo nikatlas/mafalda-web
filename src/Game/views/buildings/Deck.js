@@ -4,6 +4,7 @@
 import GuiableContainer from '../../../helpers/Guiable';
 // import Deck from '../../assets/deck';
 import CardHolder from '../base/CardHolder';
+import EventManager from '../../services/EventManager';
 
 class DeckHandler extends GuiableContainer{
     constructor(props) {
@@ -27,6 +28,9 @@ class DeckHandler extends GuiableContainer{
         this.addToFolder('Deck', this.options, 'x').onFinishChange((v) => this.position.x = v);
         this.addToFolder('Deck', this.options, 'y').onFinishChange((v) => this.position.y = v);
         
+        EventManager.on('increaseDeckCards', this.increaseCardCounter, this._card.id);
+        EventManager.on('removeDeckCards',this.decreaseCardCounter, this._card.id);
+
         this.construct(props);
     }
 
@@ -37,6 +41,7 @@ class DeckHandler extends GuiableContainer{
         
         let DeckScale = 0.35;
         this.cards = [];
+        this.cardsMap = {};
 
         this.cards.push(new CardHolder({GameLayer, 'x': 160, 'y': -230, team: 0, id: 3}).scaleTo(DeckScale));
         this.cards.push(new CardHolder({GameLayer, 'x': 160, 'y': 0, team: 1, id: 1}).scaleTo(DeckScale));
@@ -45,6 +50,7 @@ class DeckHandler extends GuiableContainer{
         this.cards.push(new CardHolder({GameLayer, 'x': 80, 'y': 230, team: 1, id: 3}).scaleTo(DeckScale));
         this.cards.forEach((c) => c.cloak());
         this.cards.forEach((c) => this.addChild(c));
+
     }
 
     getHolder(x) {
@@ -67,6 +73,22 @@ class DeckHandler extends GuiableContainer{
             id: this.options.id,
             team: this.options.team
         };
+    }
+
+    increaseCardCounter(id){
+        if (this.cardsMap(id)){
+            this.cardsMap[id] += 1;
+        }
+        else {
+            this.cardsMap[id] = 1; 
+        }
+    }
+
+    decreaseCardCounter(id){
+        this.cardsMap[id] -= 1;
+        if (this.cardsMap[id] === 0){
+            delete this.cardsMap[id];
+        }
     }
 }
 

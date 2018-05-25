@@ -32,12 +32,14 @@ class DeckCardHolder extends CardHolder {
         if(card) {
             card.attach(this);
             EventManager.trigger('CardAddedToDeck');
+            EventManager.trigger('increaseDeckCards', this._card.id);
             //if(this._lockable)card.unsetEvents();
         }
     }
 
     unlock() {
         EventManager.trigger('CardRemovedFromDeck');
+        EventManager.trigger('decreaseDeckCards',this._card.id);
         this.setEvents();
         this._locked = false;
         this._card = null;
