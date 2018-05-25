@@ -6,6 +6,7 @@ import GuiableContainer from '../../../helpers/Guiable';
 import CardHolder from '../base/CardHolder';
 // import CollectionHolder from '../base/CollectionHolder';
 import Injector from '../../services/Injector';
+import Text from '../misc/Text';
 
 class BoardHandler extends GuiableContainer{
     constructor(props) {
@@ -62,6 +63,21 @@ class BoardHandler extends GuiableContainer{
         this.holders.forEach((item) => item.parentLayer = Injector.getByName('TopLayer'));
         this.holders.forEach((item) => item.lockable());
         this.holders.forEach((item) => this.addChild(item));
+
+        this.score = new Text({GameLayer, x: 350, y: 0, text: '0 - 0'});
+        this.addChild(this.score);
+    }
+
+    updateScore() {
+        let score = this.holders.reduce((a,b) => {
+            if(!b.isEmpty()){
+                let card = b.getCard();
+                a[card.team]++;
+            }
+            return a;
+        }, ([0,0]) );
+        this.score.setText(`${score[0]} - ${score[1]}`);
+
     }
 
     updateTeam(position, team) {
@@ -70,7 +86,7 @@ class BoardHandler extends GuiableContainer{
         }
     }
 
-    isEmpty(x) { return !this.holders[x]._locked; }
+    isEmpty(x) { return this.holders[x].isEmpty(); }
 
     getCard(x,y) {
         return this.holders[3*y+x].getCard();
@@ -80,6 +96,12 @@ class BoardHandler extends GuiableContainer{
         if(this.onCardPlaced) {
             this.onCardPlaced(position, card);
         }
+    }
+
+    clear() {
+        this.holders.forEach((h) => {
+            h.discard();
+        })
     }
 
     onClick(fn) {

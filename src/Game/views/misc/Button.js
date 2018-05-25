@@ -59,6 +59,7 @@ class Button extends GuiableContainer{
 
     onClick(fn) {
         this.sprite.on('pointerdown', (e) => fn(e));
+        return this;
     }
 
 

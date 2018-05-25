@@ -112,6 +112,16 @@ class CardHolder extends GuiableContainer {
         }
     }
 
+    discard() {
+        if(!this.isEmpty()) {
+            if(this._card.parent)
+                this._card.parent.removeChild(this._card);
+            this._card.destroy();
+        }
+        if(this._locked)this.setEvents();
+        this._locked = false;
+    }
+
     unlock() {
         this.setEvents();
         this._locked = false;

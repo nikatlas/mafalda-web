@@ -18,6 +18,16 @@ class GameMachine {
         this.state = { ...this.state, board};
     }
 
+    save() {
+        let temp = { ...this.state, board: this.state.board.save() };
+        return temp;
+    }
+
+    load(state) {
+        this.state.board.load(state.board);
+        this.state = { ...state, board: this.state.board };
+    }
+
     setPlayers(players) {
         this.state = { ...this.state, players};
     }
@@ -203,6 +213,16 @@ class Board {
         return !!this.data[position];
     }
 
+    save() {
+        return {
+            data: this.data,
+            owners: this.owners
+        }
+    }
+    load(state) {
+        this.data = state.data;
+        this.owners = state.owners;
+    }
 }
 // START From top left goin row row  
 Board.ATTACK_VECTORS = [

@@ -160,6 +160,9 @@ class Card extends GuiableContainer{
         return this;
     }
 
+    lock() { return this.unsetEvents(); }
+    unlock() { return this.setEvents(); }
+
     setEvents() {
         dragAndDrop(this);
         return this;
@@ -168,8 +171,9 @@ class Card extends GuiableContainer{
 
     // Animate to Position
     moveTo(point, milliseconds=1000) {
-        if(!point)
-            debugger; // error with x undefined...
+        if(typeof point === "undefined") {
+            return; // Some times this happens...
+        }
         let path = new PIXI.tween.TweenPath();
         path.moveTo(this.position.x, this.position.y).lineTo(point.x, point.y);
 
@@ -183,18 +187,26 @@ class Card extends GuiableContainer{
     }
     // Animate Scale
     scaleTo(newscale, milliseconds=1000) {
-        this._tween = PIXI.tweenManager.createTween(this);
-        this._tween.easing = PIXI.tween.Easing.outQuart();
-        this._tween.loop = false;
-        this._tween.from({
+        this._stween = PIXI.tweenManager.createTween(this);
+        this._stween.easing = PIXI.tween.Easing.outQuart();
+        this._stween.loop = false;
+        this._stween.from({
             scale: { x: this.scale.x, y: this.scale.y }
         });
-        this._tween.to({
+        this._stween.to({
             scale: { x: newscale, y: newscale }
         });
-        this._tween.time = milliseconds;
-        this._tween.start();
+        this._stween.time = milliseconds;
+        this._stween.start();
         return this;
+    }
+
+    destroy() {
+        if(this._tween)
+            this._tween.stop();
+        if(this._stween)
+            this._stween.stop();
+        super.destroy();
     }
 
     _kill() {

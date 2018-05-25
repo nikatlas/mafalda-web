@@ -4,6 +4,7 @@
 import GuiableContainer from '../../../helpers/Guiable';
 // import Deck from '../../assets/deck';
 import CardHolder from '../base/CardHolder';
+import Card from '../base/Card';
 
 class DeckHandler extends GuiableContainer{
     constructor(props) {
@@ -35,6 +36,8 @@ class DeckHandler extends GuiableContainer{
             GameLayer
         } = props;
         
+        this.GameLayer = GameLayer;
+
         let DeckScale = 0.35;
         this.cards = [];
 
@@ -45,6 +48,34 @@ class DeckHandler extends GuiableContainer{
         this.cards.push(new CardHolder({GameLayer, 'x': 80, 'y': 230, team: 1, id: 3}).scaleTo(DeckScale));
         this.cards.forEach((c) => c.cloak());
         this.cards.forEach((c) => this.addChild(c));
+    }
+
+    draw() {
+        for(var i=0;i<5;i++) {
+            if(!this.getHolder(i).isEmpty())continue;
+            let rn = parseInt((Math.random()*1000) % 6, 10);
+            let card = new Card({GameLayer: this.GameLayer, id:rn});
+            let t = i;
+            this.getHolder(t).occupy(card);
+            // setTimeout(() => ) , 100);
+            this.addChild(card);
+        }
+    }
+
+    lock() {
+        this.cards.forEach((c,i) => {
+            if(!c.isEmpty()){
+                c.getCard().lock();
+            }
+        });
+    }
+    
+    unlock() {
+        this.cards.forEach((c,i) => {
+            if(!c.isEmpty()){
+                c.getCard().unlock();
+            }
+        });
     }
 
     getHolder(x) {

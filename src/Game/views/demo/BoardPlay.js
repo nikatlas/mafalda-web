@@ -1,16 +1,20 @@
-import * as PIXI from 'pixi.js';
+// import * as PIXI from 'pixi.js';
 
 import Card from '../base/Card';
+import Button from '../misc/Button';
 // import Injector from '../../services/Injector';
 import BoardStage from './Board';
+import GuiableContainer from '../../../helpers/Guiable';
 
 import * as Machine from '../../game';
 console.log(Machine);
 let GameMachine = new Machine.GameMachine();
 
-class BoardPlayDemo extends PIXI.Container{
+const TURN_TIME = 2000;// ms delay for NPC 
+
+class BoardPlayDemo extends GuiableContainer{
     constructor(props) {
-        super();
+        super(props);
 
         let {GameLayer} = props;
         this.GameLayer = GameLayer;
@@ -18,26 +22,36 @@ class BoardPlayDemo extends PIXI.Container{
         this.stage = new BoardStage(props);
         this.addChild(this.stage);
 
-        for(var i=0;i<5;i++) {
-            let rn = parseInt((Math.random()*1000) % 6, 10);
-            let card = new Card({GameLayer, id:rn});
-            let t = i;
-            this.stage.deck.getHolder(t).occupy(card);
-            // setTimeout(() => ) , 100);
-            this.addChild(card);
-        }
+        this.stage.deck.draw();
 
         this.stage.board.onCardPlaced = (p,c) => this.moveOnMachine(p,c);
 
         document.onkeypress = (e) => {
             e = e || window.event;
-            if (e.keyCode === '80') {
+            if (e.keyCode === 80 || e.keyCode === 112) {
                 if(this.freeSlots.includes(1))
                     this.NPCMove();
+            }
+            if (e.keyCode === 99) {
+                this.stage.board.clear();
+                this.freeSlots = [1,1,1, 1,1,1 ,1,1,1];
+            }
+            if (e.keyCode === 100) {
+                this.stage.deck.draw();
             }
         };
 
         this.freeSlots = [1,1,1, 1,1,1 ,1,1,1];
+
+
+        this.addUI(props);
+
+        // Gui ///////////////////////////
+
+        this.addFolder('BoardPlayDemo');
+        this.addToFolder('BoardPlayDemo', this, 'saveState');
+        this.addToFolder('BoardPlayDemo', this, 'loadState');
+        /////////////////////////////////
     }
 
     moveOnMachine(position, card) {
@@ -52,9 +66,12 @@ class BoardPlayDemo extends PIXI.Container{
 
         // Play NPC
         if( card.team === 0 ) {
+            this.stage.deck.lock();
             if(this.freeSlots.includes(1))
-                    this.NPCMove();
+                    setTimeout( () => this.NPCMove(), TURN_TIME);
         }
+
+        this.stage.board.updateScore();
     }
 
     NPCMove() {
@@ -68,6 +85,48 @@ class BoardPlayDemo extends PIXI.Container{
         let cc = new Card({GameLayer:this.GameLayer, id:cid, team: 1});
         this.addChild(cc);
         this.stage.board.holders[pos].occupy(cc);
+
+        this.stage.deck.unlock();
+    }
+
+    addUI(props) {
+        let clearButton = new Button({GameLayer: this.GameLayer, Text: { text: 'Clear Board'}, x: 150, y: 200});
+        clearButton.scale.set(0.6);
+        this.addChild(clearButton.onClick(() => {
+                this.stage.board.clear();
+                this.freeSlots = [1,1,1, 1,1,1 ,1,1,1];
+        }));
+        let drawButton = new Button({GameLayer: this.GameLayer, Text: { text: 'Draw Cards'}, x: 150, y: 300});
+        drawButton.scale.set(0.6);
+        this.addChild(drawButton.onClick(() => {
+                this.stage.deck.draw();
+        }));
+    }
+
+
+
+    saveState = () => {
+        let state = GameMachine.save();
+        alert(JSON.stringify({ state: state, freeSlots: this.freeSlots}));
+    }
+
+    loadState = () => {
+        var loadJSON = prompt("Enter load info...", "");
+        
+        let jsonData = null;
+        try { 
+            jsonData = JSON.parse(loadJSON);
+        } catch (e) {
+            alert("Error parsing input data!");
+        }
+        let {freeSlots, ...restState} = jsonData;
+        this.freeSlots = freeSlots;
+        GameMachine.load(restState);
+        this.sync();
+    }
+
+    sync() {
+
     }
 
     _kill = () => {}
