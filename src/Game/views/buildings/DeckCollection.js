@@ -4,13 +4,11 @@
 import GuiableContainer from '../../../helpers/Guiable';
 // import Deck from '../../assets/deck';
 import CardHolder from '../base/CardHolder';
-
-import Card from '../base/Card';
-
+//import Card from '../base/Card';
 import EventManager from '../../services/EventManager';
 
 
-class DeckHandler extends GuiableContainer{
+class DeckCollectionHandler extends GuiableContainer{
     constructor(props) {
         super(props);
         let {
@@ -58,34 +56,6 @@ class DeckHandler extends GuiableContainer{
         this.cards.forEach((c) => this.addChild(c));
     }
 
-    draw() {
-        for(var i=0;i<5;i++) {
-            if(!this.getHolder(i).isEmpty())continue;
-            let rn = parseInt((Math.random()*1000) % 6, 10);
-            let card = new Card({GameLayer: this.GameLayer, id:rn});
-            let t = i;
-            this.getHolder(t).occupy(card);
-            // setTimeout(() => ) , 100);
-            this.addChild(card);
-        }
-    }
-
-    lock() {
-        this.cards.forEach((c,i) => {
-            if(!c.isEmpty()){
-                c.getCard().lock();
-            }
-        });
-    }
-    
-    unlock() {
-        this.cards.forEach((c,i) => {
-            if(!c.isEmpty()){
-                c.getCard().unlock();
-            }
-        });
-    }
-
     getHolder(x) {
         return this.cards[x];
     }
@@ -125,4 +95,4 @@ class DeckHandler extends GuiableContainer{
     }
 }
 
-export default DeckHandler;
+export default DeckCollectionHandler;
