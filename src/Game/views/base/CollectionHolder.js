@@ -17,7 +17,7 @@ class CollectionHolder extends CardHolder {
         let {
             counter,
             zInit,
-            cardNumber,
+            id,
             GameLayer,
             deckNumber
         } = props;
@@ -25,7 +25,7 @@ class CollectionHolder extends CardHolder {
         // Properties Component 
         this.counter = counter || 0;
         this.z = zInit || 10;
-        this.cardNumber = cardNumber;
+        this.id = id;
         this.GameLayer = GameLayer;
         this.deckNumber = deckNumber || 0;
         // this.count = 0;
@@ -88,7 +88,7 @@ class CollectionHolder extends CardHolder {
     }
 
     createCardGrey(){
-        let card = new Card({GameLayer: this.GameLayer, id:this.cardNumber});
+        let card = new Card({GameLayer: this.GameLayer, id: this.id});
         card.zIndex = this.z - 5;
         card.attach(this);
         card.unsetEvents();

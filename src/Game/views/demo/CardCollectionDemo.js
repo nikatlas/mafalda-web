@@ -4,6 +4,7 @@ import 'pixi-layers';
 import Injector from '../../services/Injector';
 
 //import CardCollection from '../base/CardCollection';
+//import DeckCollection from '../buildings/DeckCollection';
 import Collection from '../buildings/Collection';
 import CollectionDeck from '../base/CollectionDeck';
 

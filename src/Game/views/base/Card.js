@@ -151,7 +151,7 @@ class Card extends GuiableContainer{
     attach(holder = null) { 
         this._holder = holder;
         setTimeout(() => {
-            this.moveTo(this.parent.toLocal(holder.getGlobalPosition()))
+            this.moveTo(this.parent.toLocal(holder.getGlobalPosition()));
         }, 10);
     }
     
