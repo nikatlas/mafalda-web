@@ -26,5 +26,15 @@
   "devDependencies": {
     "eslint": "^4.19.0",
     "eslint-plugin-react": "^7.7.0"
+  },
+  "proxy": {
+    // Matches any request starting with /api
+    "/api": {
+      "target": "<url_1>",
+      "ws": true,
+      "pathRewrite": {
+        "^/api": "/"
+      }
+    }
   }
 }

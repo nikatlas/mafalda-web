@@ -60,7 +60,7 @@ let TextStylesNames = {
 };
 
 let TextStyles = {
-	Normal: new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 61, fill : 0xffffff, align : 'center'}),
+	Normal: new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 28, fill : 0xffffff, align : 'center'}),
 	Light:  new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 22, fill : 0x000000, align : 'center'}),
 	Heavy:  new PIXI.TextStyle({fontFamily : 'Tahoma', fontSize: 25, fill : 0x022005, align : 'center'}),
 	Comic:  new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 28, fill : 0x000000, align : 'Left'}),

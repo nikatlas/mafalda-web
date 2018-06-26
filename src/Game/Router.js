@@ -28,5 +28,4 @@ class Router {
 		this.currentRouteLink = link;
 	}
 }
-
 export default Router;

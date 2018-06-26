@@ -1,3 +1,5 @@
+import UserService from './UserService';
+
 function checkIt(resp) {
     if ( Math.parseInt(resp.status / 100, 10) === 2) {
 	    return resp;
@@ -21,19 +23,21 @@ class Net {
 
 	get(url) {
 		url = this.baseURL + url;
-		return fetch(url, {method: 'GET'}).then(checkIt).catch(catchIt);
+		return window.fetch(url, {method: 'GET'}).then(checkIt).catch(catchIt);
 	}
 
 	post(url, body) {
-		url = this.baseURL + url;
-		return fetch(url, {
-			method: 'GET',
+		let urb = this.baseURL + url;
+		return window.fetch({
+			url: urb,
+			method: 'POST',
 			headers: {
-				'Content-Type':'application/json' 
+				'Content-Type':'application/json',
+				'Token' : UserService.getToken || ''
 			},
-			body: 
-		})
+			body: JSON.stringify(body)
+		});
 	}
 }
 
-module.exports = new Net();
+export default new Net('http://localhost:3000/api');

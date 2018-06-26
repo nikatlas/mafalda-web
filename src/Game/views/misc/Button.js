@@ -46,6 +46,13 @@ class Button extends GuiableContainer{
         this.addChild(this.sprite);
 
         this.loadImage(this.imageURL);        
+
+        this.setText = this.textNode.setText; // Pass setText;
+    }
+
+    scaleTo(x) {
+        this.scale.set(x);
+        return this;
     }
 
     loadImage(img) {
@@ -59,6 +66,7 @@ class Button extends GuiableContainer{
 
     onClick(fn) {
         this.sprite.on('pointerdown', (e) => fn(e));
+        this.sprite.on('mouseup', (e) => fn(e));
         return this;
     }
 

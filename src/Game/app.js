@@ -72,7 +72,23 @@ class App {
 		DATGUI.default.GUI.toggleHide();
 		// this._router.addRoute('Login', new Menu(this.app, 'LoginMenuConfig.js'));
 		// this._router.addRoute('Test', new Menu(this.app, 'TestMenuConfig.js'));
+		Injector.saveAs('Router', this._router);
+
+		this.initializeRoutes();
+
 		this.resize();
+	}
+
+
+	initializeRoutes() {
+		let Router = this._router;
+		Router.addRoute('Login', {});
+
+		Router.addRoute('Menu', {});
+		Router.addRoute('Game', {});
+		Router.addRoute('Market', {});
+		Router.addRoute('Collection', {});
+		Router.addRoute('Booster', {});
 	}
 
 	destroy() {
