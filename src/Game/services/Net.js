@@ -28,16 +28,15 @@ class Net {
 
 	post(url, body) {
 		let urb = this.baseURL + url;
-		return window.fetch({
-			url: urb,
+		return window.fetch(urb, {
 			method: 'POST',
 			headers: {
 				'Content-Type':'application/json',
-				'Token' : UserService.getToken || ''
+				'Token' : UserService.getToken() || ''
 			},
 			body: JSON.stringify(body)
 		});
 	}
 }
 
-export default new Net('http://localhost:3000/api');
+export default new Net('/api/');

@@ -11,14 +11,12 @@ class Login extends PIXI.Container{
     constructor(props) {
         super();
         let {GameLayer, Gui} = props;
-        
-
 
         let email = new TextInput({GameLayer, width: 200});
         this.addChild(email);
         let password = new TextInput({GameLayer, width: 200});
         this.addChild(password);
-        
+
         let emailText = new Text({GameLayer, width: 200});
         this.addChild(emailText);
         let passwordText = new Text({GameLayer, width: 200});
@@ -26,7 +24,7 @@ class Login extends PIXI.Container{
 
         let loginBtn = new Button({GameLayer, width: 100});
         this.addChild(loginBtn);
-        
+
         // Set Properties
         emailText.setText("Username/Email");
         passwordText.setText("Password");
@@ -44,8 +42,6 @@ class Login extends PIXI.Container{
         this.email = email;
         this.password = password;
         loginBtn.onClick((e) => this.login(e));
-
-
     }
 
     login() {
@@ -53,9 +49,9 @@ class Login extends PIXI.Container{
     	let p = this.password.getValue();
 
     	// UserService Singleton to be called
-    	UserService.login()
+    	UserService.login(e,p)
     	.then((data) => {
-    		alert(data);
+            console.log(data.body());
     		return true;
     	})
     	.catch((err) => {

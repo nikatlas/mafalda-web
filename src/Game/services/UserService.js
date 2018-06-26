@@ -4,7 +4,7 @@ import Net from './Net.js';
 class UserService {
 
 	constructor() {
-	
+		this.__enablePeristence = true;
 	}
 
 	login(username, password) {
@@ -12,7 +12,8 @@ class UserService {
 			username,
 			password
 		};
-		return Net.post('login', data)
+		return Net.post('users/login', data)
+				  .then((res) => res.json())
 				  .then((response) => {
 				  	return this._setUser(response);
 				  });
@@ -33,6 +34,9 @@ class UserService {
 
 	_unsetUser() {
 		// clear this singleton
+		this.username = null;
+		this.token = null;
+		this.__persistence();
 	}
 	
 	_setUser(data) {
@@ -48,11 +52,22 @@ class UserService {
 		this.username = username;
 		this.token = token;
 
+		this.__persistence();
 		return data;
 	}
 
+	__persistence() {
+		if(!this.__enablePeristence)return;
+		localStorage.setItem('user', JSON.stringify({
+			username: this.username,
+			token   : this.token
+		}));
+	}
+
 	_checkDataIntegrity(data) {
-		return true;
+		let tkn = data.token.length;
+		let username = data.username.length;
+		return tkn && username;
 	}
 }
 

@@ -39,7 +39,7 @@ class CollectionHolder extends CardHolder {
         this.unsetEvents();
         this.refresh();
 
-        EventManager.on('CardAddedToDeck', this.deckAdd);
+        //EventManager.on('CardAddedToDeck', this.deckAdd);
         EventManager.on('CardRemovedFromDeck', this.deckRemove);
     }
 
@@ -55,6 +55,7 @@ class CollectionHolder extends CardHolder {
 
     createCard() {
         let card = new Card({GameLayer: this.GameLayer, id:this.cardNumber});
+        this.addChild(card);
         card.zIndex = this.z;
         card.attach(this);
         this.cards.push(card);
@@ -89,6 +90,7 @@ class CollectionHolder extends CardHolder {
 
     createCardGrey(){
         let card = new Card({GameLayer: this.GameLayer, id: this.id});
+        this.addChild(card);
         card.zIndex = this.z - 5;
         card.attach(this);
         card.unsetEvents();

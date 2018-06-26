@@ -28,9 +28,8 @@
     "eslint-plugin-react": "^7.7.0"
   },
   "proxy": {
-    // Matches any request starting with /api
     "/api": {
-      "target": "<url_1>",
+      "target": "http://localhost:3000/",
       "ws": true,
       "pathRewrite": {
         "^/api": "/"

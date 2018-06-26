@@ -15,14 +15,12 @@ class DeckCardHolder extends CardHolder {
     constructor(props) {
         super(props);
 
-        // Properties Component 
-
+        // Properties Component
         this.construct(props);
 
         this.appear();
         this.uncloak();
         this.show();
-        
     }
 
     lock(card = null) {
@@ -31,10 +29,14 @@ class DeckCardHolder extends CardHolder {
         this._card = card;
         if(card) {
             card.attach(this);
-            EventManager.trigger('CardAddedToDeck');
+            //EventManager.trigger('CardAddedToDeck');
             EventManager.trigger('increaseDeckCards', this._card.id);
             //if(this._lockable)card.unsetEvents();
         }
+    }
+
+    _onDrop(card) {
+        card.parent.deckAdd();
     }
 
     unlock() {
