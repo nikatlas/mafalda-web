@@ -51,12 +51,27 @@ class Login extends PIXI.Container{
     	// UserService Singleton to be called
     	UserService.login(e,p)
     	.then((data) => {
-            console.log(data.body());
+            console.log(data);
+            if(this._onLogin)
+            	this._onLogin();
     		return true;
     	})
     	.catch((err) => {
-    		throw err;
+    		console.log(err);
+    		alert(JSON.stringify(err));
+    		//throw err;
     	});
+    }
+
+    onLogin = (fn) => {
+    	this._onLogin = fn;
+    }
+
+    update = () => {
+    	if(UserService.isLogged()) {
+    		if( this._onLogin )
+    			this._onLogin();
+    	}
     }
 
     _kill = () => {
