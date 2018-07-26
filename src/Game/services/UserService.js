@@ -8,6 +8,15 @@ class UserService {
         this.__load();
     }
 
+    register(username, password) {
+        let data = {
+            username,
+            password
+        };
+        return Net.post('users/register', data)
+            .then((res) => res.json());
+    }
+
     login(username, password) {
         let data = {
             username,
