@@ -7,6 +7,9 @@ import UserService from '../../services/UserService';
 
 import Text from '../misc/Text';
 import Button from '../misc/Button';
+
+import SocketService from '../../services/SocketService';
+
 const BlueURL = '/files/assets/cards/frame_blue.png';
 const BlueImage = PIXI.Texture.fromImage(BlueURL);
 
@@ -43,7 +46,10 @@ class Menu extends GuiableContainer{
         this.textSprite.setText(UserService.getUsername() + ':' + UserService.getToken());
             
         let play = new Button({  y:-100 , Text: {text: "Play"}});
-        play.onClick((e) => alert(e));
+        play.onClick((e) => {
+            SocketService.openSocket('randomFree');
+        });
+
         let collection = new Button({  y:50 , Text: {text: "Collection"}});
         collection.onClick((e) => alert(e));
         let logout = new Button({  y:200 , Text: {text: "Logout"}});
