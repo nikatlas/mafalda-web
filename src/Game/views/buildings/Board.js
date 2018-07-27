@@ -72,13 +72,13 @@ class BoardHandler extends GuiableContainer{
         const data = board.data;
 
         this.holders.forEach((holder, index) => {
-            if ( data[index] && holder.isEmpty() ) {
-                const card = new Card(data[index]);
+            if ( data[index] && !holder.isEmpty() ) {
+                holder.getCard().setTeam(owners[index]);
+            } else if ( data[index] ) {
+                const card = new Card({id: data[index].id});
                 this.addChild(card);
                 card.attach(holder);
-            }
-            if ( data[index] ) {
-                holder.getCard().setTeam(owners[index]);
+                card.setTeam(owners[index]);
             }
         })
     }

@@ -32,7 +32,7 @@ class GameService {
         const card = new Game.Card(cardid);
         const move = new Game.GameMoves.PlaceMove(card, position, player);
         try{
-            this.GameMachine.performMove(move);
+            this.GameMachine.runMove(move);
         } catch(e) {
             console.log(e);
             throw e;

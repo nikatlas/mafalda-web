@@ -6,6 +6,7 @@ let deck = dg();
 class Card {
     constructor(id = 0) {
         this.attack = deck[id];
+        this.id = id;
     }
 
     setAttack(attack) {
