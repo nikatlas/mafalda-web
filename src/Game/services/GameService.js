@@ -16,12 +16,12 @@ class GameService {
     init(game) {
         this.GameMachine = new Game.GameMachine();
         this.stack = [];
-        this.state.cards = game.mycards.ids;
-        this.state.salts = game.mycards.salts;
+        this.state.cards = game.cards.playerCardsArray;
+        this.state.salts = game.cards.saltArray;
         this.state.setup = game.setup;
 
         if(this.onInit) this.onInit();
-        SocketService.on('move', this.move);
+        SocketService.on('move', (data) => this.move(data));
     }
 
     move(data) {

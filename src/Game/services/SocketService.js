@@ -8,8 +8,11 @@ class SocketService {
         if(this.socket)
             this.socket.disconnect();
         this.socket = openSocket('http://localhost:3555/' + channel);
-        this.on = this.socket.on;
+        this.on = this.socket.on.bind(this.socket);
+        this.emit = this.socket.emit.bind(this.socket);
     }
+
+
 }
 
 export default new SocketService();

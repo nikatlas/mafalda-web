@@ -15,6 +15,7 @@ import Menu from '../buildings/Menu';
 class Navigation extends PIXI.Container{
     constructor(props) {
         super();
+        this.props = props;
         let {GameLayer, Gui} = props;
 
         Injector.saveAs('Navigator',this);
@@ -39,6 +40,7 @@ class Navigation extends PIXI.Container{
     }
 
     goToGame = () => {
+        console.log(this.props);
         this.routes.Board = new BoardPlay(this.props);
         this.go('Board');
     }

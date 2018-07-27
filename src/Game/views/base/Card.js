@@ -127,7 +127,7 @@ class Card extends GuiableContainer{
     }
 
     loadCard(number) {
-        number = parseInt(number+0.5, 10);
+        number = parseInt(number+0.5, 10) % 4;
         this.card = number;
         this.imageURL = Deck.Filenames[number];
         this.sprite.texture = Deck.Textures[number];

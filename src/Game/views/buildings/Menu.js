@@ -49,8 +49,12 @@ class Menu extends GuiableContainer{
         let play = new Button({  y:-100 , Text: {text: "Play"}});
         play.onClick((e) => {
             SocketService.openSocket('randomFree');
+            SocketService.on('test', () => {
+                console.log("TESTING");
+            });
             SocketService.on('joinGame', (game) => {
                 console.log('Joining Game...');
+                console.log(game);
                 Injector.getByName('Navigator').goToGame();
                 GameService.init(game);
             });

@@ -31,13 +31,14 @@ class BoardDemo extends PIXI.Container{
         }
 
         GameService.onInit = () => {
-            this.deck.sync(GameService.cards);
+            this.deck.sync(GameService.state.cards);
         }
 
         GameService.onUpdate = () => {
             this.board.sync(GameService.GameMachine.state.board);
         }
     }
+    update() {}
 
     _kill = () => {
 
