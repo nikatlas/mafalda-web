@@ -8,6 +8,7 @@ import Text from '../misc/Text';
 import Button from '../misc/Button';
 
 import Login from './Login';
+import BoardPlay from './Board';
 import Menu from '../buildings/Menu';
 
 
@@ -35,6 +36,11 @@ class Navigation extends PIXI.Container{
         this.addChild(this.routes[link]);
         this.current = this.routes[link];
         this.current.update();
+    }
+
+    goToGame = () => {
+        this.routes.Board = new BoardPlay(this.props);
+        this.go('Board');
     }
 
     _kill = () => {

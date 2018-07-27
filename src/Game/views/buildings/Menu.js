@@ -9,6 +9,7 @@ import Text from '../misc/Text';
 import Button from '../misc/Button';
 
 import SocketService from '../../services/SocketService';
+import GameService from '../../services/GameService';
 
 const BlueURL = '/files/assets/cards/frame_blue.png';
 const BlueImage = PIXI.Texture.fromImage(BlueURL);
@@ -48,6 +49,11 @@ class Menu extends GuiableContainer{
         let play = new Button({  y:-100 , Text: {text: "Play"}});
         play.onClick((e) => {
             SocketService.openSocket('randomFree');
+            SocketService.on('joinGame', (game) => {
+                console.log('Joining Game...');
+                Injector.getByName('Navigator').goToGame();
+                GameService.init(game);
+            });
         });
 
         let collection = new Button({  y:50 , Text: {text: "Collection"}});

@@ -1,7 +1,8 @@
-let GameMachine = require('./GameMachine').GameMachine;
+let GameMachine = require('./GameMachine');
 let Moves = require('./GameMoves');
 let Card = require('./Card');
 
+console.log(GameMachine);
 var mac = new GameMachine();
 
 
@@ -37,4 +38,5 @@ mac.runMove(nnmove);
 mac.state.board.debug();
 mac.runMove(nnnmove);
 mac.state.board.debug();
+console.log(mac.state.board.data);
 
