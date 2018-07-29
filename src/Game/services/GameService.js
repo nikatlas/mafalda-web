@@ -22,6 +22,7 @@ class GameService {
 
         if(this.onInit) this.onInit();
         SocketService.on('move', (data) => this.move(data));
+        SocketService.on('result', (data) => this.end(data));
     }
 
     move(data) {
@@ -41,6 +42,12 @@ class GameService {
         if(this.onUpdate) this.onUpdate(1);
     }
 
+    end(data) {
+
+
+
+        SocketService.close();
+    }
 
 }
 
