@@ -2,7 +2,6 @@ import Net from './Net.js';
 
 
 class UserService {
-
     constructor() {
         this.__enablePeristence = true;
         this.__load();

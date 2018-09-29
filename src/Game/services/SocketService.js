@@ -11,6 +11,7 @@ class SocketService {
         this.on = this.socket.on.bind(this.socket);
         this.once = this.socket.once.bind(this.socket);
         this.emit = this.socket.emit.bind(this.socket);
+        this.close = this.socket.close.bind(this.socket);
     }
 
 
