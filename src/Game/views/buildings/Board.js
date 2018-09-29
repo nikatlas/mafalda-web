@@ -7,6 +7,7 @@ import CardHolder from '../base/CardHolder';
 // import CollectionHolder from '../base/CollectionHolder';
 import Injector from '../../services/Injector';
 import Text from '../misc/Text';
+import Card from '../base/Card';
 
 class BoardHandler extends GuiableContainer{
     constructor(props) {
@@ -47,8 +48,6 @@ class BoardHandler extends GuiableContainer{
         bg.scale.set(1.75);
         this.addChild(bg);
 
-
-
         this.holders = [];
         this.holders.push(new CardHolder({GameLayer, 'x': -220, 'y': -230, team: 0, id: 4}).scaleTo(BoardScale).onDrop((c) => this.placeCard(0, c)));
         this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': -230, team: 1, id: 5}).scaleTo(BoardScale).onDrop((c) => this.placeCard(1, c)));
@@ -66,6 +65,22 @@ class BoardHandler extends GuiableContainer{
 
         this.score = new Text({GameLayer, x: 350, y: 0, text: '0 - 0'});
         this.addChild(this.score);
+    }
+
+    sync = (board) => {
+        const owners = board.owners;
+        const data = board.data;
+
+        this.holders.forEach((holder, index) => {
+            if ( data[index] && !holder.isEmpty() ) {
+                holder.getCard().setTeam(owners[index]);
+            } else if ( data[index] ) {
+                const card = new Card({id: data[index].id});
+                this.addChild(card);
+                card.attach(holder);
+                card.setTeam(owners[index]);
+            }
+        })
     }
 
     updateScore() {

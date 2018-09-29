@@ -23,6 +23,14 @@ class Loader extends PIXI.Container{
         this.gui.add(this, 'loadJSON');
 
         this.load();
+
+        document.onkeydown = (e) => {
+          var tabKey = 9;
+          if(e.keyCode == tabKey) {
+            e.preventDefault();
+            return false;
+          }
+        };
     }
 
     destroy() {

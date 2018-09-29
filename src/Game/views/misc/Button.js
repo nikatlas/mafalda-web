@@ -4,6 +4,8 @@ import { getParam } from '../../../helpers/url';
 
 import GuiableContainer from '../../../helpers/Guiable';
 
+
+
 const DefaultImageUrl = '/files/assets/ui/woodenbutton.png';
 const DefaultImage = PIXI.Texture.fromImage(DefaultImageUrl);
 
@@ -66,7 +68,7 @@ class Button extends GuiableContainer{
 
     onClick(fn) {
         this.sprite.on('pointerdown', (e) => fn(e));
-        this.sprite.on('mouseup', (e) => fn(e));
+        //this.sprite.on('mouseup', (e) => fn(e));
         return this;
     }
 

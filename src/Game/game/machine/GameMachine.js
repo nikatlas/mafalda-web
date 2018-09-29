@@ -210,7 +210,7 @@ class Board {
     }
 
     isEmpty(position) {
-        return !!this.data[position];
+        return !this.data[position];
     }
 
     save() {
