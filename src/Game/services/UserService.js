@@ -5,6 +5,13 @@ class UserService {
 
 	constructor() {
 		this.__enablePeristence = true;
+		let data = JSON.parse(localStorage.getItem('user') || {});
+		let { 
+			username,
+			token
+		} = data;
+		this.username = username;
+		this.token = token;
 	}
 
 	login(username, password) {
@@ -65,8 +72,8 @@ class UserService {
 	}
 
 	_checkDataIntegrity(data) {
-		let tkn = data.token.length;
-		let username = data.username.length;
+		let tkn = data.token && data.token.length;
+		let username = data.username && data.username.length;
 		return tkn && username;
 	}
 }

@@ -27,6 +27,11 @@ class Text extends GuiableContainer {
 		this.construct();
 	}
 
+	onClick(fn) {
+		this.textNode.interactive = true;
+		this.textNode.click = fn;
+	}
+
 	construct() {
 		this.textNode = new PIXI.Text(this.text,TextStyles[this.style]);
 		this.textNode.anchor.set(0.5,0.5);

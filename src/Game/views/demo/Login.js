@@ -12,9 +12,9 @@ class Login extends PIXI.Container{
         super();
         let {GameLayer, Gui} = props;
 
-        let email = new TextInput({GameLayer, width: 200});
+        let email = new TextInput({GameLayer, width: 250});
         this.addChild(email);
-        let password = new TextInput({GameLayer, width: 200});
+        let password = new TextInput({GameLayer, width: 250});
         this.addChild(password);
 
         let emailText = new Text({GameLayer, width: 200});
@@ -38,10 +38,13 @@ class Login extends PIXI.Container{
         password.position.set 	(0,0);
         loginBtn.position.set	(0,	100);
 
+        email.setText(UserService.username || '');
+
         // Events
         this.email = email;
         this.password = password;
         loginBtn.onClick((e) => this.login(e));
+        this.onLogin(() => alert("Logged in succesfully ! ! !"));
     }
 
     login() {
@@ -51,12 +54,21 @@ class Login extends PIXI.Container{
     	// UserService Singleton to be called
     	UserService.login(e,p)
     	.then((data) => {
-            console.log(data.body());
+            console.log(data);
+            this._onLogin();
     		return true;
     	})
     	.catch((err) => {
     		throw err;
     	});
+    }
+
+    _onLogin() {
+        this._onLoginFn();
+    }
+
+    onLogin(fn) {
+        this._onLoginFn = fn;
     }
 
     _kill = () => {
