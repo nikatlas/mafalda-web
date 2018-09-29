@@ -9,6 +9,7 @@ class SocketService {
             this.socket.disconnect();
         this.socket = openSocket('http://localhost:3555/' + channel);
         this.on = this.socket.on.bind(this.socket);
+        this.once = this.socket.once.bind(this.socket);
         this.emit = this.socket.emit.bind(this.socket);
     }
 
