@@ -77,7 +77,7 @@ class BoardHandler extends GuiableContainer{
             } else if ( data[index] ) {
                 const card = new Card({id: data[index].id});
                 this.addChild(card);
-                card.attach(holder);
+                holder.occupy(card);
                 card.setTeam(owners[index]);
             }
         })

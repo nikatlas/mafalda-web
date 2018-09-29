@@ -1,11 +1,18 @@
 // var Card = require('./Card.js');
+var SHA256 = require("crypto-js/sha256");
+
+// TO-DO
+
+// Need to create an initialization move or something to get verified!
+// Players can have their names placed on state.players on init, showing turns and colors
 
 class GameMachine {
     constructor() {
         this.state = {
             board: new Board(),
             players: [],
-            hash: "0123456789"
+            hash: "0123456789",
+            stack: []
         };
 
     }
@@ -33,7 +40,17 @@ class GameMachine {
     }
 
     runMove(move) {
-        move.performMove(this.state.board);
+        const spray = SHA256(JSON.stringify(move)).toString(); 
+        if (this.state.stack.includes(spray)) {
+            console.log('This move has been processed already');
+            return;
+        }
+        try {
+            move.performMove(this.state.board);
+            this.state.stack.push(spray);
+        } catch (e) { 
+            throw e;
+        }
     }
     ownerOf(x) {
         return this.state.board.owners[x];

@@ -52,7 +52,7 @@ class Menu extends GuiableContainer{
             SocketService.on('test', () => {
                 console.log("TESTING");
             });
-            SocketService.on('joinGame', (game) => {
+            SocketService.once('joinGame', (game) => {
                 console.log('Joining Game...');
                 console.log(game);
                 Injector.getByName('Navigator').goToGame();
