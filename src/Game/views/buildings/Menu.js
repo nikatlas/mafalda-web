@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
-import dragAndDrop from '../../../helpers/dragAndDrop';
+// import * as PIXI from 'pixi.js';
+// import dragAndDrop from '../../../helpers/dragAndDrop';
 import GuiableContainer from '../../../helpers/Guiable';
 import Injector from '../../services/Injector';
 
@@ -11,8 +11,8 @@ import Button from '../misc/Button';
 import SocketService from '../../services/SocketService';
 import GameService from '../../services/GameService';
 
-const BlueURL = '/files/assets/cards/frame_blue.png';
-const BlueImage = PIXI.Texture.fromImage(BlueURL);
+// const BlueURL = '/files/assets/cards/frame_blue.png';
+// const BlueImage = PIXI.Texture.fromImage(BlueURL);
 
 class Menu extends GuiableContainer{
     constructor(props) {

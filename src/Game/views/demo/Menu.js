@@ -1,16 +1,16 @@
 import * as PIXI from 'pixi.js';
-import Injector from '../../services/Injector';
+// import Injector from '../../services/Injector';
 
 import UserService from '../../services/UserService';
 
-import TextInput from '../misc/TextInput';
+// import TextInput from '../misc/TextInput';
 import Text from '../misc/Text';
-import Button from '../misc/Button';
+// import Button from '../misc/Button';
 
 class Menu extends PIXI.Container{
     constructor(props) {
         super();
-        let {GameLayer, Gui} = props;
+        let {GameLayer} = props;
 
         let Play = new Text({GameLayer, width: 250});
         this.addChild(Play);

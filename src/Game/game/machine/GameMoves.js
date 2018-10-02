@@ -35,7 +35,8 @@ class PlaceMove extends GameMove {
             console.log(board);
             
 
-            throw ('Tried to place a card on occupied holder!');
+            let err = { msg: 'Tried to place a card on occupied holder!' };
+            throw err;
         }
         board.putCard(this.card, this.position, this.player);
     }

@@ -1,13 +1,13 @@
-import Net from './Net.js';
+// import Net from './Net.js';
 import openSocket from 'socket.io-client';
 
 import UserService from './UserService';
 
 class SocketService {
 
-    constructor() {
-        // check persistence - reconnect 
-    }
+    // constructor() {
+    //     // check persistence - reconnect 
+    // }
 
     openSocket(channel) {
         if(this.socket)

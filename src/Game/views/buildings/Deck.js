@@ -5,7 +5,7 @@ import GuiableContainer from '../../../helpers/Guiable';
 // import Deck from '../../assets/deck';
 import CardHolder from '../base/CardHolder';
 
-import GameService from '../../services/GameService';
+// import GameService from '../../services/GameService';
 
 import Card from '../base/Card';
 
