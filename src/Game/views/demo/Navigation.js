@@ -22,10 +22,9 @@ class Navigation extends PIXI.Container{
         this.routes = {
             Login:   new Login({}),
             Menu:    new Menu({})
-        }
+        };
 
         this.addChild(this.routes.Login);
-
         this.routes.Login.onLogin(() => this.go('Menu'));
         this.current = this.routes.Login;
         this.current.update();
@@ -46,7 +45,6 @@ class Navigation extends PIXI.Container{
     }
 
     _kill = () => {
-
     }
 
     getAsJSON = () => {return {component: 'demo/Navigation'}}

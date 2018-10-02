@@ -30,6 +30,7 @@ class UserService {
 
     logout() {
         // To request Token removal
+        // TODO - stop sockets from SocketService
         this._unsetUser();
     }
 

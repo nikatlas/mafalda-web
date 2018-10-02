@@ -34,7 +34,7 @@ class GameService {
         const move = new Game.GameMoves.PlaceMove(card, position, player);
         try{
             this.GameMachine.runMove(move);
-        } catch(e) {
+        } catch (e) {
             console.log(e);
             throw e;
         }
@@ -43,12 +43,8 @@ class GameService {
     }
 
     end(data) {
-
-
-
         SocketService.close();
     }
-
 }
 
 export default new GameService();

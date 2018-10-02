@@ -45,7 +45,7 @@ class Menu extends GuiableContainer{
 
         this.textSprite = new Text({text: "123", y: -345});
         this.textSprite.setText(UserService.getUsername() + ':' + UserService.getToken());
-            
+
         let play = new Button({  y:-100 , Text: {text: "Play"}});
         play.onClick((e) => {
             SocketService.openSocket('randomFree');

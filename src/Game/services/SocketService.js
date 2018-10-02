@@ -3,7 +3,9 @@ import openSocket from 'socket.io-client';
 class SocketService {
 
     constructor() {
+        // check persistence - reconnect 
     }
+    
     openSocket(channel) {
         if(this.socket)
             this.socket.disconnect();
