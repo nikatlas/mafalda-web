@@ -70,7 +70,7 @@ class BoardHandler extends GuiableContainer{
     sync = (board) => {
         const owners = board.owners;
         const data = board.data;
-
+        console.log(owners);
         this.holders.forEach((holder, index) => {
             if ( data[index] && !holder.isEmpty() ) {
                 holder.getCard().setTeam(owners[index]);

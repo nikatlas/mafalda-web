@@ -1,5 +1,6 @@
 import Game from '../game/';
 import SocketService from '../services/SocketService';
+import UserService from '../services/UserService';
 
 class GameService {
     constructor() {
@@ -20,6 +21,9 @@ class GameService {
         this.state.salts = game.cards.saltArray;
         this.state.setup = game.setup;
 
+        // this.GameMachine.setPlayers([game.setup.id.playerOne, game.setup.id.playerTwo]);
+        
+        
         if(this.onInit) this.onInit();
         SocketService.on('move', (data) => this.move(data));
         SocketService.on('result', (data) => this.end(data));
@@ -27,11 +31,12 @@ class GameService {
 
     move(data) {
         // Game Machine perform internal Move
-
         let {cardid, position, player} = data;
 
+        let playerNum = player === UserService.getUsername();
         const card = new Game.Card(cardid);
-        const move = new Game.GameMoves.PlaceMove(card, position, player);
+        const move = new Game.GameMoves.PlaceMove(card, position, playerNum);
+
         try{
             this.GameMachine.runMove(move);
         } catch(e) {
@@ -43,12 +48,8 @@ class GameService {
     }
 
     end(data) {
-
-
-
         SocketService.close();
     }
-
 }
 
 export default new GameService();
