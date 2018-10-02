@@ -67,20 +67,22 @@ class BoardHandler extends GuiableContainer{
         this.addChild(this.score);
     }
 
-    sync = (board) => {
+    sync = (GameMachine) => {
+        let board = GameMachine.state.board;
         const owners = board.owners;
         const data = board.data;
         console.log(owners);
         this.holders.forEach((holder, index) => {
             if ( data[index] && !holder.isEmpty() ) {
-                holder.getCard().setTeam(owners[index]);
+                holder.getCard().setTeam(GameMachine.getPositionTeam(index));
             } else if ( data[index] ) {
                 const card = new Card({id: data[index].id});
                 this.addChild(card);
                 holder.occupy(card);
-                card.setTeam(owners[index]);
+                card.setTeam(GameMachine.getPositionTeam(index));
             }
         })
+        this.updateScore();
     }
 
     updateScore() {

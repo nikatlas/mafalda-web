@@ -5,6 +5,8 @@ import GuiableContainer from '../../../helpers/Guiable';
 // import Deck from '../../assets/deck';
 import CardHolder from '../base/CardHolder';
 
+import GameService from '../../services/GameService';
+
 import Card from '../base/Card';
 
 
@@ -69,12 +71,12 @@ class DeckHandler extends GuiableContainer{
         this.cards.forEach((item) => item.setTeam(team));
     }
 
-    sync(cards) {
+    sync(cards, team) {
         if(!cards)return;
         this.cards.forEach((holder, index) => {
             const card = new Card({id: cards[index]});
             this.addChild(card);
-            card.setTeam();
+            card.setTeam(team);
             card.attach(holder);
         });
     }

@@ -25,17 +25,19 @@ class BoardDemo extends PIXI.Container{
             const move = {
                 cardid: card.id,
                 position: position,
-                player: UserService.getUsername()
+                player: UserService.getToken()
             };
             SocketService.emit('broadcast', move);
         }
 
         GameService.onInit = () => {
-            this.deck.sync(GameService.state.cards);
+            console.log("GameService onInit : from './demo/Board.js'");
+            this.deck.sync(GameService.state.cards, GameService.getMyTeam());
         }
 
         GameService.onUpdate = () => {
-            this.board.sync(GameService.GameMachine.state.board);
+            console.log("GameService onUpdate : from './demo/Board.js'");
+            this.board.sync(GameService.GameMachine);
         }
     }
     

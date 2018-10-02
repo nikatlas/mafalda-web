@@ -42,8 +42,12 @@ class GameMachine {
         // return this.state.players[0] === UserService.getUsername() ? 0 : 1;
     }
 
+    getPositionTeam(x) {
+        return this.state.players.indexOf(this.state.board.owners[x]);
+    }
+
     runMove(move) {
-        const spray = SHA256(JSON.stringify(move)).toString(); 
+        const spray = SHA256(JSON.stringify(move)).toString();
         if (this.state.stack.includes(spray)) {
             console.log('This move has been processed already');
             return;
@@ -51,7 +55,7 @@ class GameMachine {
         try {
             move.performMove(this.state.board);
             this.state.stack.push(spray);
-        } catch (e) { 
+        } catch (e) {
             throw e;
         }
     }

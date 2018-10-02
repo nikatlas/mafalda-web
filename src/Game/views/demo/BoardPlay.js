@@ -103,8 +103,6 @@ class BoardPlayDemo extends GuiableContainer{
         }));
     }
 
-
-
     saveState = () => {
         let state = GameMachine.save();
         alert(JSON.stringify({ state: state, freeSlots: this.freeSlots}));
@@ -127,7 +125,7 @@ class BoardPlayDemo extends GuiableContainer{
 
 
     sync() {
-
+        
     }
 
     _kill = () => {}
