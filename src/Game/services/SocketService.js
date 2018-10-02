@@ -26,5 +26,5 @@ class SocketService {
 
 
 }
-export default new SocketService('cards.onarbooks.com/sockets');
+export default new SocketService('sockets.onarbooks.com/');
 // export default new SocketService('localhost:3555');
