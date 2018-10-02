@@ -5,14 +5,15 @@ import UserService from './UserService';
 
 class SocketService {
 
-    // constructor() {
-    //     // check persistence - reconnect 
-    // }
+    constructor(url) {
+        // check persistence - reconnect 
+        this.url = url;
+    }
 
     openSocket(channel) {
         if(this.socket)
             this.socket.disconnect();
-        this.socket = openSocket('http://localhost:3555/' + channel, { query: "token=" + UserService.getToken() });
+        this.socket = openSocket('http://'+ this.url +'/' + channel, { query: "token=" + UserService.getToken() });
         this.on = this.socket.on.bind(this.socket);
         this.once = this.socket.once.bind(this.socket);
         this.emit = this.socket.emit.bind(this.socket);
@@ -25,5 +26,5 @@ class SocketService {
 
 
 }
-
-export default new SocketService();
+export default new SocketService('cards.onarbooks.com/sockets');
+// export default new SocketService('localhost:3555');
