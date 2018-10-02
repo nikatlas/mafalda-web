@@ -38,12 +38,10 @@ class BoardDemo extends PIXI.Container{
             this.board.sync(GameService.GameMachine.state.board);
         }
     }
-
+    
     update() {}
 
-    _kill = () => {
-
-    }
+    _kill = () => {}
 
     getAsJSON = () => {return {component: 'demo/Board'}}
 }

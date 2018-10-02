@@ -1,6 +1,5 @@
 // var Card = require('./Card.js');
 var SHA256 = require("crypto-js/sha256");
-
 // TO-DO
 
 // Need to create an initialization move or something to get verified!
@@ -14,7 +13,6 @@ class GameMachine {
             hash: "0123456789",
             stack: []
         };
-
     }
 
     setState(state) {
@@ -39,6 +37,11 @@ class GameMachine {
         this.state = { ...this.state, players};
     }
 
+    getPlayerNumber(player) {
+        return this.state.players[0] === player ? 0 : 1;
+        // return this.state.players[0] === UserService.getUsername() ? 0 : 1;
+    }
+
     runMove(move) {
         const spray = SHA256(JSON.stringify(move)).toString(); 
         if (this.state.stack.includes(spray)) {
@@ -52,6 +55,7 @@ class GameMachine {
             throw e;
         }
     }
+
     ownerOf(x) {
         return this.state.board.owners[x];
     }

@@ -42,7 +42,6 @@ class Menu extends GuiableContainer{
 
     construct(props) {
         this.parentLayer = Injector.getByName('MainLayer');
-
         this.textSprite = new Text({text: "123", y: -345});
         this.textSprite.setText(UserService.getUsername() + ':' + UserService.getToken());
 
@@ -68,8 +67,6 @@ class Menu extends GuiableContainer{
             UserService.logout();
             nav.go('Login');
         });
-
-
 
         this.addChild(play);
         this.addChild(collection);

@@ -65,11 +65,16 @@ class DeckHandler extends GuiableContainer{
         }
     }
 
+    setTeam(team) {
+        this.cards.forEach((item) => item.setTeam(team));
+    }
+
     sync(cards) {
         if(!cards)return;
         this.cards.forEach((holder, index) => {
             const card = new Card({id: cards[index]});
             this.addChild(card);
+            card.setTeam();
             card.attach(holder);
         });
     }
