@@ -15,6 +15,10 @@ class GameMachine {
         };
     }
 
+    flush() {
+        console.log(this.state);
+    }
+
     setState(state) {
         this.state = { ...this.state, ...state};
     }
@@ -46,6 +50,30 @@ class GameMachine {
         return this.state.players.indexOf(this.state.board.owners[x]);
     }
 
+    hasFinished() {
+        return this.state.stack.length >= 10;
+    }
+
+    getWinner() {
+        const score1 = this.state.board.getScore(this.state.players[0]);
+        const score2 = this.state.board.getScore(this.state.players[1]) + 1;
+        return  score1 == score2 ? -1 
+            : (
+                score1 > score2
+                    ? this.state.players[0]
+                    : this.state.players[1]
+            );
+    }
+
+    isMyTurn(player) {
+        let moves = this.state.stack.length;
+        return this.getPlayerNumber(player) === moves % 2 && moves < 10;
+    }
+
+    needFinalization() {
+        return this.state.stack.length === 9;
+    }
+
     runMove(move) {
         const spray = SHA256(JSON.stringify(move)).toString();
         if (this.state.stack.includes(spray)) {
@@ -53,6 +81,7 @@ class GameMachine {
             return;
         }
         try {
+            move.verify(this.state);
             move.performMove(this.state.board);
             this.state.stack.push(spray);
         } catch (e) {
@@ -80,6 +109,10 @@ class Board {
                 sums: []
             };
         }
+    }
+
+    getScore(player) {
+        return this.owners.reduce((a,b) => b === player ? a + 1 : a, 0);
     }
 
     debug() {

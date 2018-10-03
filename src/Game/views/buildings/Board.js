@@ -6,6 +6,8 @@ import GuiableContainer from '../../../helpers/Guiable';
 import CardHolder from '../base/CardHolder';
 // import CollectionHolder from '../base/CollectionHolder';
 import Injector from '../../services/Injector';
+import UserService from '../../services/UserService';
+
 import Text from '../misc/Text';
 import Card from '../base/Card';
 
@@ -65,6 +67,9 @@ class BoardHandler extends GuiableContainer{
 
         this.score = new Text({GameLayer, x: 350, y: 0, text: '0 - 0'});
         this.addChild(this.score);
+        
+        // this.disable();
+
     }
 
     sync = (GameMachine) => {
@@ -81,8 +86,10 @@ class BoardHandler extends GuiableContainer{
                 holder.occupy(card);
                 card.setTeam(GameMachine.getPositionTeam(index));
             }
-        })
+        });
         this.updateScore();
+        GameMachine.flush();
+        GameMachine.isMyTurn(UserService.getToken()) ? this.enable() : this.disable();
     }
 
     updateScore() {
@@ -109,8 +116,17 @@ class BoardHandler extends GuiableContainer{
         return this.holders[3*y+x].getCard();
     }
 
+    disable() { 
+        this.holders.forEach((item) => item.lock());
+        this.disabled = true; 
+    }
+    enable() {
+        this.holders.forEach((item) => item.unlock());
+        this.disabled = false; 
+    }
+
     placeCard(position, card) {
-        if(this.onCardPlaced) {
+        if(this.onCardPlaced && !this.disabled) {
             this.onCardPlaced(position, card);
         }
     }

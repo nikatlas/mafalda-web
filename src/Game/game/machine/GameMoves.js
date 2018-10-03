@@ -8,7 +8,7 @@ class GameMove {
 }
 GameMove.TYPES = {
     PLACE: 1,
-    PLACE_AND_REVEAL: 2,
+    REVEAL: 2,
     SELECT_CARDS: 0
 };
 
@@ -21,10 +21,10 @@ class PlaceMove extends GameMove {
         this.player = player;
     }
     verify(state) {
-        if (state.board.isEmpty(this.position)) {
+        if (!state.board.isEmpty(this.position)) {
             throw Error('Not a valid move, there is already a card there!');
         }
-
+        // Verify the hash of the card to be sure it was there from the beginning
         return true;
     }
 
@@ -42,6 +42,27 @@ class PlaceMove extends GameMove {
     }
 }
 
+class RevealMove extends GameMove {
+    constructor(card, player) {
+        super(GameMove.TYPES.REVEAL, {});
+        this.card = card;
+        this.player = player;
+    }
+
+    verify(state) {
+        if (state.stack.length != 9) {
+            throw Error('Not a valid move, Need to play all cards to reveal!');
+        }
+        // TODO - Verify the last card from hashes
+        return true;
+    }
+
+    performMove() {
+        console.log("Reveal move processed");
+    }
+}
+
 module.exports = {
-    PlaceMove
+    PlaceMove,
+    RevealMove
 };

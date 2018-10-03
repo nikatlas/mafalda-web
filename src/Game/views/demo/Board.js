@@ -23,9 +23,9 @@ class BoardDemo extends PIXI.Container{
 
         this.board.onCardPlaced = (position, card) => {
             const move = {
-                cardid: card.id,
+                cardid  : card.id,
                 position: position,
-                player: UserService.getToken()
+                player  : UserService.getToken()
             };
             SocketService.emit('broadcast', move);
         }
@@ -33,11 +33,24 @@ class BoardDemo extends PIXI.Container{
         GameService.onInit = () => {
             console.log("GameService onInit : from './demo/Board.js'");
             this.deck.sync(GameService.state.cards, GameService.getMyTeam());
+            this.board.sync(GameService.GameMachine);
         }
 
         GameService.onUpdate = () => {
             console.log("GameService onUpdate : from './demo/Board.js'");
             this.board.sync(GameService.GameMachine);
+        }
+
+        GameService.onEnd = () => {
+            console.log("Game Finished!");
+            let winner = GameService.GameMachine.getWinner();
+            if (winner == -1) {
+                console.log("Tie");
+            } else if (winner == UserService.getToken()) {
+                console.log("You won!");
+            } else {
+                console.log("You lost!");
+            }
         }
     }
     

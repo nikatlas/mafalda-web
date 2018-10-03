@@ -105,8 +105,8 @@ class CardHolder extends GuiableContainer {
     lock(card = null) {
         this.unsetEvents();
         this._locked = true;
-        this._card = card;
         if(card) {
+            this._card = card;
             card.attach(this);
             if(this._lockable)card.unsetEvents();
         }
@@ -123,9 +123,10 @@ class CardHolder extends GuiableContainer {
     }
 
     unlock() {
-        this.setEvents();
-        this._locked = false;
-        this._card = null;
+        if(!this._lockable || !this._card) {
+            this.setEvents();
+            this._locked = false;
+        }
     }
 
     scaleTo(s) {
