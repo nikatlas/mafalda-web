@@ -21,7 +21,7 @@ class GameService {
 
         if(this.onInit) this.onInit();
         SocketService.on('move', (data) => this.move(data));
-        SocketService.on('result', (data) => this.end(data));
+        SocketService.on('winner', (data) => this.end(data));
     }
 
     isMyTurn() {
@@ -62,7 +62,7 @@ class GameService {
 
         // require UI Update where a card is placed and Board updated
         if(this.onUpdate) this.onUpdate(1);
-        if(this.GameMachine.hasFinished()) this.end();
+        //if(this.GameMachine.hasFinished()) this.end();
         else if(this.GameMachine.needFinalization() && this.GameMachine.isMyTurn()) this.sendFinalization();
     }
 
