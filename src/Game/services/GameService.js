@@ -28,16 +28,33 @@ class GameService {
         SocketService.on('result', (data) => this.end(data));
     }
 
+    isMyTurn() {
+        return this.GameMachine.isMyTurn(UserService.getToken());
+    }
+
     getMyTeam() {
         return this.state.setup.id.indexOf(UserService.getToken());
     }
 
+    setLastTime(time) {
+        this.state.timestamp = time;
+    }
+
+    getLastTime() { return this.state.timestamp; }
+    elapsedTime() { 
+        const now = new Date().getTime();
+        return now - this.state.timestamp;
+    }
+
     move(data) {
         // Game Machine perform internal Move
-        let {cardid, position, player} = data;
+        let {cardid, position, player, timestamp} = data;
+
+        this.setLastTime(timestamp); // Only here for round time!
 
         const card = new Game.Card(cardid);
         const move = new Game.GameMoves.PlaceMove(card, position, player);
+        
         try{
             this.GameMachine.runMove(move);
             let ind = this.state.cards.indexOf(cardid);

@@ -5,6 +5,7 @@ class GameMove {
     }
     verify() {}
     performMove() {}
+    export() {}
 }
 GameMove.TYPES = {
     PLACE: 1,
@@ -20,6 +21,17 @@ class PlaceMove extends GameMove {
         this.card = card;
         this.player = player;
     }
+
+    export() {
+        return {
+            type    : GameMove.TYPES.PLACE,
+            id      : this.card.id,
+            player  : this.player,
+            position: this.position
+        };
+        // Add signature!
+    }
+
     verify(state) {
         if (!state.board.isEmpty(this.position)) {
             throw Error('Not a valid move, there is already a card there!');
@@ -47,6 +59,14 @@ class RevealMove extends GameMove {
         super(GameMove.TYPES.REVEAL, {});
         this.card = card;
         this.player = player;
+    }
+
+    export() {
+        return {
+            type    : GameMove.TYPES.REVEAL,
+            id      : this.card.id,
+            player  : this.player
+        };
     }
 
     verify(state) {

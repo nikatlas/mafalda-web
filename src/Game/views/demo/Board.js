@@ -6,6 +6,8 @@ import GameService from '../../services/GameService';
 import UserService from '../../services/UserService';
 import SocketService from '../../services/SocketService';
 
+
+
 class BoardDemo extends PIXI.Container{
     constructor(props) {
         super();
@@ -39,11 +41,17 @@ class BoardDemo extends PIXI.Container{
         GameService.onUpdate = () => {
             console.log("GameService onUpdate : from './demo/Board.js'");
             this.board.sync(GameService.GameMachine);
+            this.board.updateTimer(GameService.getLastTime(), this.outoftime.bind(this));
+            console.log("!!!Stack: ");
+            console.log(GameService.GameMachine.getStack());
         }
 
         GameService.onEnd = () => {
             console.log("Game Finished!");
             let winner = GameService.GameMachine.getWinner();
+            
+            SocketService.emit('gameOver', GameService.GameMachine.getStack());
+
             if (winner == -1) {
                 console.log("Tie");
             } else if (winner == UserService.getToken()) {
@@ -54,6 +62,13 @@ class BoardDemo extends PIXI.Container{
         }
     }
     
+    outoftime() {
+        this.board.disable();
+        
+        SocketService.emit('outoftime', GameService.GameMachine.getStack());
+        alert("Out of time");
+    }
+
     update() {}
 
     _kill = () => {}

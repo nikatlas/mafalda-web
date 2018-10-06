@@ -1,6 +1,6 @@
 // var Card = require('./Card.js');
 var SHA256 = require("crypto-js/sha256");
-// TO-DO
+// TODO test
 
 // Need to create an initialization move or something to get verified!
 // Players can have their names placed on state.players on init, showing turns and colors
@@ -11,7 +11,17 @@ class GameMachine {
             board: new Board(),
             players: [],
             hash: "0123456789",
-            stack: []
+            stacks: {
+                moves: [],
+                hashes: []
+            }
+        };
+    }
+
+    getStack() {
+        return {
+            moves: this.state.stacks.moves.map((move) => move.export()),
+            hashes: this.state.stacks.hashes
         };
     }
 
@@ -51,7 +61,7 @@ class GameMachine {
     }
 
     hasFinished() {
-        return this.state.stack.length >= 10;
+        return this.state.stacks.hashes.length >= 10;
     }
 
     getWinner() {
@@ -66,24 +76,26 @@ class GameMachine {
     }
 
     isMyTurn(player) {
-        let moves = this.state.stack.length;
+        let moves = this.state.stacks.hashes.length;
         return this.getPlayerNumber(player) === moves % 2 && moves < 10;
     }
 
     needFinalization() {
-        return this.state.stack.length === 9;
+        return this.state.stacks.hashes.length === 9;
     }
 
     runMove(move) {
         const spray = SHA256(JSON.stringify(move)).toString();
-        if (this.state.stack.includes(spray)) {
+        if (this.state.stacks.hashes.includes(spray)) {
             console.log('This move has been processed already');
             return;
         }
         try {
             move.verify(this.state);
             move.performMove(this.state.board);
-            this.state.stack.push(spray);
+            this.state.stacks.moves.push(move);
+            this.state.stacks.hashes.push(spray);
+            console.log(this.state.stacks);
         } catch (e) {
             throw e;
         }

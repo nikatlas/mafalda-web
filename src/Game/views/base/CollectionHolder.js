@@ -35,7 +35,7 @@ class CollectionHolder extends CardHolder {
         this.appear();
         this.uncloak();
         this.show();
-        
+
         this.unsetEvents();
         this.refresh();
 
