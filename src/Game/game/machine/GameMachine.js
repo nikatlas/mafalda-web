@@ -114,6 +114,13 @@ class GameMachine {
     ownerOf(x) {
         return this.state.board.owners[x];
     }
+
+    runMatch(stack) {
+        for (let i = 0; i < 9; i++) {
+            this.runMove(stack[i]);
+        }
+        return this.getWinner();
+    }
 }
 
 class Board {
