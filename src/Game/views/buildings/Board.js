@@ -8,6 +8,7 @@ import CardHolder from '../base/CardHolder';
 import Injector from '../../services/Injector';
 import UserService from '../../services/UserService';
 
+import ProgressBar from '../base/ProgressBar';
 import Text from '../misc/Text';
 import Card from '../base/Card';
 
@@ -50,6 +51,9 @@ class BoardHandler extends GuiableContainer{
         bg.scale.set(1.75);
         this.addChild(bg);
 
+        this.timer = new ProgressBar({GameLayer, x: 0, y: -240,v: 0});
+        this.addChild(this.timer);
+
         this.holders = [];
         this.holders.push(new CardHolder({GameLayer, 'x': -220, 'y': -230, team: 0, id: 4}).scaleTo(BoardScale).onDrop((c) => this.placeCard(0, c)));
         this.holders.push(new CardHolder({GameLayer, 'x': -50, 'y': -230, team: 1, id: 5}).scaleTo(BoardScale).onDrop((c) => this.placeCard(1, c)));
@@ -69,7 +73,11 @@ class BoardHandler extends GuiableContainer{
         this.addChild(this.score);
         
         // this.disable();
+    }
 
+    updateTimer(time, fn) {
+        const countTime = 3 * 10000;
+        this.timer.setTimeout(countTime, fn);
     }
 
     sync = (GameMachine) => {
