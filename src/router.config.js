@@ -17,7 +17,7 @@ appStates.forEach(state => router.stateRegistry.register(state));
 router.urlService.config.baseHref('/');
 
 router.urlService.rules.initial({ 
-	state: 'home' 
+    state: 'home' 
 });
 
 // Start the router

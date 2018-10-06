@@ -44,26 +44,26 @@ class CollectionDeck extends GuiableContainer{
         this.sprite.width = w;
         this.sprite.height= h;
 
-        this.sprite.parentLayer = Injector.getByName("BackgroundLayer");
+        this.sprite.parentLayer = Injector.getByName('BackgroundLayer');
 
         this.addChild(this.sprite);
 
 
 
         let cardHolder1 = new CardHolder({GameLayer,'x':0,'y':-240,'s':0.30});
-        cardHolder1.parentLayer = Injector.getByName("MainLayer");
+        cardHolder1.parentLayer = Injector.getByName('MainLayer');
         this.addChild(cardHolder1);
         // let cardHolder2 = new CardHolder({GameLayer,'x':0,'y':-120,'s':0.30});
         // cardHolder2.parentLayer = Injector.getByName("TopLayer");
         // this.addChild(cardHolder2);
         let cardHolder3 = new CardHolder({GameLayer,'x':0,'y':0,'s':0.30});
-        cardHolder3.parentLayer = Injector.getByName("TopLayer");
+        cardHolder3.parentLayer = Injector.getByName('TopLayer');
         this.addChild(cardHolder3);
         // let cardHolder4 = new CardHolder({GameLayer,'x':0,'y':120,'s':0.30});
         // cardHolder4.parentLayer = Injector.getByName("TopLayer");
         // this.addChild(cardHolder4);
         let cardHolder5 = new CardHolder({GameLayer,'x':0,'y':240,'s':0.30});
-        cardHolder5.parentLayer = Injector.getByName("TopLayer");
+        cardHolder5.parentLayer = Injector.getByName('TopLayer');
         this.addChild(cardHolder5);
 
     }

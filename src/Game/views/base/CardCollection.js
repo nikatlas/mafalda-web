@@ -21,7 +21,7 @@ class CardCollection extends GuiableContainer{
         this.x = x || 0;
         this.y = y || 0;
 
-          // GUI
+        // GUI
         this.addFolder('CardCollection');
         this.addToFolder('CardCollection', this, 'imageURL').onFinishChange((v) => this.loadImage(v));
         this.addToFolder('CardCollection', this, 'x').onFinishChange((v) => this.position.x = v);

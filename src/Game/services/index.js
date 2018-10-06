@@ -6,10 +6,10 @@ var Network = require('./Net.js');
 var Injector = require('./Injector.js');
 
 module.exports = {
-	API, 
-	Event,
-	Gameloop,
-	Input,
-	Network,
-	Injector
-}
+    API, 
+    Event,
+    Gameloop,
+    Input,
+    Network,
+    Injector
+};

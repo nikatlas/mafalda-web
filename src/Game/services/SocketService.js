@@ -12,7 +12,7 @@ class SocketService {
     openSocket(channel) {
         if(this.socket)
             this.socket.disconnect();
-        this.socket = openSocket('http://localhost:3555/' + channel, { query: "token=" + UserService.getToken() });
+        this.socket = openSocket('http://localhost:3555/' + channel, { query: 'token=' + UserService.getToken() });
         this.on = this.socket.on.bind(this.socket);
         this.once = this.socket.once.bind(this.socket);
         this.emit = this.socket.emit.bind(this.socket);

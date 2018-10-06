@@ -1,6 +1,6 @@
 function draggable(sprite) {
-	sprite
-		// events for drag start
+    sprite
+    // events for drag start
         .on('mousedown', onDragStart)
         .on('touchstart', onDragStart)
         // events for drag end

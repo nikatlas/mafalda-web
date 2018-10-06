@@ -16,7 +16,7 @@ class Dialogue extends PIXI.Sprite{
         this.imageURL = image || getParam('imageURL') || DefaultImageUrl;
         if(Gui) {
             this.Gui = Gui;
-            let folder = Gui.addFolder("Button");
+            let folder = Gui.addFolder('Button');
             this.controller = folder.add(this, 'imageURL').onFinishChange((v) => this.loadImage(v));
         }
 

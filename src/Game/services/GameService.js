@@ -6,8 +6,7 @@ class GameService {
     constructor() {
         this.state = {
             cards: [],
-            salts: [],
-            setup: {}
+            salts: []
         };
         this.stack = [];
 
@@ -15,13 +14,10 @@ class GameService {
     }
 
     init(game) {
-        this.GameMachine = new Game.GameMachine();
+        this.GameMachine = new Game.GameMachine(game.setup);
         this.stack = [];
         this.state.cards = game.cards.playerCardsArray;
         this.state.salts = game.cards.saltArray;
-        this.state.setup = game.setup;
-
-        this.GameMachine.setPlayers(game.setup.id);
 
         if(this.onInit) this.onInit();
         SocketService.on('move', (data) => this.move(data));
@@ -33,7 +29,7 @@ class GameService {
     }
 
     getMyTeam() {
-        return this.state.setup.id.indexOf(UserService.getToken());
+        return this.GameMachine.getMyTeam(UserService.getToken());
     }
 
     setLastTime(time) {
@@ -78,7 +74,7 @@ class GameService {
             SocketService.emit('broadcast', move);
             this.end();
         } catch(e) {
-            console.log("[ /!\\ ] GameService: Cannot run Reveal Move!");
+            console.log('[ /!\\ ] GameService: Cannot run Reveal Move!');
             throw e;
         }
     }

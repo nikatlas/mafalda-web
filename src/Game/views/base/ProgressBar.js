@@ -106,7 +106,7 @@ class ProgressBar extends GuiableContainer{
 
     // Animate to Position
     moveTo(point, milliseconds=1000) {
-        if(typeof point === "undefined") {
+        if(typeof point === 'undefined') {
             return; // Some times this happens...
         }
         let path = new PIXI.tween.TweenPath();

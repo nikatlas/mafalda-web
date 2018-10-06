@@ -4,24 +4,24 @@ import Playground from './components/Playground';
 import Stats from './components/Stats';
 
 export default [
-{
-  name : "home",
-  url  : "/home",
-  component: Home
-},
-{
-  name : 'game',
-  url  : '/game',
-  component: Game
-},
-{
-  name : 'playground',
-  url  : '/playground',
-  component: Playground
-},
-{
-  name : 'stats',
-  url  : '/stats',
-  component: Stats
-}
+    {
+        name : 'home',
+        url  : '/home',
+        component: Home
+    },
+    {
+        name : 'game',
+        url  : '/game',
+        component: Game
+    },
+    {
+        name : 'playground',
+        url  : '/playground',
+        component: Playground
+    },
+    {
+        name : 'stats',
+        url  : '/stats',
+        component: Stats
+    }
 ];

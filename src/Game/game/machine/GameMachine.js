@@ -8,22 +8,27 @@ const SHA256 = require('crypto-js/sha256');
 // Players can have their names placed on state.players on init, showing turns and colors
 
 class GameMachine {
-    constructor() {
+    constructor(setup) {
         this.state = {
             board: new Board(),
             players: [],
             hash: '0123456789',
+            setup: setup,
             stacks: {
                 moves: [],
                 hashes: []
             }
         };
+        this.setPlayers(setup.id);
     }
 
     getStack() {
         return {
-            moves: this.state.stacks.moves.map((move) => move.export()),
-            hashes: this.state.stacks.hashes
+            setup: this.state.setup,
+            stack: {
+                moves: this.state.stacks.moves.map((move) => move.export()),
+                hashes: this.state.stacks.hashes
+            }
         };
     }
 
@@ -50,6 +55,10 @@ class GameMachine {
 
     setPlayers(players) {
         this.state = { ...this.state, players};
+    }
+
+    getMyTeam(token) {
+        return this.state.setup.id.indexOf(token);
     }
 
     getPlayerNumber(player) {
