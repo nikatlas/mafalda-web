@@ -1,5 +1,5 @@
 // var Card = require('./Card.js');
-var SHA256 = require("crypto-js/sha256");
+const SHA256 = require('crypto-js/sha256');
 // TO-DO
 
 // Need to create an initialization move or something to get verified!
@@ -10,7 +10,7 @@ class GameMachine {
         this.state = {
             board: new Board(),
             players: [],
-            hash: "0123456789",
+            hash: '0123456789',
             stack: []
         };
     }
@@ -28,8 +28,7 @@ class GameMachine {
     }
 
     save() {
-        let temp = { ...this.state, board: this.state.board.save() };
-        return temp;
+        return {...this.state, board: this.state.board.save()};
     }
 
     load(state) {
@@ -57,7 +56,7 @@ class GameMachine {
     getWinner() {
         const score1 = this.state.board.getScore(this.state.players[0]);
         const score2 = this.state.board.getScore(this.state.players[1]) + 1;
-        return  score1 == score2 ? -1 
+        return  score1 === score2 ? -1
             : (
                 score1 > score2
                     ? this.state.players[0]
@@ -102,7 +101,7 @@ class Board {
         // These 2 to be updated after every move
         this.triggerPaths = []; // like attackVectors
         this.plusPaths = []; // like attackVectors
-        for (var i=0; i < 9; i += 1) {
+        for (let i=0; i < 9; i += 1) {
             this.triggerPaths[i] = [];
             this.plusPaths[i] = {
                 winners: [],
@@ -121,7 +120,7 @@ class Board {
         console.log('Cards :');
         let s = '';
         for(let i=0,j=0;i<9;i+=1) {
-            s += `P${this.owners[i]}:${(this.data[i] ? this.data[i].attack.reduce((a,b) => a + b + "|", "|") : 'Empty')}\t`;
+            s += `P${this.owners[i]}:${(this.data[i] ? this.data[i].attack.reduce((a,b) => a + b + '|', '|') : 'Empty')}\t`;
             j += 1;
             if(j%3===0)s += '\n';
         }
@@ -141,7 +140,7 @@ class Board {
         console.log('---------------------------');
         s = '';
         for(let i=0,j=0;i<9;i+=1) {
-            s += `[${(this.plusPaths[i].winners.reduce((a,b) => a + b + '|', "|"))}]\t\t`;
+            s += `[${(this.plusPaths[i].winners.reduce((a,b) => a + b + '|', '|'))}]\t\t`;
             j += 1;
             if(j%3===0)s += '\n';
         }
@@ -183,7 +182,7 @@ class Board {
         case 1: return -3;  //return {x: 0, y:1};
         case 2: return -1;  //return {x: -1, y:0};
         case 3: return 3;   //return {x: 0, y:-1};
-        default: throw Error ("Cannot _getDisplacement of this value: " + j);
+        default: throw Error ('Cannot _getDisplacement of this value: ' + j);
         }
     }
 
@@ -259,7 +258,7 @@ class Board {
                 pluses[sum] = (pluses[sum] || 0) + 1;
             }
         }
-        for (var i in pluses) {
+        for (let i in pluses) {
             if (pluses[i] > 1) {
                 this.plusPaths[position].winners.push(parseInt(i, 10)); 
             }
@@ -275,7 +274,7 @@ class Board {
         return {
             data: this.data,
             owners: this.owners
-        }
+        };
     }
     load(state) {
         this.data = state.data;

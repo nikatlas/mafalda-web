@@ -58,7 +58,7 @@ class RevealMove extends GameMove {
     }
 
     performMove() {
-        console.log("Reveal move processed");
+        console.log('Reveal move processed');
     }
 }
 
