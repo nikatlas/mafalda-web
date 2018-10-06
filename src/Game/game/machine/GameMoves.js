@@ -1,3 +1,5 @@
+const Card = require('./Card.js');
+
 class GameMove {    
     constructor(type, data) {
         this.type = type;
@@ -70,7 +72,8 @@ class RevealMove extends GameMove {
     }
 
     verify(state) {
-        if (state.stack.length != 9) {
+        if (state.stacks.hashes.length != 9) {
+            console.log(state);
             throw Error('Not a valid move, Need to play all cards to reveal!');
         }
         // TODO - Verify the last card from hashes
@@ -82,7 +85,20 @@ class RevealMove extends GameMove {
     }
 }
 
+function Factory(move) {
+    let type = move.type;
+    switch(type) {
+    case GameMove.TYPES.PLACE:
+        return new PlaceMove(new Card(move.id), move.position, move.player);
+    case GameMove.TYPES.REVEAL:
+        return new RevealMove(new Card(move.id), move.player);
+    default: return {};
+    }
+}
+
 module.exports = {
     PlaceMove,
-    RevealMove
+    RevealMove,
+    Factory,
+    TYPES: GameMove.TYPES
 };

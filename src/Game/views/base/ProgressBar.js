@@ -90,6 +90,12 @@ class ProgressBar extends GuiableContainer{
         }
     }
 
+    clear() {
+        if(this._interval)clearInterval(this._interval);
+        this._interval = null;
+        this.setValue(1);
+    }
+
     setTimeout(v, fn) {
         if(this._interval) clearInterval(this._interval);
         this._total = v;

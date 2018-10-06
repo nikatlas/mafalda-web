@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
 
+import Game from '../../game/';
+
 import BoardHandler from '../buildings/Board';
 import DeckHandler from '../buildings/Deck';
 import GameService from '../../services/GameService';
@@ -23,9 +25,11 @@ class BoardDemo extends PIXI.Container{
         this.board = board;
         this.deck = deck;
 
+
         this.board.onCardPlaced = (position, card) => {
             const move = {
-                cardid  : card.id,
+                type: Game.GameMoves.TYPES.PLACE,
+                id  : card.id,
                 position: position,
                 player  : UserService.getToken()
             };
@@ -36,6 +40,10 @@ class BoardDemo extends PIXI.Container{
             console.log("GameService onInit : from './demo/Board.js'");
             this.deck.sync(GameService.state.cards, GameService.getMyTeam());
             this.board.sync(GameService.GameMachine);
+            SocketService.on('winner', () => {
+                alert('Winner')
+                SocketService.close();
+            });
         }
 
         GameService.onUpdate = () => {
@@ -49,7 +57,7 @@ class BoardDemo extends PIXI.Container{
         GameService.onEnd = () => {
             console.log("Game Finished!");
             let winner = GameService.GameMachine.getWinner();
-            
+
             SocketService.emit('gameOver', GameService.GameMachine.getStack());
 
             if (winner == -1) {

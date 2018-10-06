@@ -51,7 +51,7 @@ class BoardHandler extends GuiableContainer{
         bg.scale.set(1.75);
         this.addChild(bg);
 
-        this.timer = new ProgressBar({GameLayer, x: 0, y: -240,v: 0});
+        this.timer = new ProgressBar({GameLayer, x: 320, y: -280,v: 0});
         this.addChild(this.timer);
 
         this.holders = [];

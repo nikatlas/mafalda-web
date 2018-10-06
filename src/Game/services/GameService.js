@@ -20,8 +20,12 @@ class GameService {
         this.state.salts = game.cards.saltArray;
 
         if(this.onInit) this.onInit();
-        SocketService.on('move', (data) => this.move(data));
-        SocketService.on('winner', (data) => this.end(data));
+        SocketService.on('move', (data) => {
+            console.log("New Move : ");
+            console.log(data);
+
+            this.move(data);
+        });
     }
 
     isMyTurn() {
@@ -44,17 +48,21 @@ class GameService {
 
     move(data) {
         // Game Machine perform internal Move
-        let {cardid, position, player, timestamp} = data;
+        let {id, position, player, timestamp, type} = data;
 
         this.setLastTime(timestamp); // Only here for round time!
 
-        const card = new Game.Card(cardid);
-        const move = new Game.GameMoves.PlaceMove(card, position, player);
-        
+        const move = new Game.GameMoves.Factory(data);
+
         try{
             this.GameMachine.runMove(move);
-            let ind = this.state.cards.indexOf(cardid);
-            this.state.cards.splice(ind,1);
+            if(type === Game.GameMoves.TYPES.PLACE) {
+                let ind = this.state.cards.indexOf(id);
+                if(ind >= 0)
+                    this.state.cards.splice(ind,1);
+                console.log("My Cards:");
+                console.log(this.state.cards);
+            }
         } catch (e) {
             console.log(e);
             throw e;
@@ -62,17 +70,21 @@ class GameService {
 
         // require UI Update where a card is placed and Board updated
         if(this.onUpdate) this.onUpdate(1);
-        //if(this.GameMachine.hasFinished()) this.end();
-        else if(this.GameMachine.needFinalization() && this.GameMachine.isMyTurn()) this.sendFinalization();
+        if(this.GameMachine.hasFinished()) {
+            this.end();
+        } else if (this.GameMachine.needFinalization() && this.isMyTurn()) {
+            this.sendFinalization();
+        }
     }
 
     sendFinalization() {
-        const card = new Game.Card(this.state.cards[0]);
-        const move = new Game.GameMoves.RevealMove(card, UserService.getToken());
         try {
-            this.GameMachine.runMove(move);
+            const move = {
+                type: Game.GameMoves.TYPES.REVEAL,
+                id  : this.state.cards[0],
+                player  : UserService.getToken()
+            };
             SocketService.emit('broadcast', move);
-            this.end();
         } catch(e) {
             console.log('[ /!\\ ] GameService: Cannot run Reveal Move!');
             throw e;
@@ -80,7 +92,7 @@ class GameService {
     }
 
     end(data) {
-        SocketService.close();
+        //SocketService.close();
         if(this.onEnd)
             this.onEnd();
     }
