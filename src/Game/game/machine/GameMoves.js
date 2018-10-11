@@ -72,7 +72,7 @@ class RevealMove extends GameMove {
     }
 
     verify(state) {
-        if (state.stacks.hashes.length != 9) {
+        if (state.stacks.hashes.length !== 9) {
             console.log(state);
             throw Error('Not a valid move, Need to play all cards to reveal!');
         }

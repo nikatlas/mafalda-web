@@ -48,7 +48,7 @@ class GameService {
 
     move(data) {
         // Game Machine perform internal Move
-        let {id, position, player, timestamp, type} = data;
+        let {id, timestamp, type} = data;
 
         this.setLastTime(timestamp); // Only here for round time!
 

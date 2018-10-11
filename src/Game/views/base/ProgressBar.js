@@ -1,16 +1,6 @@
 import * as PIXI from 'pixi.js';
-import config from '../../config';
-
-import dragAndDrop from '../../../helpers/dragAndDrop';
 
 import GuiableContainer from '../../../helpers/Guiable';
-import Injector from '../../services/Injector';
-
-import Deck from '../../assets/deck';
-
-import Text from '../misc/Text';
-
-import Machine from '../../game';
 
 const ProgressFrameURL = '/files/assets/cards/frame_blue.png';
 const ProgressFrame = PIXI.Texture.fromImage(ProgressFrameURL);
@@ -52,8 +42,6 @@ class ProgressBar extends GuiableContainer{
         } = props;
 
         let [w,h] = [200, 30];
-        // Every card has a transparent region around so the hitArea is Reduced!!!
-        let [hw,hh] = [config.CARD.WIDTH-config.CARD.OFFSET.X,config.CARD.HEIGHT-config.CARD.OFFSET.Y];  
 
         this.sprite = new PIXI.Graphics();
         this.sprite.beginFill(0x6284D9  ,1);

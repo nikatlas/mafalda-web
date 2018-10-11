@@ -8,7 +8,7 @@ import GameService from '../../services/GameService';
 import UserService from '../../services/UserService';
 import SocketService from '../../services/SocketService';
 
-import InputManager from '../../services/InputManager';
+//import InputManager from '../../services/InputManager';
 
 class BoardDemo extends PIXI.Container{
     constructor(props) {
@@ -73,9 +73,9 @@ class BoardDemo extends PIXI.Container{
             SocketService.emit('gameOver', stack);
             console.log("EventEmmited!")
 
-            if (winner == -1) {
+            if (winner === -1) {
                 console.log("Tie");
-            } else if (winner == UserService.getToken()) {
+            } else if (winner === UserService.getToken()) {
                 console.log("You won!");
             } else {
                 console.log("You lost!");
