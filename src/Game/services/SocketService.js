@@ -7,7 +7,7 @@ class SocketService {
 
     constructor(url) {
         // check persistence - reconnect 
-        this.url = url;
+        this.url = url === "localhost" ? "localhost:3555" : url; // add port to localhost
     }
 
     openSocket(channel) {
