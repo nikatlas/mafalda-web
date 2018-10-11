@@ -41,15 +41,42 @@ class Menu extends GuiableContainer{
     }
 
     construct(props) {
+        let { GameLayer } = props;
+
         this.parentLayer = Injector.getByName('MainLayer');
         this.textSprite = new Text({text: "123", y: -345});
         this.textSprite.setText(UserService.getUsername() + ':' + UserService.getToken());
+
+        let Online = new Text({GameLayer, width: 250});
+        Online.position.set     (0, -300);
+        Online.setText("Players Searching: ^.^");
+
+        let Lobby = new Text({GameLayer, width: 250});
+        Lobby.position.set     (0, -250);
+        Lobby.setText("Players on Lobby: ^.^");
+
+        this.addChild(Online);
+        this.addChild(Lobby);
+
+        SocketService.openSocket('');
+        SocketService.on('queueSize', (size) => {
+            Online.setText("Players Searching: " + size);
+        });
+        SocketService.on('lobbySize', (size) => {
+            Lobby.setText("Players on Lobby: " + size);
+        });
 
         let play = new Button({  y:-100 , Text: {text: "Play"}});
         play.onClick((e) => {
             SocketService.openSocket('randomFree');
             SocketService.on('test', () => {
                 console.log("TESTING");
+            });
+            SocketService.on('queueSize', (size) => {
+                Online.setText("Players Searching: " + size);
+            });
+            SocketService.on('lobbySize', (size) => {
+                Lobby.setText("Players on Lobby: " + size);
             });
             SocketService.once('joinGame', (game) => {
                 console.log('Joining Game...');
@@ -68,6 +95,7 @@ class Menu extends GuiableContainer{
             nav.go('Login');
         });
 
+
         this.addChild(play);
         this.addChild(collection);
         this.addChild(logout);
@@ -84,7 +112,7 @@ class Menu extends GuiableContainer{
 
     getAsJSON() {
         return {
-            component: 'base/Menu',
+            component: 'buildings/Menu',
             x:  this.position.x,
             y:  this.position.y,
             id: this.options.id,

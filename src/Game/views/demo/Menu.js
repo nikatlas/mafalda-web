@@ -36,6 +36,8 @@ class Menu extends PIXI.Container{
         Collection.position.set(0,-50);
         Logout.position.set    (0,0);
 
+
+
         Logout.onClick((e) => UserService.logout());
         
         Play.onClick(() => null);
