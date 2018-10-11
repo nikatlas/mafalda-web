@@ -1,7 +1,7 @@
 // var Card = require('./Card.js');
 
 const SHA256 = require('crypto-js/sha256');
-
+const GameMoves = require('./GameMoves');
 // TODO test
 
 // Need to create an initialization move or something to get verified!
@@ -116,8 +116,9 @@ class GameMachine {
     }
 
     runMatch(stack) {
-        for (let i = 0; i < 9; i++) {
-            this.runMove(stack[i]);
+        for (let i = 0; i < stack.length && i < 9; i++) {
+            let move = GameMoves.Factory(stack[i]);
+            this.runMove(move);
         }
         return this.getWinner();
     }

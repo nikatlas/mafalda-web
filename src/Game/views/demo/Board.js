@@ -8,7 +8,7 @@ import GameService from '../../services/GameService';
 import UserService from '../../services/UserService';
 import SocketService from '../../services/SocketService';
 
-
+import InputManager from '../../services/InputManager';
 
 class BoardDemo extends PIXI.Container{
     constructor(props) {
@@ -26,6 +26,14 @@ class BoardDemo extends PIXI.Container{
         this.deck = deck;
 
 
+        // let a = new InputManager.Action('test');
+        // a.addCondition('g', true);
+        // InputManager.createAction(a);
+        // InputManager.onAction('test', () => {
+        //     let stack = GameService.GameMachine.getStack();
+        //     SocketService.emit('gameOver', stack);
+        // });
+
         this.board.onCardPlaced = (position, card) => {
             const move = {
                 type: Game.GameMoves.TYPES.PLACE,
@@ -37,28 +45,33 @@ class BoardDemo extends PIXI.Container{
         }
 
         GameService.onInit = () => {
-            console.log("GameService onInit : from './demo/Board.js'");
+            // console.log("GameService onInit : from './demo/Board.js'");
             this.deck.sync(GameService.state.cards, GameService.getMyTeam());
             this.board.sync(GameService.GameMachine);
-            SocketService.on('winner', () => {
-                alert('Winner')
+            SocketService.on('winner', (winner) => {
+                alert('Winner ' + winner);
+                this.board.disable();
                 SocketService.close();
             });
         }
 
         GameService.onUpdate = () => {
-            console.log("GameService onUpdate : from './demo/Board.js'");
+            // console.log("GameService onUpdate : from './demo/Board.js'");
             this.board.sync(GameService.GameMachine);
             this.board.updateTimer(GameService.getLastTime(), this.outoftime.bind(this));
-            console.log("!!!Stack: ");
-            console.log(GameService.GameMachine.getStack());
+            // console.log("!!!Stack: ");
+            // console.log(GameService.GameMachine.getStack());
         }
 
         GameService.onEnd = () => {
             console.log("Game Finished!");
             let winner = GameService.GameMachine.getWinner();
 
-            SocketService.emit('gameOver', GameService.GameMachine.getStack());
+            const stack = GameService.GameMachine.getStack();
+            console.log("Stack retrieved:");
+            console.log(stack);
+            SocketService.emit('gameOver', stack);
+            console.log("EventEmmited!")
 
             if (winner == -1) {
                 console.log("Tie");

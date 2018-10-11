@@ -3,7 +3,7 @@
 function keyboard(keyCode) {
   let key = {};
   key.code = keyCode;
-  key.isDown = false;
+  key.value = key.isDown = false;
   key.isUp = true;
   key.press = undefined;
   key.release = undefined;
@@ -11,8 +11,9 @@ function keyboard(keyCode) {
   key.downHandler = event => {
     if (event.keyCode === key.code) {
       if (key.isUp && key.press) key.press();
-      key.isDown = true;
+      key.value = key.isDown = true;
       key.isUp = false;
+
     }
     event.preventDefault();
   };
@@ -20,7 +21,7 @@ function keyboard(keyCode) {
   key.upHandler = event => {
     if (event.keyCode === key.code) {
       if (key.isDown && key.release) key.release();
-      key.isDown = false;
+      key.value = key.isDown = false;
       key.isUp = true;
     }
     event.preventDefault();
@@ -37,6 +38,8 @@ function keyboard(keyCode) {
 
 class InputManager {
 	constructor(){
+		this.actions = [];
+		this.actionCallbacks = {};
 		this.keys = {};
 		this.initKeys();
 		this.Action = Action;
@@ -47,6 +50,7 @@ class InputManager {
 	_startCapturing() {
 		// window.requestAnimationFrame()
 		// start capturing 
+		this.interval = setInterval(this._checkRules.bind(this), 100);
 	}
 
 	initKeys() {
@@ -89,24 +93,23 @@ class InputManager {
 		// invoke on Pipeline plz - Priority 
 		let len = this.actionCallbacks[name].length;
 		chainNum = !chainNum ? 0 : chainNum; 
-		if (chainNum === len-1) {
+		if (chainNum === len) {
 			return;
-		} else if (chainNum < len-1) {
+		} else if (chainNum < len) {
 			this.actionCallbacks[name][chainNum]  (   data, (res) => this._invokeAction(name, chainNum+1, res)  );
 		}
 	}
 
-	createAction(name, action) {
-		this.actions.push({
-			action,
-			name
-		});
+
+	createAction(action) {
+		this.actions.push(action);
 	}
 
-	onAction(action, callback) {
-		if(!this.actionCallbacks[action]) this.actionCallbacks[action] = [];
-		this.actionCallbacks[action].push(callback);
+	onAction(name, callback) {
+		if(!this.actionCallbacks[name]) this.actionCallbacks[name] = [];
+		this.actionCallbacks[name].push(callback);
 	}
+
 	offAction(action, callback) {
 		if(!this.actionCallbacks[action])
 			return;
@@ -136,6 +139,8 @@ class Action {
 	}
 
 	addCondition(key, value) {
+		if(typeof key === "string") key = key.toUpperCase().charCodeAt(0);
+		console.log(key);
 		this.inputs.push({
 			keyCode: key,
 			desiredValue: value 
@@ -153,5 +158,4 @@ class State {
 	}
 }
 
-
-module.exports = new InputManager();
+export default new InputManager();
