@@ -13,7 +13,11 @@ class SocketService {
     openSocket(channel) {
         if(this.socket)
             this.socket.disconnect();
-        this.socket = openSocket('http://'+ this.url +'/' + channel, { query: "token=" + UserService.getToken() });
+        this.socket = openSocket('http://'+ this.url +'/' + channel, 
+            { 
+                query: "token=" + UserService.getToken(),
+                path: '/sockets'
+            });
         this.on = this.socket.on.bind(this.socket);
         this.once = this.socket.once.bind(this.socket);
         this.emit = this.socket.emit.bind(this.socket);
@@ -23,8 +27,5 @@ class SocketService {
     getId() {
         return this.socket.id;
     }
-
-
 }
-export default new SocketService('sockets.onarbooks.com/');
-// export default new SocketService('localhost:3555');
+export default new SocketService(window.location.hostname);
