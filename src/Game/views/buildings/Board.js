@@ -76,7 +76,7 @@ class BoardHandler extends GuiableContainer{
     }
 
     updateTimer(time, fn) {
-        const countTime = 3 * 10000;
+        const countTime = 9 * 10000;
         this.timer.setTimeout(countTime, fn);
     }
 
