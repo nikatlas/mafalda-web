@@ -11,6 +11,8 @@ import Button from '../misc/Button';
 import SocketService from '../../services/SocketService';
 import GameService from '../../services/GameService';
 
+import ChatBox from './ChatBox';
+
 // const BlueURL = '/files/assets/cards/frame_blue.png';
 // const BlueImage = PIXI.Texture.fromImage(BlueURL);
 
@@ -31,6 +33,9 @@ class Menu extends GuiableContainer{
             y: y || 0
         };
 
+
+        this.chat = new ChatBox();
+        this.chat.mount();
 
         // GUI
         this.addFolder('Menu');
