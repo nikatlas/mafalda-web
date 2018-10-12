@@ -40,7 +40,10 @@ class ChatComponent extends Component {
         $('.chat').slideToggle(300, 'swing');
         $('.chat-message-counter').fadeToggle(300, 'swing');
     }
-    
+    componentDidUpdate() {
+        var element = document.getElementById("chat-history");
+        element.scrollTop = element.scrollHeight;
+    }
     render() {
         return (<div id="live-chat">
                     <header className="clearfix" onClick={() => this.toggle()}>
@@ -49,7 +52,7 @@ class ChatComponent extends Component {
                         <span className="chat-message-counter">1</span>
                     </header>
                     <div className="chat">
-                        <div className="chat-history">
+                        <div className="chat-history" id="chat-history">
                           {this.state.messages.map((item, index) => 
                             [<div className="chat-message clearfix"  key={2*index}>
                                 <div className="letterbox">{item.user[0].toUpperCase()}</div>

@@ -153,6 +153,7 @@ p { margin: 0; }
 
 .chat-message {
 	margin: 16px 0;
+	position: relative;
 }
 
 .chat-message img {
