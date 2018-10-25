@@ -10,6 +10,7 @@
     "dat.gui": "^0.7.1",
     "jquery": "^3.3.1",
     "material-ui": "^0.20.0",
+    "npm": "^6.4.1",
     "pixi-layers": "^0.1.9",
     "pixi-tween": "^0.2.0",
     "pixi.js": "^4.6.2",

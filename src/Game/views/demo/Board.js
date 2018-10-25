@@ -16,7 +16,7 @@ class BoardDemo extends PIXI.Container{
 
         let {GameLayer} = props;
         
-        let board = new BoardHandler({GameLayer, 'x': -250, 'y': 0 });
+        let board = new BoardHandler({GameLayer, 'x': 0, 'y': 0 });
         this.addChild(board);
 
         let deck = new DeckHandler({GameLayer, 'x': 380, 'y': 0});
@@ -41,17 +41,17 @@ class BoardDemo extends PIXI.Container{
                 position: position,
                 player  : UserService.getToken()
             };
-            SocketService.emit('broadcast', move);
+            SocketService.to().emit('broadcast', move);
         }
 
         GameService.onInit = () => {
             // console.log("GameService onInit : from './demo/Board.js'");
             this.deck.sync(GameService.state.cards, GameService.getMyTeam());
             this.board.sync(GameService.GameMachine);
-            SocketService.on('winner', (winner) => {
+            SocketService.to().on('winner', (winner) => {
                 alert('Winner ' + winner);
                 this.board.disable();
-                SocketService.close();
+                SocketService.to().close();
             });
         }
 
@@ -70,7 +70,7 @@ class BoardDemo extends PIXI.Container{
             const stack = GameService.GameMachine.getStack();
             console.log("Stack retrieved:");
             console.log(stack);
-            SocketService.emit('gameOver', stack);
+            SocketService.to().emit('gameOver', stack);
             console.log("EventEmmited!")
 
             if (winner === -1) {
@@ -86,7 +86,7 @@ class BoardDemo extends PIXI.Container{
     outoftime() {
         this.board.disable();
         
-        SocketService.emit('outoftime', GameService.GameMachine.getStack());
+        SocketService.to().emit('outoftime', GameService.GameMachine.getStack());
         alert("Out of time");
     }
 

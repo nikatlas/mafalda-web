@@ -64,26 +64,34 @@ class Menu extends GuiableContainer{
         this.addChild(Lobby);
 
         SocketService.openSocket('');
-        SocketService.on('queueSize', (size) => {
+        SocketService.to().on('queueSize', (size) => {
             Online.setText("Players Searching: " + size);
         });
-        SocketService.on('lobbySize', (size) => {
+        SocketService.to().on('lobbySize', (size) => {
             Lobby.setText("Players on Lobby: " + size);
+        });
+        SocketService.to().on('gameInProgress', (match) => {
+            //SocketService.openSocket('randomFree');
+            SocketService.setGame('randomFree');
+            Injector.getByName('Navigator').goToGame();
+            GameService.init(match);
         });
 
         let play = new Button({  y:-100 , Text: {text: "Play"}});
         play.onClick((e) => {
-            SocketService.openSocket('randomFree');
-            SocketService.on('test', () => {
+            //SocketService.openSocket('randomFree');
+            SocketService.to().emit('join_RandomFreeQueue');
+            SocketService.setGame('randomFree');
+            SocketService.to().on('test', () => {
                 console.log("TESTING");
             });
-            SocketService.on('queueSize', (size) => {
+            SocketService.to().on('queueSize', (size) => {
                 Online.setText("Players Searching: " + size);
             });
-            SocketService.on('lobbySize', (size) => {
+            SocketService.to().on('lobbySize', (size) => {
                 Lobby.setText("Players on Lobby: " + size);
             });
-            SocketService.once('joinGame', (game) => {
+            SocketService.to().once('joinGame', (game) => {
                 console.log('Joining Game...');
                 console.log(game);
                 Injector.getByName('Navigator').goToGame();
@@ -95,6 +103,7 @@ class Menu extends GuiableContainer{
         collection.onClick((e) => alert(e));
         let logout = new Button({  y:200 , Text: {text: "Logout"}});
         logout.onClick((e) => {
+            SocketService.end();
             let nav = Injector.getByName('Navigator');
             UserService.logout();
             nav.go('Login');
@@ -108,6 +117,7 @@ class Menu extends GuiableContainer{
     }
 
     update = () => {
+        SocketService.openSocket('');
         this.textSprite.setText(UserService.getUsername() + ':' + UserService.getToken());
     }
 

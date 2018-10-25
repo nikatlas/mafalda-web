@@ -78,12 +78,12 @@ class Card extends GuiableContainer{
         this.frame.height= h;
         //this.frame.setTexture(RedImage);
 
-        let [lw,lh] = [412,137];
+        let [lw,lh] = [0.9 * w,0.2 * h];
         this.label = new PIXI.Sprite(LabelImage);
         this.label.anchor.set(0.5,0.5);
         this.label.width = lw;
         this.label.height= lh;
-        this.label.position.set(0,210);
+        this.label.position.set(0,0.285 * h);
 
         this.interactive = true;
         this.hitArea = new PIXI.Rectangle(-hw/2,-hh/2,hw,hh);
@@ -99,10 +99,10 @@ class Card extends GuiableContainer{
 
         this.numbers = 
         [
-            new Text({text: '1', x:  176, y: -17}),
-            new Text({text: '1', y: -268}),
-            new Text({text: '1', x: -176, y: -17}),
-            new Text({text: '1', y:  268})
+            new Text({text: '1', x:  0.35 * w, y: -0.03 * h}),
+            new Text({text: '1', y: -0.4 * h}),
+            new Text({text: '1', x: -0.35 * w, y: -0.03 * h}),
+            new Text({text: '1', y:  0.4 * h})
         ];
         this.numbers.forEach((item) => this.addChild(item));
 

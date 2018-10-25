@@ -16,7 +16,7 @@ class ChatComponent extends Component {
             msg: ''
         };
 
-        SocketService.persistenceOn('newChatMsg', (msg) => {
+        SocketService.to().on('newChatMsg', (msg) => {
             console.log("New Chat Message!");
             this.setState({
                 messages: [...this.state.messages, msg]
@@ -25,7 +25,7 @@ class ChatComponent extends Component {
     }
 
     send(e) {
-        SocketService.emit('chatMsg', {
+        SocketService.to().emit('chatMsg', {
             msg: this.state.msg,
             user: UserService.getUsername()
         });

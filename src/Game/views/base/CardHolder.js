@@ -25,7 +25,7 @@ class CardHolder extends GuiableContainer {
         this.w = config.CARD.WIDTH-config.CARD.OFFSET.X;
         this.h = config.CARD.HEIGHT-config.CARD.OFFSET.Y;
         this.s = s || 1;
-
+        // 236 283
         // GUI
         this.addFolder('CardHolder');
         this.addToFolder('CardHolder', this, 'x').onFinishChange((v) => this.change({x: v}));

@@ -8,34 +8,38 @@ class SocketService {
     constructor(url) {
         // check persistence - reconnect 
         this.url = url === "localhost" ? "localhost:3555" : url; // add port to localhost
-        this._persistence = [];
+        this.sockets = {};
     }
 
-    persistenceOn(name, fn) {
-        this._persistence.push({name, fn});
-        this._applyPersistence();
+    to(channel = '/') {
+        if(channel[0] !== '/')channel = '/' + channel;
+        return this.sockets[channel];
     }
-    _applyPersistence() {
-        this._persistence.map((item) => this.socket.on(item.name, item.fn));
+    toGame() {
+        return this.sockets[this.gameChannel];
     }
-    openSocket(channel) {
-        if(this.socket)
-            this.socket.disconnect();
-        this.socket = openSocket('http://'+ this.url +'/' + channel, 
+    openSocket(channel = '/') {
+        if(channel[0] !== '/')channel = '/' + channel;
+        let token = "token=" + UserService.getToken();
+        this.sockets[channel] = openSocket('http://'+ this.url + channel, 
             { 
-                query: "token=" + UserService.getToken(),
+                query: token,
                 path: '/sockets'
             });
-        this.on = this.socket.on.bind(this.socket);
-        this.once = this.socket.once.bind(this.socket);
-        this.emit = this.socket.emit.bind(this.socket);
-        this.close = this.socket.close.bind(this.socket);
-
-        this._applyPersistence();
+        // this._applyPersistence();
+    }
+    setGame(channel = '/') {
+        if(channel[0] !== '/')channel = '/' + channel;
+        this.gameChannel = channel; 
     }
 
     getId() {
         return this.socket.id;
+    }
+    end(channel = '/') {
+        // disconnect!
+        this.sockets[channel].disconnect();
+        return;
     }
 }
 export default new SocketService(window.location.hostname);

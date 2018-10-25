@@ -6,26 +6,53 @@ class GameService {
     constructor() {
         this.state = {
             cards: [],
-            salts: []
+            salts: [],
+            moves: []
         };
-        this.stack = [];
-
         this.__enablePersistence = true;
     }
 
+    saveToLocal(game) {
+        this.game = game;
+        let local = {
+            setup: game,
+            moves: []
+        };
+    }
+    saveMoves() {
+        let local = {
+            setup: this.game,
+            moves: this.state.moves
+        }
+        localStorage.setItem('currentgame', JSON.stringify(local));
+    }
+    loadFromLocal(game) {
+        let local = JSON.parse(localStorage.getItem('currentgame'));
+        if(local !== null && local !== undefined && local.setup !== null && local.setup !== undefined){
+            if (game === local.setup) {
+                for(var i=0; i<local.moves.length;i++) {
+                    this.move(local.moves[i]);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
     init(game) {
         this.GameMachine = new Game.GameMachine(game.setup);
-        this.stack = [];
         this.state.cards = game.cards.playerCardsArray;
         this.state.salts = game.cards.saltArray;
 
         if(this.onInit) this.onInit();
-        SocketService.on('move', (data) => {
+        SocketService.to().on('move', (data) => {
             console.log("New Move : ");
             console.log(data);
-
             this.move(data);
+            this.saveMoves();
         });
+        if(!this.loadFromLocal(game)) {
+            this.saveToLocal(game);
+        }
     }
 
     isMyTurn() {
@@ -52,10 +79,10 @@ class GameService {
 
         this.setLastTime(timestamp); // Only here for round time!
 
-        const move = new Game.GameMoves.Factory(data);
-
         try{
+            const move = new Game.GameMoves.Factory(data);
             this.GameMachine.runMove(move);
+            this.state.moves.push(move.export());
             if(type === Game.GameMoves.TYPES.PLACE) {
                 let ind = this.state.cards.indexOf(id);
                 if(ind >= 0)
@@ -84,7 +111,7 @@ class GameService {
                 id  : this.state.cards[0],
                 player  : UserService.getToken()
             };
-            SocketService.emit('broadcast', move);
+            SocketService.to().emit('broadcast', move);
         } catch(e) {
             console.log('[ /!\\ ] GameService: Cannot run Reveal Move!');
             throw e;
@@ -92,7 +119,7 @@ class GameService {
     }
 
     end(data) {
-        //SocketService.close();
+        //SocketService.to().close();
         if(this.onEnd)
             this.onEnd();
     }
