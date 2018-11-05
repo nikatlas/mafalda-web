@@ -29,7 +29,8 @@ class Card extends GuiableContainer{
         let {
             x,
             y,
-            id
+            id,
+            MachineCard
         } = props;
 
         // Properties Component 
@@ -44,6 +45,8 @@ class Card extends GuiableContainer{
         };
 
         this.id = id;
+        
+        this.MachineCard = MachineCard;
 
         // GUI
         this.addFolder('Card');
@@ -89,7 +92,8 @@ class Card extends GuiableContainer{
         this.hitArea = new PIXI.Rectangle(-hw/2,-hh/2,hw,hh);
         this.cursor = 'pointer';
 
-        this.scale.set(0.355);
+
+        this.scale.set(1);
 
         this.addChild(this.sprite);
         this.addChild(this.label);
@@ -99,10 +103,10 @@ class Card extends GuiableContainer{
 
         this.numbers = 
         [
-            new Text({text: '1', x:  0.35 * w, y: -0.03 * h}),
-            new Text({text: '1', y: -0.4 * h}),
-            new Text({text: '1', x: -0.35 * w, y: -0.03 * h}),
-            new Text({text: '1', y:  0.4 * h})
+            new Text({style: 'Card', text: '1', x:  0.355 * w, y: -0.03 * h}),
+            new Text({style: 'Card', text: '1', y: -0.393 * h}),
+            new Text({style: 'Card', text: '1', x: -0.355 * w, y: -0.03 * h}),
+            new Text({style: 'Card', text: '1', y:  0.393 * h})
         ];
         this.numbers.forEach((item) => this.addChild(item));
 
@@ -145,13 +149,29 @@ class Card extends GuiableContainer{
         this.sprite.on('pointerdown', (e) => fn(e));
     }
 
+    onMouseOut(fn) {
+        this.on('mouseout', (e) => {
+            fn(e)
+        });
+    }
+
+    onMouseOver(fn) {
+        this.on('mouseover', (e) => {
+            fn(e)
+        });
+    }
+
     getHolder() {
         return this._holder;
     }
 
     attach(holder = null) { 
         this._holder = holder;
+        if(holder) { 
+            this.scaleTo(holder.scale.x);
+        }
         setTimeout(() => {
+            if(this.destroyed) return;
             this.moveTo(this.parent.toLocal(holder.getGlobalPosition()));
         }, 10);
     }
@@ -175,6 +195,9 @@ class Card extends GuiableContainer{
         if(typeof point === 'undefined') {
             return; // Some times this happens...
         }
+        if(this._tween) {
+            this._tween.remove();
+        }
         let path = new PIXI.tween.TweenPath();
         path.moveTo(this.position.x, this.position.y).lineTo(point.x, point.y);
 
@@ -188,6 +211,9 @@ class Card extends GuiableContainer{
     }
     // Animate Scale
     scaleTo(newscale, milliseconds=1000) {
+        if(this._stween) {
+            this._stween.remove();
+        }
         this._stween = PIXI.tweenManager.createTween(this);
         this._stween.easing = PIXI.tween.Easing.outQuart();
         this._stween.loop = false;
@@ -208,6 +234,7 @@ class Card extends GuiableContainer{
         if(this._stween)
             this._stween.stop();
         super.destroy();
+        this.destroyed = true;
     }
 
     _kill() {

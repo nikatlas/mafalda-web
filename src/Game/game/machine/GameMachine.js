@@ -3,9 +3,12 @@
 const SHA256 = require('crypto-js/sha256');
 const GameMoves = require('./GameMoves');
 // TODO test
-
+const DEBUG = false;
 // Need to create an initialization move or something to get verified!
 // Players can have their names placed on state.players on init, showing turns and colors
+const debug = (a) => {
+    if(DEBUG) console.log(a);
+}
 
 class GameMachine {
     constructor(setup) {
@@ -15,8 +18,9 @@ class GameMachine {
             hash: '0123456789',
             setup: setup,
             stacks: {
-                moves: [],
-                hashes: []
+                moves : [],
+                hashes: [],
+                played: [[],[]]
             }
         };
         this.setPlayers(setup.id);
@@ -27,13 +31,14 @@ class GameMachine {
             setup: this.state.setup,
             stack: {
                 moves: this.state.stacks.moves.map((move) => move.export()),
-                hashes: this.state.stacks.hashes
+                hashes: this.state.stacks.hashes,
+                played: this.state.played
             }
         };
     }
 
     flush() {
-        console.log(this.state);
+        debug(this.state);
     }
 
     setState(state) {
@@ -58,7 +63,12 @@ class GameMachine {
     }
 
     getMyTeam(token) {
-        return this.state.setup.id.indexOf(token);
+        return this.getPlayerNumber(token);
+        // return this.state.setup.id.indexOf(token);
+    }
+
+    getMyPlayedCards(token) {
+        return this.state.stacks.played[this.getPlayerNumber(token)];
     }
 
     getPlayerNumber(player) {
@@ -97,15 +107,22 @@ class GameMachine {
     runMove(move) {
         const spray = SHA256(JSON.stringify(move)).toString();
         if (this.state.stacks.hashes.includes(spray)) {
-            console.log('This move has been processed already');
+            debug('This move has been processed already');
             return;
         }
+
         try {
             move.verify(this.state);
+            
             move.performMove(this.state.board);
+
+            let player = this.getPlayerNumber(move.getPlayer());
+            this.state.stacks.played[player].push(move.card);
+            
             this.state.stacks.moves.push(move);
             this.state.stacks.hashes.push(spray);
-            console.log(this.state.stacks);
+            
+            debug(this.state.stacks);
         } catch (e) {
             throw e;
         }

@@ -5,6 +5,10 @@ import GuiableContainer from '../../../helpers/Guiable';
 const ProgressFrameURL = '/files/assets/cards/frame_blue.png';
 const ProgressFrame = PIXI.Texture.fromImage(ProgressFrameURL);
 
+const debug = (a) => {
+    //console.log(a);
+}
+
 class ProgressBar extends GuiableContainer{
     constructor(props) {
         super(props);
@@ -70,9 +74,8 @@ class ProgressBar extends GuiableContainer{
     _intervalCallback(dt, fn) {
         this.setValue(1 - (this._ctime/this._total));
         this._ctime += dt;
-        console.log('Interval +');
         if(this._ctime > this._total) {
-            console.log('Interval stop');
+            debug('Interval stop');
             clearInterval(this._interval);
             if(fn) fn();
         }
@@ -89,7 +92,7 @@ class ProgressBar extends GuiableContainer{
         this._total = v;
         this._ctime = 0;
         this._interval = setInterval(this._intervalCallback.bind(this), 50, 50, fn);
-        console.log('Interval set');
+        debug('Interval set');
     }
 
 

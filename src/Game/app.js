@@ -19,10 +19,13 @@ DATGUI.default.GUI.prototype.removeFolder = function(name) {
   this.onResize();
 }
 ////
+// Disable interpolation when scaling, will make texture be pixelated
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
 class App {
 	constructor(){
 		this.__$$ = tweenManager;
 		this.animateables = [];
+		
 		this.app = new PIXI.Application(window.innerWidth, window.innerHeight, {backgroundColor : 0x1099bb});
 		window.onresize = this.resize;
 		this.app.view.style.display = 'none';

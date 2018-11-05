@@ -16,15 +16,17 @@ class CardHolder extends GuiableContainer {
         let {
             x,
             y,
+            w,
+            h,
             s
         } = props;
 
         // Properties Component 
         this.x = x || 0;
         this.y = y || 0;
-        this.w = config.CARD.WIDTH-config.CARD.OFFSET.X;
-        this.h = config.CARD.HEIGHT-config.CARD.OFFSET.Y;
-        this.s = s || 1;
+        this.w = w || config.CARD.WIDTH-config.CARD.OFFSET.X;
+        this.h = h || config.CARD.HEIGHT-config.CARD.OFFSET.Y;
+        this.s = s || 1.00;
         // 236 283
         // GUI
         this.addFolder('CardHolder');
@@ -87,18 +89,25 @@ class CardHolder extends GuiableContainer {
     }
 
     setEvents() {
+        // if(this._events) return;
+        // this._events = true;
         this.sprite.on('mouseup', this._placeFn);
         this.sprite.on('touchend',this._placeFn);
     }
 
     unsetEvents() {
+        // this._events = false;
         this.sprite.off('mouseup', this._placeFn);
         this.sprite.off('touchend',this._placeFn);
     }
 
-    occupy(card) {
+    occupy(card, events = true) {
+        if(card.getHolder()) {
+            let holder = card.getHolder();
+            holder.unlock();
+        }
         this.lock(card);
-        if(this._onDrop)
+        if(events && this._onDrop)
             this._onDrop(card);
     }
 
@@ -125,6 +134,7 @@ class CardHolder extends GuiableContainer {
     unlock() {
         if(!this._lockable || !this._card) {
             this.setEvents();
+            this._card = null;
             this._locked = false;
         }
     }

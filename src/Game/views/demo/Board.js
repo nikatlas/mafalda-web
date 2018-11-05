@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 
-import Game from '../../game/';
+// import Game from '../../game/';
 
 import BoardHandler from '../buildings/Board';
 import DeckHandler from '../buildings/Deck';
@@ -19,7 +19,7 @@ class BoardDemo extends PIXI.Container{
         let board = new BoardHandler({GameLayer, 'x': 0, 'y': 0 });
         this.addChild(board);
 
-        let deck = new DeckHandler({GameLayer, 'x': 380, 'y': 0});
+        let deck = new DeckHandler({GameLayer, 'x': 13, 'y': 275});
         this.addChild(deck);
 
         this.board = board;
@@ -35,17 +35,12 @@ class BoardDemo extends PIXI.Container{
         // });
 
         this.board.onCardPlaced = (position, card) => {
-            const move = {
-                type: Game.GameMoves.TYPES.PLACE,
-                id  : card.id,
-                position: position,
-                player  : UserService.getToken()
-            };
-            SocketService.to().emit('broadcast', move);
+            GameService.playCard(position, card.id);
         }
 
         GameService.onInit = () => {
-            // console.log("GameService onInit : from './demo/Board.js'");
+            console.log("GameService onInit : from './demo/Board.js'");
+            console.log(GameService.state);
             this.deck.sync(GameService.state.cards, GameService.getMyTeam());
             this.board.sync(GameService.GameMachine);
             SocketService.to().on('winner', (winner) => {
@@ -56,7 +51,8 @@ class BoardDemo extends PIXI.Container{
         }
 
         GameService.onUpdate = () => {
-            // console.log("GameService onUpdate : from './demo/Board.js'");
+            console.log("GameService onUpdate : from './demo/Board.js'");
+            this.deck.sync(GameService.state.cards, GameService.getMyTeam());
             this.board.sync(GameService.GameMachine);
             this.board.updateTimer(GameService.getLastTime(), this.outoftime.bind(this));
             // console.log("!!!Stack: ");
@@ -80,6 +76,7 @@ class BoardDemo extends PIXI.Container{
             } else {
                 console.log("You lost!");
             }
+
         }
     }
     

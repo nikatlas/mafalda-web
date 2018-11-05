@@ -12,6 +12,10 @@ import ProgressBar from '../base/ProgressBar';
 import Text from '../misc/Text';
 import Card from '../base/Card';
 
+const debug = (a) => {
+    if(false)console.log(a);
+}
+
 class BoardHandler extends GuiableContainer{
     constructor(props) {
         super(props);
@@ -43,7 +47,7 @@ class BoardHandler extends GuiableContainer{
             GameLayer
         } = props;
         
-        let BoardScale = 0.35;
+        let BoardScale = 0.95;
         // Board BG
         let bg = new PIXI.Sprite(PIXI.Texture.fromImage('/files/assets/board_web.png'));
         bg.parentLayer = Injector.getByName('BackgroundLayer');
@@ -89,14 +93,14 @@ class BoardHandler extends GuiableContainer{
         let board = GameMachine.state.board;
         const owners = board.owners;
         const data = board.data;
-        console.log(owners);
+        debug(owners);
         this.holders.forEach((holder, index) => {
             if ( data[index] && !holder.isEmpty() ) {
                 holder.getCard().setTeam(GameMachine.getPositionTeam(index));
             } else if ( data[index] ) {
                 const card = new Card({id: data[index].id});
                 this.addChild(card);
-                holder.occupy(card);
+                holder.occupy(card, false);
                 card.setTeam(GameMachine.getPositionTeam(index));
             }
         });

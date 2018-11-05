@@ -26,14 +26,16 @@ class PlaceMove extends GameMove {
 
     export() {
         return {
-            type    : GameMove.TYPES.PLACE,
-            id      : this.card.id,
-            player  : this.player,
-            position: this.position
+            type        : GameMove.TYPES.PLACE,
+            id          : this.card.id,
+            salt        : this.card.salt,
+            signature   : this.player,
+            position    : this.position
         };
         // Add signature!
     }
 
+    getPlayer() { return this.player; }
     verify(state) {
         if (!state.board.isEmpty(this.position)) {
             throw Error('Not a valid move, there is already a card there!');
@@ -65,12 +67,14 @@ class RevealMove extends GameMove {
 
     export() {
         return {
-            type    : GameMove.TYPES.REVEAL,
-            id      : this.card.id,
-            player  : this.player
+            type        : GameMove.TYPES.REVEAL,
+            id          : this.card.id,
+            salt        : this.card.salt,
+            signature   : this.player
         };
     }
 
+    getPlayer() { return this.player; }
     verify(state) {
         if (state.stacks.hashes.length !== 9) {
             console.log(state);
@@ -89,9 +93,9 @@ function Factory(move) {
     let type = move.type;
     switch(type) {
     case GameMove.TYPES.PLACE:
-        return new PlaceMove(new Card(move.id), move.position, move.player);
+        return new PlaceMove(new Card(move.id, move.salt), move.position, move.signature);
     case GameMove.TYPES.REVEAL:
-        return new RevealMove(new Card(move.id), move.player);
+        return new RevealMove(new Card(move.id, move.salt), move.signature);
     default: return {};
     }
 }

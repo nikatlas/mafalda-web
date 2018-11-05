@@ -1,4 +1,4 @@
-// import * as PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js';
 // import config from '../../config';
 
 import GuiableContainer from '../../../helpers/Guiable';
@@ -9,6 +9,9 @@ import CardHolder from '../base/CardHolder';
 
 import Card from '../base/Card';
 
+const debug = (a) => {
+    console.log(a);
+}
 
 class DeckHandler extends GuiableContainer{
     constructor(props) {
@@ -42,16 +45,16 @@ class DeckHandler extends GuiableContainer{
         
         this.GameLayer = GameLayer;
 
-        let DeckScale = 0.35;
+        let DeckScale = 0.7;
         this.cards = [];
         this.cardsMap = {};
 
-        this.cards.push(new CardHolder({GameLayer, 'x': 160, 'y': -230, team: 0, id: 3}).scaleTo(DeckScale));
-        this.cards.push(new CardHolder({GameLayer, 'x': 160, 'y': 0, team: 1, id: 1}).scaleTo(DeckScale));
-        this.cards.push(new CardHolder({GameLayer, 'x': 0, 'y': -230, team: 1, id: 5}).scaleTo(DeckScale));
-        this.cards.push(new CardHolder({GameLayer, 'x': 0, 'y': 0, team: 1, id: 4}).scaleTo(DeckScale));
-        this.cards.push(new CardHolder({GameLayer, 'x': 80, 'y': 230, team: 1, id: 3}).scaleTo(DeckScale));
-        this.cards.forEach((c) => c.cloak());
+        this.cards.push(new CardHolder({GameLayer, 'x': -200, 'y': 0, team: 0, id: 3}).scaleTo(DeckScale));
+        this.cards.push(new CardHolder({GameLayer, 'x': -100, 'y': 0, team: 1, id: 1}).scaleTo(DeckScale));
+        this.cards.push(new CardHolder({GameLayer, 'x': 0, 'y': 0, team: 1, id: 5}).scaleTo(DeckScale));
+        this.cards.push(new CardHolder({GameLayer, 'x': 100, 'y': 0, team: 1, id: 4}).scaleTo(DeckScale));
+        this.cards.push(new CardHolder({GameLayer, 'x': 200, 'y': 0, team: 1, id: 3}).scaleTo(DeckScale));
+        //this.cards.forEach((c) => c.cloak());
         this.cards.forEach((c) => this.addChild(c));
     }
 
@@ -73,12 +76,66 @@ class DeckHandler extends GuiableContainer{
 
     sync(cards, team) {
         if(!cards)return;
+        let temp = cards.map((card) => card.id);
+        debug("-----------------------------------------");
+        debug("Syncing deck with:");
+        debug(temp);
         this.cards.forEach((holder, index) => {
-            const card = new Card({id: cards[index]});
-            this.addChild(card);
-            card.setTeam(team);
-            card.attach(holder);
+            if(!holder.isEmpty()) {
+                let card = holder.getCard();
+                if (temp.indexOf(card.id) > -1) {
+                    const index = temp.indexOf(card.id);
+                    temp.splice(index, 1);
+                } else {
+                    card.destroy();
+                }
+            }
         });
+
+        debug("Cards: ");
+        debug(cards);
+        debug("Missing cards: ");
+        debug(temp);
+        
+        temp.forEach((id, index) => {
+            const card = new Card({id});
+            card.setTeam(team);
+            this.addCard(card);
+            this.addChild(card);
+        });
+        debug("-----------------------------------------");
+    }
+
+    addCard(card) {
+        for (var i=0; i < this.cards.length; i++) {
+            if(this.cards[i].isEmpty()){
+                debug("Holder " + i + " is empty adding card");
+                this.cards[i].occupy(card);
+                card.zoomable = true;
+                // card.onMouseOver(this.zoomEffect);
+                // card.onMouseOut(this.unzoomEffect);
+                return;
+            }
+        }
+        debug("Cannot Add card no space...");
+        // throw "Cannot Add card no space...";
+    }
+
+    zoomEffect(e) {
+        if(e.target.dragging)return;
+        console.log("zoomEffect");
+        const npos = new PIXI.Point();
+        npos.copy(e.target.position);
+        npos.y = -100;
+        e.target.zIndex = 1000;
+        e.target.moveTo(npos,500);
+        e.target.scaleTo(1.5 ,500);
+    }
+
+    unzoomEffect(e) {
+        if(e.currentTarget.dragging)return;
+        console.log("unzoomEffect");
+        e.currentTarget.zIndex = 10;
     }
 
     lock() {

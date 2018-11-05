@@ -61,7 +61,8 @@ let TextStylesNames = {
 	Light:  'Light',
 	Heavy:  'Heavy',
 	Comic:  'Comic',
-	Info:   'Info'
+	Info:   'Info',
+	Card:   'Card'
 };
 
 let TextStyles = {
@@ -69,7 +70,8 @@ let TextStyles = {
 	Light:  new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 22, fill : 0x000000, align : 'center'}),
 	Heavy:  new PIXI.TextStyle({fontFamily : 'Tahoma', fontSize: 25, fill : 0x022005, align : 'center'}),
 	Comic:  new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 28, fill : 0x000000, align : 'Left'}),
-	Info: 	new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 28, fill : 0x000000, align : 'center'})
+	Info: 	new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 28, fill : 0x000000, align : 'center'}),
+	Card:   new PIXI.TextStyle({fontFamily : 'Arial', fontSize: 17, fill : 0xffffff, align : 'center'})
 };
 
 

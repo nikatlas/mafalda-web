@@ -1,10 +1,10 @@
 let config = {
     CARD: {
-        WIDTH: 360,//494,
-        HEIGHT: 480,//683,
+        WIDTH: 130,//494,
+        HEIGHT: 180,//683,
         OFFSET: {
-            X: 64,
-            Y: 67
+            X: 15,//64,
+            Y: 14//67
         }
     }
 };
