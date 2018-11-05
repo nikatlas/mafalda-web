@@ -16,10 +16,10 @@ class GameService {
 
     saveToLocal(game) {
         this.game = game;
-        let local = {
-            setup: game,
-            moves: []
-        };
+        // let local = {
+        //     setup: game,
+        //     moves: []
+        // };
     }
     saveMoves() {
         let local = {
@@ -72,7 +72,7 @@ class GameService {
     }
 
     bootstrapMoves(stack) {
-        let { moves, hashes } = stack;
+        let { moves } = stack;
         debug("Bootstraping");
         debug(moves);
         try {
@@ -89,7 +89,7 @@ class GameService {
 
     move(data) {
         // Game Machine perform internal Move
-        let {id, timestamp, type, signature} = data;
+        let {timestamp} = data;
 
         this.setLastTime(timestamp); // Only here for round time!
 
